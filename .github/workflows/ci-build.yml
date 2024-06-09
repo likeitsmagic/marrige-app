@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build frontend image
-        run: docker-compose -f docker-compose.yml build frontend
+        run: docker compose -f docker-compose.yml build frontend
 
   build-backend:
     name: Build Backend
@@ -31,4 +31,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build backend image
-        run: docker-compose -f docker-compose.yml build backend
+        run: docker compose -f docker-compose.yml build backend
