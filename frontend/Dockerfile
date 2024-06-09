@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # Используем nginx в качестве сервера для статических файлов
-FROM nginx:alpine
+FROM nginx:1.27-alpine
 
 # Копируем собранные файлы в nginx
 COPY --from=build /app/dist /usr/share/nginx/html
