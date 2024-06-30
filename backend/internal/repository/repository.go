@@ -1,13 +1,22 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"log"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
 
 type Repository struct {
-	db *gorm.DB
+	DB *gorm.DB
 }
 
-func NewRepository(db *gorm.DB) *Repository {
+func NewRepository(dsn string) *Repository {
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("failed to connect to database: %v", err)
+	}
 	return &Repository{
-		db: db,
+		DB: db,
 	}
 }

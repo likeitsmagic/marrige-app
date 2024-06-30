@@ -3,6 +3,7 @@ import { HomePage } from "./home";
 import { SignInPage } from "./signin";
 import { SignUpPage } from "./signup";
 import { RootPage } from "./root";
+import { Protected } from "./protected";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignUpPage />,
+      },
+      {
+        path: "/protected",
+        element: <Protected />,
       },
     ],
   },

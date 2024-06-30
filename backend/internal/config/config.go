@@ -1,27 +1,30 @@
 package config
 
-import "os"
+import (
+	"log"
+
+	"github.com/Netflix/go-env"
+)
 
 type Config struct {
-	DbHost string
-	DbPort string
-	DbUser string
-	DbPass string
-	DbName string
+	PostgresUser     string `env:"POSTGRES_USER"`
+	PostgresPassword string `env:"POSTGRES_PASSWORD"`
+	PostgresDb       string `env:"POSTGRES_DB"`
+	PostgresHost     string `env:"POSTGRES_HOST"`
+	PostgresPort     string `env:"POSTGRES_PORT"`
+
+	AccessSecret  string `env:"ACCESS_SECRET"`
+	RefreshSecret string `env:"REFRESH_SECRET"`
 }
 
-func (x Config) GetConfig() *Config {
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbUser := os.Getenv("DB_USER")
-	dbPass := os.Getenv("DB_PASS")
-	dbName := os.Getenv("DB_NAME")
+func GetConfig() *Config {
+	cfg := &Config{}
 
-	return &Config{
-		DbHost: dbHost,
-		DbPort: dbPort,
-		DbUser: dbUser,
-		DbPass: dbPass,
-		DbName: dbName,
+	_, err := env.UnmarshalFromEnviron(cfg)
+
+	if err != nil {
+		log.Panicln(err)
 	}
+
+	return cfg
 }

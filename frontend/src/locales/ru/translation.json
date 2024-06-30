@@ -1,3 +1,8 @@
 {
-  "signin": "вход"
+  "signin": "вход",
+  "email": "Почта",
+  "password": "Пароль",
+  "password_min_length_validation": "Пароль должен содержать минимум 6 символов",
+  "login": "Войти",
+  "signup": "Зарегистрироваться"
 }
