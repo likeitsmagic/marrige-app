@@ -55,8 +55,8 @@ const tryToRefreshTokens = async () => {
   const res = await axios.post("/api/users/refresh", { [refreshTokenKey]: refreshToken });
 
   if (res.status === 200 && res.data) {
-    localStorage.setItem(authTokenKey, res.data.accessToken);
-    localStorage.setItem(refreshTokenKey, res.data.refreshToken);
+    localStorage.setItem(authTokenKey, res.data.access_token);
+    localStorage.setItem(refreshTokenKey, res.data.refresh_token);
   }
 };
 
