@@ -4,7 +4,7 @@ import { authTokenKey, refreshTokenKey } from "../constants/constants.ts";
 
 const axiosInstance: AxiosInstance = axios.create({
   withCredentials: true,
-  baseURL: `${import.meta.env.VITE_API}`,
+  baseURL: `/api`,
   headers: {
     "Content-Type": "application/json",
   },

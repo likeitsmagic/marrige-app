@@ -14,7 +14,6 @@ env:
   POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
   ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}
   REFRESH_SECRET: ${{ secrets.REFRESH_SECRET }}
-  VITE_API: ${{ secrets.VITE_API }}
 
 jobs:
   build-and-deploy:

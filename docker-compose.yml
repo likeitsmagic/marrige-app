@@ -23,8 +23,6 @@ services:
   frontend:
     build:
       context: ./frontend
-    environment:
-      VITE_API: ${VITE_API}
     labels:
       - "traefik.http.routers.frontend.rule=Host(`${DOMAIN}`)"
       - "traefik.http.routers.frontend.entrypoints=websecure"
