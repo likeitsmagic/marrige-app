@@ -26,7 +26,7 @@ func main() {
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai", c.PostgresHost,
 		c.PostgresUser, c.PostgresPassword, c.PostgresDb, c.PostgresPort)
-
+	log.Println(dsn)
 	db := repository.NewRepository(dsn)
 
 	err := db.DB.AutoMigrate(&model.User{})
