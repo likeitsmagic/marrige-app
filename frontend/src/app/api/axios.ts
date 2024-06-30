@@ -52,7 +52,7 @@ axiosInstance.interceptors.response.use(
 
 const tryToRefreshTokens = async () => {
   const refreshToken = localStorage.getItem(refreshTokenKey);
-  const res = await axios.post(`${import.meta.env.VITE_API}/users/refresh`, { [refreshTokenKey]: refreshToken });
+  const res = await axios.post("/api/users/refresh", { [refreshTokenKey]: refreshToken });
 
   if (res.status === 200 && res.data) {
     localStorage.setItem(authTokenKey, res.data.accessToken);
