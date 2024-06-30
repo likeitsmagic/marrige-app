@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Box } from "@chakra-ui/react";
-import { t } from "i18next";
+import { Container } from "@chakra-ui/react";
+import { Login } from "../../widgets/login/ui/Login.tsx";
 
-export const SignInPage: FC = () => <Box>{t("signin")}</Box>;
+export const SignInPage: FC = () => <Container><Login /></Container>;

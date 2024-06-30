@@ -1,3 +1,8 @@
 {
-  "signin": "signinfdsfds"
+  "signin": "signin",
+  "email": "Email address",
+  "password": "Password",
+  "password_min_length_validation": "Password must contain at least 6 characters",
+  "login": "Login",
+  "signup": "Sign Up"
 }
