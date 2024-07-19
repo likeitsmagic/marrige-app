@@ -2,9 +2,11 @@ import axios, { AxiosInstance } from "axios";
 import { camelizeKeys, decamelizeKeys } from "humps";
 import { authTokenKey, refreshTokenKey } from "../constants/constants.ts";
 
+const baseURL = import.meta.env.VITE_NODE_ENV === "development" ? "http://localhost:81/api" : "/api";
+
 const axiosInstance: AxiosInstance = axios.create({
   withCredentials: true,
-  baseURL: `/api`,
+  baseURL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -52,7 +54,7 @@ axiosInstance.interceptors.response.use(
 
 const tryToRefreshTokens = async () => {
   const refreshToken = localStorage.getItem(refreshTokenKey);
-  const res = await axios.post("/api/users/refresh", { [refreshTokenKey]: refreshToken });
+  const res = await axios.post(`${baseURL}/users/auth/refresh`, { [refreshTokenKey]: refreshToken });
 
   if (res.status === 200 && res.data) {
     localStorage.setItem(authTokenKey, res.data.access_token);

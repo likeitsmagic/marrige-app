@@ -1,4 +1,4 @@
-FROM node:22-alpine as build
+FROM node:22.4-alpine as build
 
 # Устанавливаем рабочую директорию
 WORKDIR /app

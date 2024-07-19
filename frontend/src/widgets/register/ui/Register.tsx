@@ -27,7 +27,7 @@ export const Register: FC = () => {
     const registerData = await register(data.email, data.password);
 
     if (registerData.registered) {
-      navigate("/signin");
+      navigate("/protected");
       return;
     }
 
@@ -49,6 +49,7 @@ export const Register: FC = () => {
                 autocomplite="email"
                 variant="filled"
                 disabled={isSubmitting}
+                required
               />
             </FormControl>
             <FormControl isInvalid={!!errors.password && touched.password}>
@@ -70,6 +71,7 @@ export const Register: FC = () => {
                   return error;
                 }}
                 disabled={isSubmitting}
+                required
               />
               <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>

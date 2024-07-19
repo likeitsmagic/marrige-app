@@ -13,7 +13,7 @@ export const useAuth = () => {
 
   const login = async (email: string, password: string) => {
     try {
-      const res = await axiosInstance.post<ILoginResponse>('/users/login', { email, password });
+      const res = await axiosInstance.post<ILoginResponse>('/users/auth/signin', { email, password });
 
       if (res.status === 200) {
         localStorage.setItem(authTokenKey, res.data.accessToken);
@@ -41,7 +41,7 @@ export const useAuth = () => {
 
   const register = async (email: string, password: string) => {
     try {
-      const res = await axiosInstance.post<ILoginResponse>('/users', { email, password });
+      const res = await axiosInstance.post<ILoginResponse>('/users/auth/signup', { email, password });
 
       if (res.status === 201) {
 

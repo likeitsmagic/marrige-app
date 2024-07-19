@@ -48,6 +48,7 @@ export const Login: FC = () => {
                 type="email"
                 autocomplite="email"
                 variant="filled"
+                required
                 disabled={isSubmitting}
               />
             </FormControl>
@@ -60,6 +61,7 @@ export const Login: FC = () => {
                 type="password"
                 autocomplite="current-password"
                 variant="filled"
+                required
                 disabled={isSubmitting}
               />
             </FormControl>
