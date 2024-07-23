@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "./proto";
+
+package user;
+
+service AuthService {
+	rpc PermissionAuth(PermissionAuthRequest) returns (PermissionAuthResponse);
+}
+
+message PermissionAuthRequest {
+    string token = 1;
+	repeated string permissions = 2;
+}
+
+message PermissionAuthResponse {
+	string id = 1;
+	string email = 2;
+	repeated string permissions = 3;
+    bool is_confirmed = 4;
+}

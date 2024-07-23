@@ -1,0 +1,33 @@
+services:
+  campaignservice:
+    build:
+      context: campaignservice
+      dockerfile: Dockerfile
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL}
+      GIN_MODE: ${GIN_MODE}
+      POSTGRES_CAMPAIGNSERVICE_USER: ${POSTGRES_CAMPAIGNSERVICE_USER} 
+      POSTGRES_CAMPAIGNSERVICE_PASSWORD: ${POSTGRES_CAMPAIGNSERVICE_PASSWORD}
+      POSTGRES_CAMPAIGNSERVICE_DB: ${POSTGRES_CAMPAIGNSERVICE_DB}
+      POSTGRES_CAMPAIGNSERVICE_HOST: campaignservice-db
+      POSTGRES_CAMPAIGNSERVICE_PORT: 5432
+    labels:
+      - "traefik.http.routers.campaignservice.rule=Host(`${DOMAIN}`) && PathPrefix(`/api/campaigns`)"
+      - "traefik.http.routers.campaignservice.entrypoints=websecure"
+      - "traefik.http.routers.campaignservice.tls.certresolver=myresolver"
+      - "traefik.http.services.campaignservice.loadbalancer.server.port=8080"
+    depends_on:
+      - campaignservice-db
+      - traefik
+
+  campaignservice-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_CAMPAIGNSERVICE_USER} 
+      POSTGRES_PASSWORD: ${POSTGRES_CAMPAIGNSERVICE_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_CAMPAIGNSERVICE_DB}
+    volumes:
+      - campaignservice-db_data:/var/lib/postgresql/data
+
+volumes:
+  campaignservice-db_data:

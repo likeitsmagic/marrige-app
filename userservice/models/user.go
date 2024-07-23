@@ -13,3 +13,11 @@ type User struct {
 	BanReason   string       `gorm:"type:text"`
 	BannedAt    time.Time    `gorm:"type:timestamp"`
 }
+
+func (u *User) GetPermissions() []string {
+	permissions := make([]string, len(u.Permissions))
+	for i, permission := range u.Permissions {
+		permissions[i] = permission.Name
+	}
+	return permissions
+}

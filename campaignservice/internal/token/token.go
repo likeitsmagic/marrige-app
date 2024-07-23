@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/moyasvadba/userservice/internal/config"
+	"github.com/moyasvadba/campaignservice/internal/config"
 
 	"github.com/golang-jwt/jwt"
 )
@@ -25,11 +25,10 @@ func NewJWTService(config *config.Config) *JWTService {
 	}
 }
 
-func (s *JWTService) GenerateAccessToken(userID string, permissions []string) (string, error) {
+func (s *JWTService) GenerateAccessToken(userID string) (string, error) {
 	claims := jwt.MapClaims{
-		"user_id":     userID,
-		"permissions": permissions,
-		"exp":         time.Now().Add(s.accessExpireDuration).Unix(),
+		"user_id": userID,
+		"exp":     time.Now().Add(s.accessExpireDuration).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(s.accessSigningKey))

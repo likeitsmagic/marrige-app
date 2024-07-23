@@ -4,13 +4,16 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
+	"sync"
 	"time"
 
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/moyasvadba/userservice/auth"
+	authgrpc "github.com/moyasvadba/userservice/auth/delivery/grpc"
 	authhttp "github.com/moyasvadba/userservice/auth/delivery/http"
 	authgorm "github.com/moyasvadba/userservice/auth/repository/gorm"
 	authusecase "github.com/moyasvadba/userservice/auth/usecase"
@@ -20,6 +23,7 @@ import (
 	"github.com/moyasvadba/userservice/internal/token"
 	"github.com/moyasvadba/userservice/models"
 	"go.uber.org/zap"
+	"google.golang.org/grpc"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -28,6 +32,7 @@ import (
 
 type App struct {
 	httpServer *http.Server
+	grpcServer *grpc.Server
 	corsConfig cors.Config
 	authUC     auth.UseCase
 	logger     *zap.Logger
@@ -42,7 +47,7 @@ func NewApp(cfg *config.Config) *App {
 	}
 
 	corsConfig := cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173", "https://mayna-system.ru"},
+		AllowOrigins:     []string{"http://localhost:5173"},
 		AllowCredentials: true,
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
 	}
@@ -79,9 +84,28 @@ func (a *App) Run() error {
 		MaxHeaderBytes: 1 << 20,
 	}
 
+	var wg sync.WaitGroup
+	wg.Add(2)
+
 	go func() {
-		if err := a.httpServer.ListenAndServe(); err != nil {
-			log.Fatalf("Failed to listen and serve: %+v", err)
+		defer wg.Done()
+		if err := a.httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			a.logger.Fatal("Failed to listen and serve HTTP: %+v", zap.Error(err))
+		}
+	}()
+
+	lis, err := net.Listen("tcp", ":50051")
+	if err != nil {
+		a.logger.Fatal("failed to listen on port 50051", zap.Error(err))
+	}
+
+	a.grpcServer = grpc.NewServer()
+	authgrpc.RegisterGrpcServer(a.grpcServer, a.authUC)
+
+	go func() {
+		defer wg.Done()
+		if err := a.grpcServer.Serve(lis); err != nil {
+			a.logger.Fatal("failed to serve gRPC", zap.Error(err))
 		}
 	}()
 
@@ -93,7 +117,13 @@ func (a *App) Run() error {
 	ctx, shutdown := context.WithTimeout(context.Background(), 5*time.Second)
 	defer shutdown()
 
-	return a.httpServer.Shutdown(ctx)
+	if err := a.httpServer.Shutdown(ctx); err != nil {
+		a.logger.Fatal("HTTP server Shutdown", zap.Error(err))
+	}
+	a.grpcServer.GracefulStop()
+
+	wg.Wait()
+	return nil
 }
 
 func initDB(cfg *config.Config) *gorm.DB {

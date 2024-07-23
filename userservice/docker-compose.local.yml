@@ -13,9 +13,10 @@ services:
       POSTGRES_USERSERVICE_PORT: 5432
       ACCESS_SECRET: ${ACCESS_SECRET}
       REFRESH_SECRET: ${REFRESH_SECRET}
+    ports:
+      - "50051:50051"
     labels:
-      - "traefik.http.routers.backend.rule=Host(`localhost`) && PathPrefix(`/api/users`)"
-      - "traefik.http.services.backend.loadbalancer.server.port=8080"
+      - "traefik.http.routers.userservice.rule=Host(`localhost`) && PathPrefix(`/api/users`)"
     depends_on:
       - userservice-db
       - traefik

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 
+	"github.com/google/uuid"
 	"github.com/moyasvadba/userservice/auth"
 	"github.com/moyasvadba/userservice/internal/token"
 	"github.com/moyasvadba/userservice/models"
@@ -50,7 +51,7 @@ func (a *AuthUseCase) SignUp(ctx context.Context, email, password string) (auth.
 		return auth.AuthClaims{}, err
 	}
 
-	accessToken, err := a.jwtService.GenerateAccessToken(createdUser.ID.String())
+	accessToken, err := a.jwtService.GenerateAccessToken(createdUser.ID.String(), createdUser.GetPermissions())
 	if err != nil {
 		return auth.AuthClaims{}, err
 	}
@@ -78,7 +79,7 @@ func (a *AuthUseCase) SignIn(ctx context.Context, email, password string) (auth.
 
 	log.Println(user)
 
-	accessToken, err := a.jwtService.GenerateAccessToken(user.ID.String())
+	accessToken, err := a.jwtService.GenerateAccessToken(user.ID.String(), user.GetPermissions())
 	if err != nil {
 		return auth.AuthClaims{}, err
 	}
@@ -105,13 +106,22 @@ func (a *AuthUseCase) UpdateTokens(ctx context.Context, refreshToken string) (au
 		return auth.AuthClaims{}, auth.ErrInvalidCredentials
 	}
 
-	userID := claims["user_id"].(string)
-	accessToken, err := a.jwtService.GenerateAccessToken(userID)
+	userID, err := uuid.Parse(claims["user_id"].(string))
 	if err != nil {
 		return auth.AuthClaims{}, auth.ErrInvalidCredentials
 	}
 
-	refreshToken, err = a.jwtService.GenerateRefreshToken(userID)
+	user, err := a.userRepo.GetUserByID(ctx, userID)
+	if err != nil {
+		return auth.AuthClaims{}, auth.ErrInvalidCredentials
+	}
+
+	accessToken, err := a.jwtService.GenerateAccessToken(userID.String(), user.GetPermissions())
+	if err != nil {
+		return auth.AuthClaims{}, auth.ErrInvalidCredentials
+	}
+
+	refreshToken, err = a.jwtService.GenerateRefreshToken(userID.String())
 	if err != nil {
 		return auth.AuthClaims{}, auth.ErrInvalidCredentials
 	}
@@ -120,4 +130,40 @@ func (a *AuthUseCase) UpdateTokens(ctx context.Context, refreshToken string) (au
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil
+}
+
+func (a *AuthUseCase) PermissionAuth(ctx context.Context, accessToken string, permissions []string) (*models.User, error) {
+	token, err := a.jwtService.ValidateToken(accessToken, false)
+	if err != nil {
+		return nil, auth.ErrInvalidCredentials
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok || !token.Valid {
+		return nil, auth.ErrInvalidCredentials
+	}
+
+	userID, err := uuid.Parse(claims["user_id"].(string))
+	if err != nil {
+		return nil, auth.ErrInvalidCredentials
+	}
+
+	user, err := a.userRepo.GetUserByID(ctx, userID)
+	if err != nil {
+		return nil, auth.ErrInvalidCredentials
+	}
+
+	userPermissions := user.GetPermissions()
+	permissionSet := make(map[string]struct{}, len(userPermissions))
+	for _, userPermission := range userPermissions {
+		permissionSet[userPermission] = struct{}{}
+	}
+
+	for _, requiredPermission := range permissions {
+		if _, ok := permissionSet[requiredPermission]; !ok {
+			return nil, auth.ErrNoPermission
+		}
+	}
+
+	return user, nil
 }
