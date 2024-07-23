@@ -14,10 +14,10 @@ services:
       ACCESS_SECRET: ${ACCESS_SECRET}
       REFRESH_SECRET: ${REFRESH_SECRET}
     labels:
-      - "traefik.http.routers.backend.rule=Host(`${DOMAIN}`) && PathPrefix(`/api/users`)"
-      - "traefik.http.routers.backend.entrypoints=websecure"
-      - "traefik.http.routers.backend.tls.certresolver=myresolver"
-      - "traefik.http.services.backend.loadbalancer.server.port=8080"
+      - "traefik.http.routers.userservice.rule=Host(`${DOMAIN}`) && PathPrefix(`/api/users`)"
+      - "traefik.http.routers.userservice.entrypoints=websecure"
+      - "traefik.http.routers.userservice.tls.certresolver=myresolver"
+      - "traefik.http.services.userservice.loadbalancer.server.port=8080"
     depends_on:
       - userservice-db
       - traefik
