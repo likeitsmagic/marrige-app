@@ -5,16 +5,15 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/moyasvadba/campaignservice/advantage"
-	"github.com/moyasvadba/campaignservice/advantage/repository"
 	"github.com/moyasvadba/campaignservice/models"
 	"gorm.io/gorm"
 )
 
 type AdvantageUseCase struct {
-	advantageRepo *repository.AdvantageRepository
+	advantageRepo advantage.Repository
 }
 
-func NewAdvantageUseCase(advantageRepo *repository.AdvantageRepository) *AdvantageUseCase {
+func NewAdvantageUseCase(advantageRepo advantage.Repository) *AdvantageUseCase {
 	return &AdvantageUseCase{
 		advantageRepo: advantageRepo,
 	}

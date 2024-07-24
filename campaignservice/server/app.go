@@ -10,6 +10,10 @@ import (
 	"time"
 
 	ginzap "github.com/gin-contrib/zap"
+	"github.com/moyasvadba/campaignservice/activitysector"
+	activitysectorhttp "github.com/moyasvadba/campaignservice/activitysector/delivery/http"
+	activitysectorgorm "github.com/moyasvadba/campaignservice/activitysector/repository"
+	activitysectorusecase "github.com/moyasvadba/campaignservice/activitysector/usecase"
 	"github.com/moyasvadba/campaignservice/advantage"
 	advantagehttp "github.com/moyasvadba/campaignservice/advantage/delivery/http"
 	advantagegorm "github.com/moyasvadba/campaignservice/advantage/repository"
@@ -18,7 +22,6 @@ import (
 	"github.com/moyasvadba/campaignservice/internal/logger"
 	"github.com/moyasvadba/campaignservice/internal/repository"
 	"github.com/moyasvadba/campaignservice/models"
-	"go.uber.org/zap"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -26,13 +29,14 @@ import (
 )
 
 type App struct {
-	httpServer  *http.Server
-	corsConfig  cors.Config
-	logger      *zap.Logger
-	advantageUC advantage.UseCase
+	httpServer       *http.Server
+	corsConfig       cors.Config
+	logger           *logger.Logger
+	advantageUC      advantage.UseCase
+	activitySectorUC activitysector.UseCase
 }
 
-func NewApp(cfg *config.Config) *App {
+func NewApp(cfg *config.Config, logger *logger.Logger) *App {
 	db := initDB(cfg)
 
 	err := db.AutoMigrate(&models.Advantage{}, &models.ActivitySector{}, &models.Campaign{})
@@ -46,12 +50,14 @@ func NewApp(cfg *config.Config) *App {
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
 	}
 
-	advantageRepo := advantagegorm.NewAdvantageRepository(db)
+	advantageRepo := advantagegorm.NewAdvantageRepository(db, logger)
+	activitySectorRepo := activitysectorgorm.NewActivitySectorRepository(db, logger)
 
 	return &App{
-		advantageUC: advantageusecase.NewAdvantageUseCase(advantageRepo),
-		corsConfig:  corsConfig,
-		logger:      logger.NewLogger(cfg).Logger,
+		advantageUC:      advantageusecase.NewAdvantageUseCase(advantageRepo),
+		activitySectorUC: activitysectorusecase.NewActivitySectorUsecase(activitySectorRepo, advantageRepo, logger),
+		corsConfig:       corsConfig,
+		logger:           logger,
 	}
 }
 
@@ -66,6 +72,7 @@ func (a *App) Run() error {
 	apiGroup := router.Group("/api/campaigns")
 
 	advantagehttp.RegisterHTTPEndpoints(apiGroup, a.advantageUC)
+	activitysectorhttp.RegisterHTTPEndpoints(apiGroup, a.activitySectorUC)
 
 	// HTTP Server
 	a.httpServer = &http.Server{

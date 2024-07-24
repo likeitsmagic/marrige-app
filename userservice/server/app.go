@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"log"
 	"net"
 	"net/http"
 	"os"
@@ -35,15 +34,15 @@ type App struct {
 	grpcServer *grpc.Server
 	corsConfig cors.Config
 	authUC     auth.UseCase
-	logger     *zap.Logger
+	logger     *logger.Logger
 }
 
-func NewApp(cfg *config.Config) *App {
+func NewApp(cfg *config.Config, logger *logger.Logger) *App {
 	db := initDB(cfg)
 
 	err := db.AutoMigrate(&models.User{})
 	if err != nil {
-		log.Fatalf("failed to migrate database: %v", err)
+		logger.Error("failed to migrate database", zap.Error(err))
 	}
 
 	corsConfig := cors.Config{
@@ -58,8 +57,8 @@ func NewApp(cfg *config.Config) *App {
 
 	return &App{
 		corsConfig: corsConfig,
-		authUC:     authusecase.NewAuthUseCase(userRepo, *jwtService),
-		logger:     logger.NewLogger(cfg).Logger,
+		authUC:     authusecase.NewAuthUseCase(userRepo, jwtService, logger),
+		logger:     logger,
 	}
 }
 
