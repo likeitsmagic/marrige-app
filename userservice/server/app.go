@@ -53,7 +53,7 @@ func NewApp(cfg *config.Config, logger *logger.Logger) *App {
 
 	jwtService := token.NewJWTService(cfg)
 
-	userRepo := authgorm.NewUserRepository(db)
+	userRepo := authgorm.NewUserRepository(db, logger)
 
 	return &App{
 		corsConfig: corsConfig,
