@@ -4,60 +4,60 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	activirysector "github.com/moyasvadba/campaignservice/activitysector"
+	"github.com/moyasvadba/campaignservice/activitysector"
 	"gorm.io/gorm"
 )
 
 type Handler struct {
-	useCase activirysector.UseCase
+	useCase activitysector.UseCase
 }
 
-func NewHandler(useCase activirysector.UseCase) *Handler {
+func NewHandler(useCase activitysector.UseCase) *Handler {
 	return &Handler{useCase: useCase}
 }
 
-type activirysectorInput struct {
+type activitysectorInput struct {
 	Name       string   `json:"name"`
-	Advantages []string `json:"advanatages"`
+	Advantages []string `json:"advantages"`
 }
 
 func (h *Handler) CreateActivitySector(c *gin.Context) {
-	inp := new(activirysectorInput)
+	inp := new(activitysectorInput)
 
 	if err := c.BindJSON(inp); err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
-	activitysector, err := h.useCase.CreateActivitySector(c, inp.Name, inp.Advantages)
+	ac, err := h.useCase.CreateActivitySector(c, inp.Name, inp.Advantages)
 
 	if err != nil {
 		if err == gorm.ErrDuplicatedKey {
-			c.AbortWithError(http.StatusConflict, activirysector.ErrActivitySectorAlreadyExists)
+			c.AbortWithError(http.StatusConflict, activitysector.ErrActivitySectorAlreadyExists)
 			return
 		}
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
-	c.JSON(http.StatusCreated, activitysector)
+	c.JSON(http.StatusCreated, ac)
 }
 
 func (h *Handler) GetActivitySector(c *gin.Context) {
 	id := c.Param("id")
 
-	activitysector, err := h.useCase.GetActivitySector(c, id)
+	ac, err := h.useCase.GetActivitySector(c, id)
 
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			c.AbortWithError(http.StatusNotFound, activirysector.ErrActivitySectorNotFound)
+			c.AbortWithError(http.StatusNotFound, activitysector.ErrActivitySectorNotFound)
 			return
 		}
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
 
-	c.JSON(http.StatusOK, activitysector)
+	c.JSON(http.StatusOK, ac)
 }
 
 func (h *Handler) GetActivitySectors(c *gin.Context) {
@@ -73,7 +73,7 @@ func (h *Handler) GetActivitySectors(c *gin.Context) {
 
 func (h *Handler) UpdateActivitySector(c *gin.Context) {
 	id := c.Param("id")
-	inp := new(activirysectorInput)
+	inp := new(activitysectorInput)
 
 	if err := c.BindJSON(inp); err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
@@ -84,7 +84,7 @@ func (h *Handler) UpdateActivitySector(c *gin.Context) {
 
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			c.AbortWithError(http.StatusNotFound, activirysector.ErrActivitySectorNotFound)
+			c.AbortWithError(http.StatusNotFound, activitysector.ErrActivitySectorNotFound)
 			return
 		}
 		c.AbortWithStatus(http.StatusInternalServerError)
@@ -101,7 +101,7 @@ func (h *Handler) DeleteActivitySector(c *gin.Context) {
 
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			c.AbortWithError(http.StatusNotFound, activirysector.ErrActivitySectorNotFound)
+			c.AbortWithError(http.StatusNotFound, activitysector.ErrActivitySectorNotFound)
 			return
 		}
 		c.AbortWithStatus(http.StatusInternalServerError)

@@ -9,6 +9,7 @@ import (
 	"github.com/moyasvadba/userservice/internal/logger"
 	"github.com/moyasvadba/userservice/internal/token"
 	"github.com/moyasvadba/userservice/models"
+	"github.com/moyasvadba/userservice/permission"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 
@@ -18,23 +19,26 @@ import (
 
 type AuthUseCase struct {
 	userRepo   auth.UserRepository
+	permissionRepo permission.PermissionRepository
 	jwtService *token.JWTService
 	logger     *logger.Logger
 }
 
 func NewAuthUseCase(
 	userRepo auth.UserRepository,
+	permissionRepo permission.PermissionRepository,
 	jwtService *token.JWTService,
 	logger *logger.Logger,
 ) *AuthUseCase {
 	return &AuthUseCase{
-		userRepo:   userRepo,
-		jwtService: jwtService,
-		logger:     logger,
+		userRepo:      userRepo,
+		permissionRepo: permissionRepo,
+		jwtService:     jwtService,
+		logger:        logger,
 	}
 }
 
-func (a *AuthUseCase) SignUp(ctx context.Context, email, password string) (auth.AuthClaims, error) {
+func (a *AuthUseCase) SignUp(ctx context.Context, email, password string, business bool) (auth.AuthClaims, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return auth.AuthClaims{}, err
@@ -43,6 +47,15 @@ func (a *AuthUseCase) SignUp(ctx context.Context, email, password string) (auth.
 	user := &models.User{
 		Email:    email,
 		Password: string(hashedPassword),
+		
+	}
+
+	if business {
+		permission, err := a.permissionRepo.GetPermissionByName(ctx, "business")
+		if err != nil {
+			return auth.AuthClaims{}, err
+		}
+		user.Permissions = []models.Permission{*permission}
 	}
 
 	createdUser, err := a.userRepo.CreateUser(ctx, user)

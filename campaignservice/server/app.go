@@ -18,6 +18,10 @@ import (
 	advantagehttp "github.com/moyasvadba/campaignservice/advantage/delivery/http"
 	advantagegorm "github.com/moyasvadba/campaignservice/advantage/repository"
 	advantageusecase "github.com/moyasvadba/campaignservice/advantage/usecase"
+	"github.com/moyasvadba/campaignservice/campaign"
+	campaignhttp "github.com/moyasvadba/campaignservice/campaign/delivery/http"
+	campaigngorm "github.com/moyasvadba/campaignservice/campaign/repository"
+	campaignusecase "github.com/moyasvadba/campaignservice/campaign/usecase"
 	"github.com/moyasvadba/campaignservice/internal/config"
 	"github.com/moyasvadba/campaignservice/internal/logger"
 	"github.com/moyasvadba/campaignservice/internal/repository"
@@ -34,6 +38,7 @@ type App struct {
 	logger           *logger.Logger
 	advantageUC      advantage.UseCase
 	activitySectorUC activitysector.UseCase
+	campaignUC       campaign.UseCase
 }
 
 func NewApp(cfg *config.Config, logger *logger.Logger) *App {
@@ -52,10 +57,12 @@ func NewApp(cfg *config.Config, logger *logger.Logger) *App {
 
 	advantageRepo := advantagegorm.NewAdvantageRepository(db, logger)
 	activitySectorRepo := activitysectorgorm.NewActivitySectorRepository(db, logger)
+	campaignRepo := campaigngorm.NewCampaignRepository(db, logger)
 
 	return &App{
 		advantageUC:      advantageusecase.NewAdvantageUseCase(advantageRepo),
 		activitySectorUC: activitysectorusecase.NewActivitySectorUsecase(activitySectorRepo, advantageRepo, logger),
+		campaignUC: campaignusecase.NewCampaignUseCase(campaignRepo),
 		corsConfig:       corsConfig,
 		logger:           logger,
 	}
@@ -73,6 +80,7 @@ func (a *App) Run() error {
 
 	advantagehttp.RegisterHTTPEndpoints(apiGroup, a.advantageUC)
 	activitysectorhttp.RegisterHTTPEndpoints(apiGroup, a.activitySectorUC)
+	campaignhttp.RegisterHTTPEndpoints(apiGroup, a.campaignUC)
 
 	// HTTP Server
 	a.httpServer = &http.Server{

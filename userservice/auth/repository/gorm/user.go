@@ -12,33 +12,33 @@ import (
 )
 
 type UserRepository struct {
-	DB     *gorm.DB
-	Logger *logger.Logger
+	db     *gorm.DB
+	logger *logger.Logger
 }
 
 func NewUserRepository(db *gorm.DB, logger *logger.Logger) *UserRepository {
 	return &UserRepository{
-		DB:     db,
-		Logger: logger,
+		db:     db,
+		logger: logger,
 	}
 }
 
 func (r *UserRepository) CreateUser(ctx context.Context, user *models.User) (*models.User, error) {
-	err := r.DB.Create(user).Error
-	r.Logger.Info("Error creating user", zap.Error(err))
+	err := r.db.Preload("Permissions").Create(user).Error
+	r.logger.Info("Error creating user", zap.Error(err))
 	return user, err
 }
 
 func (r *UserRepository) GetUserByID(ctx context.Context, id uuid.UUID) (*models.User, error) {
 	var user models.User
-	err := r.DB.Preload("Permissions").First(&user, id).Error
-	r.Logger.Info("Error getting user by id", zap.Error(err))
+	err := r.db.Preload("Permissions").First(&user, id).Error
+	r.logger.Info("Error getting user by id", zap.Error(err))
 	return &user, err
 }
 
 func (r *UserRepository) GetUserByEmail(ctx context.Context, email string) (*models.User, error) {
 	var user models.User
-	err := r.DB.Where("email = ?", email).First(&user).Error
-	r.Logger.Info("Error getting user by email", zap.Error(err))
+	err := r.db.Preload("Permissions").Where("email = ?", email).First(&user).Error
+	r.logger.Info("Error getting user by email", zap.Error(err))
 	return &user, err
 }

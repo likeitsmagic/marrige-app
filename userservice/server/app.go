@@ -21,6 +21,7 @@ import (
 	"github.com/moyasvadba/userservice/internal/repository"
 	"github.com/moyasvadba/userservice/internal/token"
 	"github.com/moyasvadba/userservice/models"
+	permissiongorm "github.com/moyasvadba/userservice/permission/repository/gorm"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 
@@ -54,10 +55,10 @@ func NewApp(cfg *config.Config, logger *logger.Logger) *App {
 	jwtService := token.NewJWTService(cfg)
 
 	userRepo := authgorm.NewUserRepository(db, logger)
-
+	permissionRepo := permissiongorm.NewPermissionRepository(db, logger)
 	return &App{
 		corsConfig: corsConfig,
-		authUC:     authusecase.NewAuthUseCase(userRepo, jwtService, logger),
+		authUC:     authusecase.NewAuthUseCase(userRepo, permissionRepo, jwtService, logger),
 		logger:     logger,
 	}
 }

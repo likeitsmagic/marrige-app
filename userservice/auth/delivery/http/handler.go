@@ -21,6 +21,7 @@ func NewHandler(useCase auth.UseCase) *Handler {
 type signInput struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+	Business bool   `json:"business"`
 }
 
 func (h *Handler) SignUp(c *gin.Context) {
@@ -31,7 +32,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 		return
 	}
 
-	tokens, err := h.useCase.SignUp(c.Request.Context(), inp.Email, inp.Password)
+	tokens, err := h.useCase.SignUp(c.Request.Context(), inp.Email, inp.Password, inp.Business)
 	if err != nil {
 		if err == auth.ErrUserAlreadyExists {
 			c.AbortWithStatusJSON(http.StatusConflict, gin.H{

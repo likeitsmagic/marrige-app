@@ -11,7 +11,8 @@ func RegisterHTTPEndpoints(router *gin.RouterGroup, uc advantage.UseCase) {
 
 	advantageEndpoints := router.Group("/advantages")
 	{
-		advantageEndpoints.GET("/:id", h.GetAdvantagesByType)
+		advantageEndpoints.GET("/:id", h.GetAdvantageByID)
+		advantageEndpoints.GET("/type/:type", h.GetAdvantagesByType)
 		advantageEndpoints.GET("/", h.GetAdvantages)
 		advantageEndpoints.POST("/", middleware.PermissionAuth([]string{"manage_advantages"}), h.CreateAdvantage)
 		advantageEndpoints.POST("/many", middleware.PermissionAuth([]string{"manage_advantages"}), h.CreateAdvantages)

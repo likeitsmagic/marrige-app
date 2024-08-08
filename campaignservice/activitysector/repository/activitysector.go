@@ -47,9 +47,6 @@ func (r *ActivitySectorRepository) CreateActivitySector(ctx context.Context, act
 	}
 
 	for _, advantage := range advantages {
-		if err := r.db.First(&advantage).Error; err != nil {
-			return nil, err
-		}
 		if err := r.db.Model(activitySector).Association("Advantages").Append(advantage); err != nil {
 			return nil, err
 		}
