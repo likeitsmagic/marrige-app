@@ -1,30 +1,32 @@
 import { FC, useState } from "react";
 import { useAuth } from "../../../app/auth/useAuth.ts";
 import { Field, Formik } from "formik";
-import { Button, FormControl, FormErrorMessage, FormLabel, Input, Text, VStack } from "@chakra-ui/react";
+import { Button, FormControl, FormErrorMessage, FormLabel, Input, Switch, Text, VStack } from "@chakra-ui/react";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
 
 interface IRegisterValues {
   email: string;
   password: string;
+  business: boolean;
 }
 
 export const Register: FC = () => {
   const navigate = useNavigate();
-  const {register} = useAuth();
+  const { register } = useAuth();
 
   const [registerError, setRegisterError] = useState("")
 
   const initialValues: IRegisterValues = {
     email: "",
-    password: ""
+    password: "",
+    business: false,
   };
 
   const onSubmit = async (data: IRegisterValues) => {
     setRegisterError("");
 
-    const registerData = await register(data.email, data.password);
+    const registerData = await register(data.email, data.password, data.business);
 
     if (registerData.registered) {
       navigate("/protected");
@@ -36,7 +38,7 @@ export const Register: FC = () => {
 
   return (
     <Formik<IRegisterValues> initialValues={initialValues} onSubmit={onSubmit}>
-      {({handleSubmit, errors, touched, isSubmitting}) => (
+      {({ handleSubmit, errors, touched, isSubmitting }) => (
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="flex-start">
             <FormControl>
@@ -72,6 +74,16 @@ export const Register: FC = () => {
                 }}
                 disabled={isSubmitting}
                 required
+              />
+              <FormErrorMessage>{errors.password}</FormErrorMessage>
+            </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="business">{t("is_business")}</FormLabel>
+              <Field
+                as={Switch}
+                id="business"
+                name="business"
+                disabled={isSubmitting}
               />
               <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>

@@ -1,4 +1,9 @@
 import { FC } from "react";
-import { Box } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
+import { CampaignsList } from "../../features/CampaignsList";
 
-export const HomePage: FC = () => <Box>Home</Box>;
+export const HomePage: FC = () => (
+    <Container maxW='container.2xl'>
+        <CampaignsList />
+    </Container>
+);
