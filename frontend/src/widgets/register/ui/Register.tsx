@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { useAuth } from "../../../app/auth/useAuth.ts";
 import { Field, Formik } from "formik";
-import { Button, FormControl, FormErrorMessage, FormLabel, Input, Switch, Text, VStack } from "@chakra-ui/react";
+import { Button, FormControl, FormErrorMessage, FormLabel, HStack, Input, Switch, Text, VStack } from "@chakra-ui/react";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -29,7 +29,7 @@ export const Register: FC = () => {
     const registerData = await register(data.email, data.password, data.business);
 
     if (registerData.registered) {
-      navigate("/protected");
+      navigate("/");
       return;
     }
 
@@ -78,17 +78,18 @@ export const Register: FC = () => {
               <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="business">{t("is_business")}</FormLabel>
-              <Field
-                as={Switch}
-                id="business"
-                name="business"
-                disabled={isSubmitting}
-              />
-              <FormErrorMessage>{errors.password}</FormErrorMessage>
+              <HStack>
+                <Text>{t("is_business")}</Text>
+                <Field
+                  as={Switch}
+                  id="business"
+                  name="business"
+                  disabled={isSubmitting}
+                />
+              </HStack>
             </FormControl>
             {registerError && <Text color="red">{registerError}</Text>}
-            <Button type="submit" colorScheme="purple" width="full" isLoading={isSubmitting}>
+            <Button type="submit" width="full" isLoading={isSubmitting}>
               {t("signup")}
             </Button>
           </VStack>

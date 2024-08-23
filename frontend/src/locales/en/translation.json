@@ -11,5 +11,14 @@
   "type": "Type",
   "region": "Region",
   "rating": "Rating",
-  "is_business": "Business account?"
+  "is_business": "Business account?",
+  "wedding": "My wedding",
+  "reception_venues": "Reception Venues",
+  "vendors": "Vendors",
+  "couple": "The Couple",
+  "signin_signup": "Signin / Signup",
+  "platform_tagline": "The platform for the day of your life",
+  "search_placeholder": "Name or category of vendors",
+  "search_location_placeholder": "Where",
+  "search_button": "Search"
 }

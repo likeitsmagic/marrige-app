@@ -12,7 +12,7 @@ interface ILoginValues {
 
 export const Login: FC = () => {
   const navigate = useNavigate();
-  const {login} = useAuth();
+  const { login } = useAuth();
 
   const [loginError, setLoginError] = useState("")
 
@@ -27,7 +27,7 @@ export const Login: FC = () => {
     const loginData = await login(data.email, data.password);
 
     if (loginData.authenticated) {
-      navigate("/protected");
+      navigate("/");
       return;
     }
 
@@ -36,7 +36,7 @@ export const Login: FC = () => {
 
   return (
     <Formik<ILoginValues> initialValues={initialValues} onSubmit={onSubmit}>
-      {({handleSubmit, isSubmitting}) => (
+      {({ handleSubmit, isSubmitting }) => (
         <form onSubmit={handleSubmit}>
           <VStack spacing={4} align="flex-start">
             <FormControl>
@@ -66,7 +66,7 @@ export const Login: FC = () => {
               />
             </FormControl>
             {loginError && <Text color="red">{loginError}</Text>}
-            <Button type="submit" colorScheme="purple" width="full" isLoading={isSubmitting}>
+            <Button type="submit" colorScheme="red" width="full" isLoading={isSubmitting}>
               {t("login")}
             </Button>
           </VStack>
