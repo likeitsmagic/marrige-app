@@ -13,7 +13,7 @@ export const Searcher: FC = () => {
                 <HStack width={{ base: "95%", md: "70%", lg: "60%", xl: "55%", "2xl": "40%" }} spacing="0">
                     <InputGroup>
                         <InputLeftElement width="2rem">
-                            <SearchIcon color='gray.300' />
+                            <SearchIcon />
                         </InputLeftElement>
                         <Input variant="unstyled" padding={2} pl="2rem" bgColor="rgba(255, 255, 255, 0.8)" placeholder={t("search_placeholder")} borderRightRadius={0} borderRight="1px solid gray" />
                     </InputGroup>
