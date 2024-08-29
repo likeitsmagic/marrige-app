@@ -1,2 +1,4 @@
 .env
 *pb.go
+
+.DS_Store
