@@ -13,10 +13,8 @@ services:
     environment:
       ENV_VARIABLE: ${ENV_VARIABLE}
       NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+      AUTH_SECRET: ${AUTH_SECRET}
 
-    # Set environment variables based on the .env file
-    env_file:
-      - .env
     volumes:
       - ./next-app/src:/app/src
       - ./next-app/public:/app/public
