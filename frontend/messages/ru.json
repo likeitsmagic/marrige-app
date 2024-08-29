@@ -1,0 +1,14 @@
+{
+    "Header": {
+        "brand": "TOI & MOI",
+        "wedding": "Моя свадьба",
+        "reception_venues": "Места проведения",
+        "vendors": "Поставщики",
+        "couple": "Жених и невеста",
+        "signin_signup": "Вход / Регистрация",
+        "search_placeholder": "Имя или категория поставщиков",
+        "search_location_placeholder": "Где",
+        "platform_tagline": "Платформа для самого важного дня в вашей жизни",
+        "search_button": "Поиск"
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "Header": {
+        "brand": "TOI & MOI",
+        "wedding": "My wedding",
+        "reception_venues": "Reception venues",
+        "vendors": "Vendors",
+        "couple": "Couple",
+        "signin_signup": "Sign in / Sign up",
+        "search_placeholder": "Name or category of vendors",
+        "search_location_placeholder": "Where",
+        "platform_tagline": "The platform for the most important day of your life",
+        "search_button": "Search"
+    }
+}

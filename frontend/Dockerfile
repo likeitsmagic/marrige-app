@@ -1,31 +1,28 @@
-FROM node:22.4-alpine as build
+FROM node:22.4-alpine
 
-# Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Копируем package.json и package-lock.json в рабочую директорию
-COPY package*.json ./
+COPY package*.json  ./
 
-# Устанавливаем зависимости
-RUN npm ci
+RUN npm ci;
 
-# Копируем все файлы проекта в рабочую директорию
-COPY . .
+COPY . ./
 
-# Собираем проект
+# Environment variables must be present at build time
+# https://github.com/vercel/next.js/discussions/14030
+ARG ENV_VARIABLE
+ENV ENV_VARIABLE=${ENV_VARIABLE}
+ARG NEXT_PUBLIC_ENV_VARIABLE
+ENV NEXT_PUBLIC_ENV_VARIABLE=${NEXT_PUBLIC_ENV_VARIABLE}
+
+# Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line to disable telemetry at build time
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# Note: Don't expose ports here, Compose will handle that for us
+
+# Build Next.js based on the preferred package manager
 RUN npm run build
 
-# Используем nginx в качестве сервера для статических файлов
-FROM nginx:1.27-alpine
-
-# Копируем собранные файлы в nginx
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Копируем конфигурационный файл nginx
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Открываем порт 80
-EXPOSE 80
-
-# Запускаем nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start Next.js based on the preferred package manager
+CMD npm run start
