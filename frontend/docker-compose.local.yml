@@ -16,8 +16,11 @@ services:
       AUTH_SECRET: ${AUTH_SECRET}
 
     volumes:
-      - ./next-app/src:/app/src
-      - ./next-app/public:/app/public
+      - next-app:/app/src
+      - next-app:/app/public
     restart: always
     ports:
       - 3000:3000
+
+volumes:
+  next-app:
