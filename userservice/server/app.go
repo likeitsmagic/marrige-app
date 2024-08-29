@@ -71,9 +71,7 @@ func (a *App) Run() error {
 		cors.New(a.corsConfig),
 	)
 
-	apiGroup := router.Group("/api/users")
-
-	authhttp.RegisterHTTPEndpoints(apiGroup, a.authUC)
+	authhttp.RegisterHTTPEndpoints(router, a.authUC)
 
 	// HTTP Server
 	a.httpServer = &http.Server{

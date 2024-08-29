@@ -1,7 +1,9 @@
 import { Searcher } from "@/features/Searcher";
 
-export default function Home() {
+const Home = () => {
   return (
     <Searcher />
   );
 }
+
+export default Home;

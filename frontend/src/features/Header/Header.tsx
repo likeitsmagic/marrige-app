@@ -41,7 +41,7 @@ export const Header = () => {
 
         <NavbarContent justify="end">
             <NavbarItem>
-                <Link href="/" as={NextLink} color="primary" className="uppercase">{t("signin_signup")}</Link>
+                <Link href="/signin-signup" as={NextLink} color="primary" className="uppercase">{t("signin_signup")}</Link>
             </NavbarItem>
         </NavbarContent>
 

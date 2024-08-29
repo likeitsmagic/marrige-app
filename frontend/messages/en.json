@@ -10,5 +10,19 @@
         "search_location_placeholder": "Where",
         "platform_tagline": "The platform for the most important day of your life",
         "search_button": "Search"
+    },
+    "SignInSignUpForm": {
+        "signin": "Sign in",
+        "signup": "Sign up",
+        "signin_title": "Sign in to your account",
+        "signup_title": "Create a professional account",
+        "no_account": "Don't have an account?",
+        "email_label": "Your email",
+        "email_placeholder": "Your email",
+        "password_label": "Password",
+        "password_placeholder": "Password",
+        "forgot_password": "Forgot password?",
+        "name_label": "Name",
+        "name_placeholder": "Your name"
     }
 }

@@ -1,0 +1,28 @@
+{
+    "Header": {
+        "brand": "TOI & MOI",
+        "wedding": "Mon mariage",
+        "reception_venues": "Lieux de réception",
+        "vendors": "Fournisseurs",
+        "couple": "Couple",
+        "signin_signup": "Se connecter / S'inscrire",
+        "search_placeholder": "Nom ou catégorie de fournisseurs",
+        "search_location_placeholder": "Où",
+        "platform_tagline": "La plateforme pour le jour le plus important de votre vie",
+        "search_button": "Rechercher"
+    },
+    "SignInSignUpForm": {
+        "signin": "Se connecter",
+        "signup": "S'inscrire",
+        "signin_title": "Connectez-vous à votre compte",
+        "signup_title": "Créer un compte professionnel",
+        "no_account": "Vous n'avez pas de compte?",
+        "email_label": "Votre email",
+        "email_placeholder": "Votre email",
+        "password_label": "Mot de passe",
+        "password_placeholder": "Mot de passe",
+        "forgot_password": "Mot de passe oublié?",
+        "name_label": "Nom",
+        "name_placeholder": "Votre nom"
+    }
+}

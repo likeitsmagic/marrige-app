@@ -10,5 +10,19 @@
         "search_location_placeholder": "Где",
         "platform_tagline": "Платформа для самого важного дня в вашей жизни",
         "search_button": "Поиск"
+    },
+    "SignInSignUpForm": {
+        "signin": "Вход",
+        "signup": "Регистрация",
+        "signin_title": "Войдите в свой аккаунт",
+        "signup_title": "Создать профессиональный аккаунт",
+        "no_account": "У вас нет аккаунта?",
+        "email_label": "Ваш email",
+        "email_placeholder": "Ваш email",
+        "password_label": "Пароль",
+        "password_placeholder": "Пароль",
+        "forgot_password": "Забыли пароль?",
+        "name_label": "Имя",
+        "name_placeholder": "Ваше имя"
     }
 }

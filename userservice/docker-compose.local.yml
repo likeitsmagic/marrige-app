@@ -6,7 +6,7 @@ services:
     environment:
       LOG_LEVEL: ${LOG_LEVEL}
       GIN_MODE: ${GIN_MODE}
-      POSTGRES_USERSERVICE_USER: ${POSTGRES_USERSERVICE_USER} 
+      POSTGRES_USERSERVICE_USER: ${POSTGRES_USERSERVICE_USER}
       POSTGRES_USERSERVICE_PASSWORD: ${POSTGRES_USERSERVICE_PASSWORD}
       POSTGRES_USERSERVICE_DB: ${POSTGRES_USERSERVICE_DB}
       POSTGRES_USERSERVICE_HOST: userservice-db
@@ -16,7 +16,7 @@ services:
     ports:
       - "50051:50051"
     labels:
-      - "traefik.http.routers.userservice.rule=Host(`localhost`) && PathPrefix(`/api/users`)"
+      - "traefik.http.routers.userservice.rule=Host(`userservice.localhost`)"
     depends_on:
       - userservice-db
       - traefik
