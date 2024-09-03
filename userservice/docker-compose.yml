@@ -13,9 +13,8 @@ services:
       POSTGRES_USERSERVICE_PORT: 5432
       ACCESS_SECRET: ${ACCESS_SECRET}
       REFRESH_SECRET: ${REFRESH_SECRET}
-      DOMAIN: ${DOMAIN}
     labels:
-      - "traefik.http.routers.userservice.rule=Host(`${DOMAIN}`) && PathPrefix(`/api/users`)"
+      - "traefik.http.routers.userservice.rule=Host(`userservice.${DOMAIN}`)"
       - "traefik.http.routers.userservice.entrypoints=websecure"
       - "traefik.http.routers.userservice.tls.certresolver=myresolver"
       - "traefik.http.services.userservice.loadbalancer.server.port=8080"
