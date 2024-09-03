@@ -1,11 +1,9 @@
-import { useTranslations } from 'next-intl';
-import React from 'react';
-import bg from '../../../public/bg.webp';
-import { ImageContainer } from '@/components/ImageContainer';
+import { useTranslation } from "react-i18next";
+import { ImageContainer } from "src/components/ImageContainer";
 
 export const Searcher = () => {
 
-    const t = useTranslations("Header");
+    const { t } = useTranslation("translation", { keyPrefix: "Searcher" });
     return (
         <ImageContainer>
             <div className="w-full h-full flex justify-center px-4">

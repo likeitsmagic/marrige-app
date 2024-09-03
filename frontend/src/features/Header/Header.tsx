@@ -1,13 +1,12 @@
-"use client"
-
-import { Link, Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuToggle } from "@nextui-org/react";
-import { useTranslations } from "next-intl";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuToggle } from "@nextui-org/react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Link as RouterLink } from "react-router-dom";
 import { NavbarMenuButton } from "./components/NavbarMenuButton";
-import { Link as NextLink } from "@/routing";
+import { UserInfo } from "./components/UserInfo";
 
 export const Header = () => {
-    const t = useTranslations("Header")
+    const { t } = useTranslation("translation", { keyPrefix: "Header" })
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -19,13 +18,17 @@ export const Header = () => {
 
         <NavbarContent className="md:hidden pr-3" justify="center">
             <NavbarBrand>
-                <h1 className="font-bold text-inherit">{t("brand")}</h1>
+                <RouterLink to="/">
+                    <h1 className="font-bold text-inherit">{t("brand")}</h1>
+                </RouterLink>
             </NavbarBrand>
         </NavbarContent>
 
         <NavbarContent className="hidden md:flex" justify="start">
             <NavbarBrand>
-                <h1 className="font-bold text-inherit text-2xl">{t("brand")}</h1>
+                <RouterLink to="/">
+                    <h1 className="font-bold text-inherit text-2xl">{t("brand")}</h1>
+                </RouterLink>
             </NavbarBrand>
         </NavbarContent>
 
@@ -41,7 +44,7 @@ export const Header = () => {
 
         <NavbarContent justify="end">
             <NavbarItem>
-                <Link href="/signin-signup" as={NextLink} color="primary" className="uppercase">{t("signin_signup")}</Link>
+                <UserInfo />
             </NavbarItem>
         </NavbarContent>
 

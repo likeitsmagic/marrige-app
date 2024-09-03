@@ -1,13 +1,29 @@
-import { notFound } from "next/navigation";
-import { getRequestConfig, getTimeZone } from "next-intl/server";
-import { routing } from "./routing";
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import translationEN from "./assets/locales/en/translation.json";
+import translationRU from "./assets/locales/ru/translation.json";
 
-export default getRequestConfig(async ({ locale }) => {
-  if (!routing.locales.includes(locale as "en" | "ru")) notFound();
+const resources = {
+  en: {
+    translation: translationEN,
+  },
+  ru: {
+    translation: translationRU,
+  },
+};
 
-  //   const timeZone = await getTimeZone();
+i18n
+  .use(initReactI18next)
+  .use(LanguageDetector)
+  .init({
+    resources,
+    supportedLngs: ["en", "ru", "fr"],
+    lng: "ru",
 
-  return {
-    messages: (await import(`../messages/${locale}.json`)).default,
-  };
-});
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
+export default i18n;

@@ -79,6 +79,12 @@ func (a *AuthUseCase) SignUp(ctx context.Context, email, password string, busine
 		return auth.AuthClaims{}, err
 	}
 
+	err = a.userRepo.SaveRefreshToken(ctx, refreshToken, createdUser.ID)
+	if err != nil {
+		a.logger.Error("Error saving refresh token", zap.Error(err))
+		return auth.AuthClaims{}, err
+	}
+
 	return auth.AuthClaims{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
@@ -106,6 +112,12 @@ func (a *AuthUseCase) SignIn(ctx context.Context, email, password string) (auth.
 		return auth.AuthClaims{}, err
 	}
 
+	err = a.userRepo.SaveRefreshToken(ctx, refreshToken, user.ID)
+	if err != nil {
+		a.logger.Error("Error saving refresh token", zap.Error(err))
+		return auth.AuthClaims{}, err
+	}
+
 	return auth.AuthClaims{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
@@ -120,15 +132,9 @@ func (a *AuthUseCase) UpdateTokens(ctx context.Context, refreshToken string) (au
 		return auth.AuthClaims{}, auth.ErrInvalidCredentials
 	}
 
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok || !token.Valid {
-		a.logger.Error("Error validating refresh token", zap.Error(err))
-		return auth.AuthClaims{}, auth.ErrInvalidCredentials
-	}
-
-	userID, err := uuid.Parse(claims["user_id"].(string))
+	userID, err := a.userRepo.GetUserIdByRefreshToken(ctx, refreshToken)
 	if err != nil {
-		a.logger.Error("Error parsing user ID", zap.Error(err))
+		a.logger.Error("Error getting user ID by refresh token", zap.Error(err))
 		return auth.AuthClaims{}, auth.ErrInvalidCredentials
 	}
 
@@ -148,6 +154,12 @@ func (a *AuthUseCase) UpdateTokens(ctx context.Context, refreshToken string) (au
 	if err != nil {
 		a.logger.Error("Error generating refresh token", zap.Error(err))
 		return auth.AuthClaims{}, auth.ErrInvalidCredentials
+	}
+
+	err = a.userRepo.SaveRefreshToken(ctx, refreshToken, userID)
+	if err != nil {
+		a.logger.Error("Error saving refresh token", zap.Error(err))
+		return auth.AuthClaims{}, err
 	}
 
 	return auth.AuthClaims{
@@ -191,6 +203,22 @@ func (a *AuthUseCase) PermissionAuth(ctx context.Context, accessToken string, pe
 		if _, ok := permissionSet[requiredPermission]; !ok {
 			return nil, auth.ErrNoPermission
 		}
+	}
+
+	return user, nil
+}
+
+func (a *AuthUseCase) Me(ctx context.Context, userID string) (*models.User, error) {
+	parsedUserID, err := uuid.Parse(userID)
+	if err != nil {
+		a.logger.Error("Error parsing user ID", zap.Error(err))
+		return nil, auth.ErrInvalidCredentials
+	}
+
+	user, err := a.userRepo.GetUserByID(ctx, parsedUserID)
+	if err != nil {
+		a.logger.Error("Error getting user by ID", zap.Error(err))
+		return nil, auth.ErrInvalidCredentials
 	}
 
 	return user, nil

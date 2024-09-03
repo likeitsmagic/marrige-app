@@ -50,7 +50,7 @@ func NewApp(cfg *config.Config, logger *logger.Logger) *App {
 	}
 
 	corsConfig := cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowOrigins:     []string{"http://localhost:5173", fmt.Sprintf("https://%s", cfg.Domain)},
 		AllowCredentials: true,
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
 	}
@@ -76,11 +76,10 @@ func (a *App) Run() error {
 		cors.New(a.corsConfig),
 	)
 
-	apiGroup := router.Group("/api/campaigns")
 
-	advantagehttp.RegisterHTTPEndpoints(apiGroup, a.advantageUC)
-	activitysectorhttp.RegisterHTTPEndpoints(apiGroup, a.activitySectorUC)
-	campaignhttp.RegisterHTTPEndpoints(apiGroup, a.campaignUC)
+	advantagehttp.RegisterHTTPEndpoints(router, a.advantageUC)
+	activitysectorhttp.RegisterHTTPEndpoints(router, a.activitySectorUC)
+	campaignhttp.RegisterHTTPEndpoints(router, a.campaignUC)
 
 	// HTTP Server
 	a.httpServer = &http.Server{

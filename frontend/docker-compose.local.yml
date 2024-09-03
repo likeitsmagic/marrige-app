@@ -1,26 +1,9 @@
 services:
   frontend:
-    container_name: next-app
     build:
       context: frontend
       dockerfile: Dockerfile
 
     labels:
       - "traefik.http.routers.frontend.rule=Host(`localhost`)"
-      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
-
-    # Set environment variables directly in the docker-compose file
-    environment:
-      ENV_VARIABLE: ${ENV_VARIABLE}
-      NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
-      AUTH_SECRET: ${AUTH_SECRET}
-
-    volumes:
-      - next-app:/app/src
-      - next-app:/app/public
-    restart: always
-    ports:
-      - 3000:3000
-
-volumes:
-  next-app:
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"

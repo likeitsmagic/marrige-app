@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, InternalForwardRefRenderFunction, NavbarItem } from "@nextui-org/react"
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, NavbarItem } from "@nextui-org/react"
 import { FC } from "react"
 
 interface NavbarMenuButtonProps {

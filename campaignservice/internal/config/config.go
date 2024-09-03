@@ -17,6 +17,7 @@ type Config struct {
 
 	AccessSecret  string `env:"ACCESS_SECRET"`
 	RefreshSecret string `env:"REFRESH_SECRET"`
+	Domain        string `env:"DOMAIN"`
 }
 
 func GetConfig() *Config {

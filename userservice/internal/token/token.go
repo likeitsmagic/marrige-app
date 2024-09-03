@@ -27,9 +27,8 @@ func NewJWTService(config *config.Config) *JWTService {
 
 func (s *JWTService) GenerateAccessToken(userID string, permissions []string) (string, error) {
 	claims := jwt.MapClaims{
-		"user_id":     userID,
-		"permissions": permissions,
-		"exp":         time.Now().Add(s.accessExpireDuration).Unix(),
+		"sub":     userID,
+		"exp":     time.Now().Add(s.accessExpireDuration).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(s.accessSigningKey))
@@ -37,7 +36,6 @@ func (s *JWTService) GenerateAccessToken(userID string, permissions []string) (s
 
 func (s *JWTService) GenerateRefreshToken(userID string) (string, error) {
 	claims := jwt.MapClaims{
-		"user_id": userID,
 		"exp":     time.Now().Add(s.refreshExpireDuration).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

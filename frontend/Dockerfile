@@ -1,28 +1,33 @@
-FROM node:22.4-alpine
+# Use an official Node.js runtime as a parent image
+FROM node:22.4-alpine AS build
 
+# Set the working directory
 WORKDIR /app
 
-COPY package*.json  ./
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-RUN npm ci;
+# Install dependencies
+RUN npm ci
 
-COPY . ./
+# Copy the rest of the application code
+COPY . .
 
-# Environment variables must be present at build time
-# https://github.com/vercel/next.js/discussions/14030
-ARG ENV_VARIABLE
-ENV ENV_VARIABLE=${ENV_VARIABLE}
-ARG NEXT_PUBLIC_ENV_VARIABLE
-ENV NEXT_PUBLIC_ENV_VARIABLE=${NEXT_PUBLIC_ENV_VARIABLE}
-
-# Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line to disable telemetry at build time
-ENV NEXT_TELEMETRY_DISABLED 1
-
-# Note: Don't expose ports here, Compose will handle that for us
-
-# Build Next.js based on the preferred package manager
+# Build the React app with Vite
 RUN npm run build
 
-# Start Next.js based on the preferred package manager
-CMD npm run start
+# Use an official Nginx runtime as a parent image
+FROM nginx:1.27-alpine
+
+# Copy the built files from the previous stage
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Copy custom Nginx configuration file
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx when the container has started
+CMD ["nginx", "-g", "daemon off;"]
+

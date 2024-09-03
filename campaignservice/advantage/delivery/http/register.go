@@ -6,7 +6,7 @@ import (
 	"github.com/moyasvadba/campaignservice/internal/middleware"
 )
 
-func RegisterHTTPEndpoints(router *gin.RouterGroup, uc advantage.UseCase) {
+func RegisterHTTPEndpoints(router *gin.Engine, uc advantage.UseCase) {
 	h := NewHandler(uc)
 
 	advantageEndpoints := router.Group("/advantages")

@@ -35,19 +35,20 @@ type App struct {
 	grpcServer *grpc.Server
 	corsConfig cors.Config
 	authUC     auth.UseCase
+	jwtService *token.JWTService
 	logger     *logger.Logger
 }
 
 func NewApp(cfg *config.Config, logger *logger.Logger) *App {
 	db := initDB(cfg)
 
-	err := db.AutoMigrate(&models.User{})
+	err := db.AutoMigrate(&models.User{}, &models.Permission{}, &models.RefreshToken{})
 	if err != nil {
 		logger.Error("failed to migrate database", zap.Error(err))
 	}
 
 	corsConfig := cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},
+		AllowOrigins:     []string{"http://localhost:5173", fmt.Sprintf("https://%s", cfg.Domain)},
 		AllowCredentials: true,
 		AllowHeaders:     []string{"Content-Type", "Authorization"},
 	}
@@ -59,6 +60,7 @@ func NewApp(cfg *config.Config, logger *logger.Logger) *App {
 	return &App{
 		corsConfig: corsConfig,
 		authUC:     authusecase.NewAuthUseCase(userRepo, permissionRepo, jwtService, logger),
+		jwtService: jwtService,
 		logger:     logger,
 	}
 }
@@ -71,7 +73,7 @@ func (a *App) Run() error {
 		cors.New(a.corsConfig),
 	)
 
-	authhttp.RegisterHTTPEndpoints(router, a.authUC)
+	authhttp.RegisterHTTPEndpoints(router, a.authUC, a.jwtService, a.logger)
 
 	// HTTP Server
 	a.httpServer = &http.Server{

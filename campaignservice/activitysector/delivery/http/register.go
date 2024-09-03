@@ -6,7 +6,7 @@ import (
 	"github.com/moyasvadba/campaignservice/internal/middleware"
 )
 
-func RegisterHTTPEndpoints(router *gin.RouterGroup, uc activitysector.UseCase) {
+func RegisterHTTPEndpoints(router *gin.Engine, uc activitysector.UseCase) {
 	handler := NewHandler(uc)
 
 	r := router.Group("/activitysectors")

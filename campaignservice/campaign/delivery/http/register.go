@@ -6,7 +6,7 @@ import (
 	"github.com/moyasvadba/campaignservice/internal/middleware"
 )
 
-func RegisterHTTPEndpoints(router *gin.RouterGroup, uc campaign.UseCase) {
+func RegisterHTTPEndpoints(router *gin.Engine, uc campaign.UseCase) {
 	h := NewHandler(uc)
 
 	{

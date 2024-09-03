@@ -2,19 +2,23 @@ package http
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/moyasvadba/userservice/auth"
+	"github.com/moyasvadba/userservice/internal/logger"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Handler struct {
 	useCase auth.UseCase
+	logger *logger.Logger
 }
 
-func NewHandler(useCase auth.UseCase) *Handler {
+func NewHandler(useCase auth.UseCase, logger *logger.Logger) *Handler {
 	return &Handler{
 		useCase: useCase,
+		logger: logger,
 	}
 }
 
@@ -110,5 +114,40 @@ func (h *Handler) UpdateTokens(c *gin.Context) {
 	c.JSON(http.StatusOK, signInResponse{
 		AccessToken:  tokens.AccessToken,
 		RefreshToken: tokens.RefreshToken,
+	})
+}
+
+type meResponse struct {
+	ID      string `json:"id"`
+	Email       string   `json:"email"`
+	Permissions []string `json:"permissions"`
+	IsBanned    bool     `json:"is_banned"`
+	BanReason   string   `json:"ban_reason"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+}
+
+func (h *Handler) Me(c *gin.Context) {
+	userID, ok := c.Get("user_id")
+
+	if !ok {
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+
+	user, err := h.useCase.Me(c.Request.Context(), userID.(string))
+	if err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(http.StatusOK, meResponse{
+		ID:        user.ID.String(),
+		Email:     user.Email,
+		Permissions: user.GetPermissions(),
+		IsBanned:    user.IsBanned,
+		BanReason:   user.BanReason,
+		CreatedAt:   user.CreatedAt,
+		UpdatedAt:   user.UpdatedAt,
 	})
 }
