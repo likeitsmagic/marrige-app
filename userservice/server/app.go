@@ -17,6 +17,7 @@ import (
 	authgorm "github.com/moyasvadba/userservice/auth/repository/gorm"
 	authusecase "github.com/moyasvadba/userservice/auth/usecase"
 	"github.com/moyasvadba/userservice/internal/config"
+	"github.com/moyasvadba/userservice/internal/locale"
 	"github.com/moyasvadba/userservice/internal/logger"
 	"github.com/moyasvadba/userservice/internal/repository"
 	"github.com/moyasvadba/userservice/internal/token"
@@ -50,7 +51,7 @@ func NewApp(cfg *config.Config, logger *logger.Logger) *App {
 	corsConfig := cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173", fmt.Sprintf("https://%s", cfg.Domain)},
 		AllowCredentials: true,
-		AllowHeaders:     []string{"Content-Type", "Authorization"},
+		AllowHeaders:     []string{"Content-Type", "Authorization", "Accept-Language"},
 	}
 
 	jwtService := token.NewJWTService(cfg)
@@ -71,6 +72,7 @@ func (a *App) Run() error {
 		gin.Recovery(),
 		ginzap.Ginzap(a.logger, time.RFC3339, true),
 		cors.New(a.corsConfig),
+		locale.LocaleMiddleware(),
 	)
 
 	authhttp.RegisterHTTPEndpoints(router, a.authUC, a.jwtService, a.logger)

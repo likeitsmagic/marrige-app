@@ -6,6 +6,7 @@ import (
 
 	"github.com/moyasvadba/userservice/auth"
 	"github.com/moyasvadba/userservice/internal/logger"
+	"go.uber.org/zap"
 
 	"github.com/gin-gonic/gin"
 )
@@ -61,6 +62,14 @@ type signInResponse struct {
 
 func (h *Handler) SignIn(c *gin.Context) {
 	inp := new(signInput)
+
+	locale, ok := c.Get("locale")
+	if !ok {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	h.logger.Error("locale", zap.Any("locale", locale))
 
 	if err := c.BindJSON(inp); err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
@@ -129,7 +138,6 @@ type meResponse struct {
 
 func (h *Handler) Me(c *gin.Context) {
 	userID, ok := c.Get("user_id")
-
 	if !ok {
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return

@@ -52,7 +52,7 @@ func NewApp(cfg *config.Config, logger *logger.Logger) *App {
 	corsConfig := cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173", fmt.Sprintf("https://%s", cfg.Domain)},
 		AllowCredentials: true,
-		AllowHeaders:     []string{"Content-Type", "Authorization"},
+		AllowHeaders:     []string{"Content-Type", "Authorization", "Accept-Language"},
 	}
 
 	advantageRepo := advantagegorm.NewAdvantageRepository(db, logger)

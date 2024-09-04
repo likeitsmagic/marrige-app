@@ -13,7 +13,7 @@
         "couple": "Couple",
         "signin_signup": "Sign in / Sign up"
     },
-    "SignInSignUpForm": {
+    "SignInForm": {
         "individual": "Individual",
         "professional": "Professional",
         "access_your_account": "Access your account",
