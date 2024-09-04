@@ -3,11 +3,13 @@ import { authTokenKey, refreshTokenKey } from "../auth/contants";
 import { camelizeKeys, decamelizeKeys } from "humps";
 import { getApiUrl } from "./getApiUrl";
 import { Services } from "./constants";
+import i18n from "src/i18n";
 
 const axiosInstance: AxiosInstance = axios.create({
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
+    "Accept-Language": i18n.language,
   },
 });
 
