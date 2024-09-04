@@ -9,3 +9,17 @@ services:
       - "81:80"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+    labels:
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.localhost`)"
+      - "traefik.http.services.pgadmin.loadbalancer.server.port=80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+
+volumes:
+  pgadmin:
