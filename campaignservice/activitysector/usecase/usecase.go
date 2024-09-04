@@ -1,8 +1,7 @@
 package usecase
 
 import (
-	"context"
-
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	activirysector "github.com/moyasvadba/campaignservice/activitysector"
 	"github.com/moyasvadba/campaignservice/advantage"
@@ -25,7 +24,7 @@ func NewActivitySectorUsecase(activitySectorRepo activirysector.Repository, adva
 	}
 }
 
-func (u *ActivitySectorUsecase) CreateActivitySector(ctx context.Context, name string, advantages []string) (*models.ActivitySector, error) {
+func (u *ActivitySectorUsecase) CreateActivitySector(ctx *gin.Context, name string, advantages []string) (*models.ActivitySector, error) {
 	var advantageUUIDs []uuid.UUID
 	for _, advantage := range advantages {
 		advantageUUID, err := uuid.Parse(advantage)
@@ -45,20 +44,20 @@ func (u *ActivitySectorUsecase) CreateActivitySector(ctx context.Context, name s
 	return u.activitySectorRepo.CreateActivitySector(ctx, activitySector, foundedAdvantages)
 }
 
-func (u *ActivitySectorUsecase) GetActivitySector(ctx context.Context, id string) (*models.ActivitySector, error) {
+func (u *ActivitySectorUsecase) GetActivitySector(ctx *gin.Context, id string) (activirysector.ActivitySector, error) {
 	activitySectorID, err := uuid.Parse(id)
 	if err != nil {
-		return nil, err
+		return activirysector.ActivitySector{}, err
 	}
 	activitySector, err := u.activitySectorRepo.GetActivitySector(ctx, activitySectorID)
 	if err != nil {
 		u.logger.Error("Error getting activity sector", zap.Error(err))
-		return nil, err
+		return activirysector.ActivitySector{}, err
 	}
 	return activitySector, nil
 }
 
-func (u *ActivitySectorUsecase) GetActivitySectors(ctx context.Context) ([]*models.ActivitySector, error) {
+func (u *ActivitySectorUsecase) GetActivitySectors(ctx *gin.Context) ([]activirysector.ActivitySector, error) {
 	activitySectors, err := u.activitySectorRepo.GetActivitySectors(ctx)
 	if err != nil {
 		u.logger.Error("Error getting activity sectors", zap.Error(err))
@@ -67,7 +66,7 @@ func (u *ActivitySectorUsecase) GetActivitySectors(ctx context.Context) ([]*mode
 	return activitySectors, nil
 }
 
-func (u *ActivitySectorUsecase) UpdateActivitySector(ctx context.Context, id string, name string, advantages []string) (*models.ActivitySector, error) {
+func (u *ActivitySectorUsecase) UpdateActivitySector(ctx *gin.Context, id string, name string, advantages []string) (*models.ActivitySector, error) {
 	var advantageUUIDs []uuid.UUID
 	for _, advantage := range advantages {
 		advantageUUID, err := uuid.Parse(advantage)
@@ -102,7 +101,7 @@ func (u *ActivitySectorUsecase) UpdateActivitySector(ctx context.Context, id str
 	return updatedActivitySector, nil
 }
 
-func (u *ActivitySectorUsecase) DeleteActivitySector(ctx context.Context, id string) error {
+func (u *ActivitySectorUsecase) DeleteActivitySector(ctx *gin.Context, id string) error {
 	activitySectorID, err := uuid.Parse(id)
 	if err != nil {
 		return err

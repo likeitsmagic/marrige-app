@@ -1,8 +1,7 @@
 package usecase
 
 import (
-	"context"
-
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/moyasvadba/campaignservice/advantage"
 	"github.com/moyasvadba/campaignservice/models"
@@ -19,7 +18,7 @@ func NewAdvantageUseCase(advantageRepo advantage.Repository) *AdvantageUseCase {
 	}
 }
 
-func (u *AdvantageUseCase) Create(ctx context.Context, advantage *models.Advantage) (*models.Advantage, error) {
+func (u *AdvantageUseCase) Create(ctx *gin.Context, advantage *models.Advantage) (*models.Advantage, error) {
 	createdAdvantage, err := u.advantageRepo.Create(ctx, advantage)
 	if err != nil {
 		return nil, err
@@ -27,7 +26,7 @@ func (u *AdvantageUseCase) Create(ctx context.Context, advantage *models.Advanta
 	return createdAdvantage, nil
 }
 
-func (u *AdvantageUseCase) CreateMany(ctx context.Context, advantages []*models.Advantage) ([]*models.Advantage, error) {
+func (u *AdvantageUseCase) CreateMany(ctx *gin.Context, advantages []*models.Advantage) ([]*models.Advantage, error) {
 	createdAdvantages, err := u.advantageRepo.CreateMany(ctx, advantages)
 	if err != nil {
 		return nil, err
@@ -35,11 +34,11 @@ func (u *AdvantageUseCase) CreateMany(ctx context.Context, advantages []*models.
 	return createdAdvantages, nil
 }
 
-func (u *AdvantageUseCase) GetAll(ctx context.Context) ([]*models.Advantage, error) {
+func (u *AdvantageUseCase) GetAll(ctx *gin.Context) ([]advantage.Advantage, error) {
 	return u.advantageRepo.GetAll(ctx)
 }
 
-func (u *AdvantageUseCase) GetByType(ctx context.Context, t string) ([]*models.Advantage, error) {
+func (u *AdvantageUseCase) GetByType(ctx *gin.Context, t string) ([]advantage.Advantage, error) {
 	advantages, err := u.advantageRepo.GetByType(ctx, t)
 	if err != nil {
 		return nil, advantage.ErrAdvantagesNotFound
@@ -47,19 +46,19 @@ func (u *AdvantageUseCase) GetByType(ctx context.Context, t string) ([]*models.A
 	return advantages, nil
 }
 
-func (u *AdvantageUseCase) GetByID(ctx context.Context, id uuid.UUID) (*models.Advantage, error) {
+func (u *AdvantageUseCase) GetByID(ctx *gin.Context, id uuid.UUID) (advantage.Advantage, error) {
 	foundedAdvantage, err := u.advantageRepo.GetByID(ctx, id)
 	if err != nil {
-		return nil, advantage.ErrAdvantageNotFound
+		return advantage.Advantage{}, advantage.ErrAdvantageNotFound
 	}
 	return foundedAdvantage, nil
 }
 
-func (u *AdvantageUseCase) Update(ctx context.Context, advantage *models.Advantage) error {
+func (u *AdvantageUseCase) Update(ctx *gin.Context, advantage *models.Advantage) error {
 	return u.advantageRepo.Update(ctx, advantage)
 }
 
-func (u *AdvantageUseCase) Delete(ctx context.Context, id uuid.UUID) error {
+func (u *AdvantageUseCase) Delete(ctx *gin.Context, id uuid.UUID) error {
 	err := u.advantageRepo.Delete(ctx, id)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -69,6 +68,6 @@ func (u *AdvantageUseCase) Delete(ctx context.Context, id uuid.UUID) error {
 	return nil
 }
 
-func (u *AdvantageUseCase) DeleteMany(ctx context.Context, ids []uuid.UUID) error {
+func (u *AdvantageUseCase) DeleteMany(ctx *gin.Context, ids []uuid.UUID) error {
 	return u.advantageRepo.DeleteMany(ctx, ids)
 }

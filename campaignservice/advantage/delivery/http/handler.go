@@ -19,7 +19,9 @@ func NewHandler(useCase advantage.UseCase) *Handler {
 
 type advantageInput struct {
 	Type string `json:"type"`
-	Name string `json:"name"`
+	NameRU string `json:"name_ru"`
+	NameEN string `json:"name_en"`
+	NameFR string `json:"name_fr"`
 }
 
 func (h *Handler) CreateAdvantage(c *gin.Context) {
@@ -30,9 +32,11 @@ func (h *Handler) CreateAdvantage(c *gin.Context) {
 		return
 	}
 
-	advantage, err := h.useCase.Create(c.Request.Context(), &models.Advantage{
+	advantage, err := h.useCase.Create(c, &models.Advantage{
 		Type: inp.Type,
-		Name: inp.Name,
+		NameRU: inp.NameRU,
+		NameEN: inp.NameEN,
+		NameFR: inp.NameFR,
 	})
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
@@ -58,11 +62,13 @@ func (h *Handler) CreateAdvantages(c *gin.Context) {
 	for _, adv := range inp.Advantages {
 		advantages = append(advantages, &models.Advantage{
 			Type: adv.Type,
-			Name: adv.Name,
+			NameRU: adv.NameRU,
+			NameEN: adv.NameEN,
+			NameFR: adv.NameFR,
 		})
 	}
 
-	createdAdvantages, err := h.useCase.CreateMany(c.Request.Context(), advantages)
+	createdAdvantages, err := h.useCase.CreateMany(c, advantages)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -72,7 +78,7 @@ func (h *Handler) CreateAdvantages(c *gin.Context) {
 }
 
 func (h *Handler) GetAdvantages(c *gin.Context) {
-	advantages, err := h.useCase.GetAll(c.Request.Context())
+	advantages, err := h.useCase.GetAll(c)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -84,7 +90,7 @@ func (h *Handler) GetAdvantages(c *gin.Context) {
 func (h *Handler) GetAdvantagesByType(c *gin.Context) {
 	typeParam := c.Param("type")
 
-	advantages, err := h.useCase.GetByType(c.Request.Context(), typeParam)
+	advantages, err := h.useCase.GetByType(c, typeParam)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -102,7 +108,7 @@ func (h *Handler) GetAdvantageByID(c *gin.Context) {
 		return
 	}
 
-	advantage, err := h.useCase.GetByID(c.Request.Context(), advantageId)
+	advantage, err := h.useCase.GetByID(c, advantageId)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -128,14 +134,14 @@ func (h *Handler) UpdateAdvantage(c *gin.Context) {
 	}
 
 	advantage := &models.Advantage{
-		Base: models.Base{
-			ID: advantageId,
-		},
+		ID: advantageId,
 		Type: inp.Type,
-		Name: inp.Name,
+		NameRU: inp.NameRU,
+		NameEN: inp.NameEN,
+		NameFR: inp.NameFR,
 	}
 
-	err = h.useCase.Update(c.Request.Context(), advantage)
+	err = h.useCase.Update(c, advantage)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -153,7 +159,7 @@ func (h *Handler) DeleteAdvantage(c *gin.Context) {
 		return
 	}
 
-	err = h.useCase.Delete(c.Request.Context(), advantageId)
+	err = h.useCase.Delete(c, advantageId)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
@@ -184,7 +190,7 @@ func (h *Handler) DeleteAdvantages(c *gin.Context) {
 		ids = append(ids, parsedId)
 	}
 
-	err := h.useCase.DeleteMany(c.Request.Context(), ids)
+	err := h.useCase.DeleteMany(c, ids)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return

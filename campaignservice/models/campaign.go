@@ -1,9 +1,17 @@
 package models
 
-import "github.com/google/uuid"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Campaign struct {
-	Base
+	ID        uuid.UUID  `gorm:"type:uuid;primary_key;default:gen_random_uuid();" json:"id"`
+	CreatedAt time.Time  `json:"created_at"`
+	UpdatedAt time.Time  `json:"updated_at"`
+	DeletedAt *time.Time `json:"deleted_at"`
+	
 	OwnerID          uuid.UUID      `gorm:"not null unique" json:"owner_id"`
 	Name             string         `gorm:"not null" json:"name"`
 	Phone            string         `gorm:"not null" json:"phone"`

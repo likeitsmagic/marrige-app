@@ -23,6 +23,7 @@ import (
 	campaigngorm "github.com/moyasvadba/campaignservice/campaign/repository"
 	campaignusecase "github.com/moyasvadba/campaignservice/campaign/usecase"
 	"github.com/moyasvadba/campaignservice/internal/config"
+	"github.com/moyasvadba/campaignservice/internal/locale"
 	"github.com/moyasvadba/campaignservice/internal/logger"
 	"github.com/moyasvadba/campaignservice/internal/repository"
 	"github.com/moyasvadba/campaignservice/models"
@@ -74,6 +75,7 @@ func (a *App) Run() error {
 		gin.Recovery(),
 		ginzap.Ginzap(a.logger, time.RFC3339, true),
 		cors.New(a.corsConfig),
+		locale.LocaleMiddleware(),
 	)
 
 

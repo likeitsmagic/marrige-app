@@ -181,7 +181,7 @@ func (a *AuthUseCase) PermissionAuth(ctx context.Context, accessToken string, pe
 		return nil, auth.ErrInvalidCredentials
 	}
 
-	userID, err := uuid.Parse(claims["user_id"].(string))
+	userID, err := uuid.Parse(claims["sub"].(string))
 	if err != nil {
 		a.logger.Error("Error parsing user ID", zap.Error(err))
 		return nil, auth.ErrInvalidCredentials
