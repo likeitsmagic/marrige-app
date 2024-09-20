@@ -2,6 +2,7 @@ import { isAxiosError } from "axios";
 import { createContext, FC, PropsWithChildren, useCallback, useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 import { authTokenKey, refreshTokenKey } from "./contants";
+import { ILocation } from "../types";
 
 interface ILoginResponse {
     accessToken: string;
@@ -20,7 +21,7 @@ interface IUser {
 
 interface IAuthContext {
     signin: (email: string, password: string) => Promise<{ authenticated: boolean; data: ILoginResponse | null }>;
-    signup: (email: string, password: string, business: boolean) => Promise<{ registered: boolean; data: ILoginResponse | null }>;
+    signup: (email: string, password: string, business: boolean, location?: ILocation) => Promise<{ registered: boolean; data: ILoginResponse | null }>;
     logout: () => void;
     updateInfo: () => Promise<void>;
     isAuthenticated: boolean;
@@ -75,14 +76,17 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
     }, []);
 
     const signup = useCallback(
-        async (email: string, password: string, business: boolean) => {
+        async (email: string, password: string, business: boolean, location?: ILocation) => {
             try {
                 const res = await axiosInstance.post<ILoginResponse>(
                     business ? "/auth/sign-up-business" : "/auth/sign-up",
-                    { email, password }
+                    { email, password, location }
                 );
 
                 if (res.status === 201) {
+                    localStorage.setItem(authTokenKey, res.data.accessToken);
+                    localStorage.setItem(refreshTokenKey, res.data.refreshToken);
+    
                     return {
                         registered: true,
                         data: res.data,

@@ -2,13 +2,15 @@ import { Autocomplete, AutocompleteItem, Button, Card, CardBody, Input, Link } f
 import { Field, Formik } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { ImageContainer } from "src/components/ImageContainer";
 import { debounce } from 'lodash';
+import { ILocation } from "src/core/types";
+import { useAuthContext } from "src/core/auth/useAuth";
 
 interface IRegion {
     name: string;
-    pos: number[];
+    pos: string;
     provinceName: string;
 }
 
@@ -16,7 +18,6 @@ interface ISignUpValues {
     email: string;
     password: string;
     repeatPassword: string;
-    regionQuery: string;
 }
 
 export const SignUpForm = () => {
@@ -24,25 +25,55 @@ export const SignUpForm = () => {
 
     const [regions, setRegions] = useState<IRegion[]>([]);
 
+    const [selectedRegion, setSelectedRegion] = useState<IRegion>();
+
+    const navigate = useNavigate();
+
+    const { signup, updateInfo } = useAuthContext();
 
 
     const initialValues: ISignUpValues = {
         email: "",
         password: "",
         repeatPassword: "",
-        regionQuery: ""
     };
 
-    const onSubmit = async () => {
+    const onSubmit = async (values: ISignUpValues) => {
+        if (values.password !== values.repeatPassword) {
+            return;
+        }
 
+        if (!selectedRegion) {
+            return;
+        }
+        
+        const location: ILocation = {
+            type: "Point",
+            coordinates: selectedRegion.pos.split(' ').map(Number)
+        };
+
+        const result = await signup(values.email, values.password, false, location);
+
+        if (result) {
+            updateInfo();
+            navigate('/');
+        }
     };
 
     const handleRegionQuery = async (query: string) => {
+        if (query?.length < 1) {
+            return;
+        }
+
         const response = await fetch(`https://functions.yandexcloud.net/d4e66i32i0s9783irqrp?query=${query.split(' ').join('+')}`);
         if (response.ok) {
             const data = await response.json();
             setRegions(data);
         }
+    };
+
+    const handleRegionChange = (region: IRegion) => {
+        setSelectedRegion(region);
     };
 
     const debouncedHandleRegionQuery = debounce(handleRegionQuery, 1000);
@@ -63,10 +94,10 @@ export const SignUpForm = () => {
                                         </Link>
                                     </p>
                                     <Field variant="underlined" name="email" label={t('your_email')} type="email" disabled={isSubmitting} as={Input} />
-                                    <Autocomplete variant="underlined" name="regionQuery" placeholder={t('region_query_placeholder')} label={t('region_query')} type="text" disabled={isSubmitting} items={regions} onInputChange={debouncedHandleRegionQuery} listboxProps={{
+                                    <Autocomplete variant="underlined" name="regionQuery" placeholder={t('region_query_placeholder')} label={t('region_query')} type="text" disabled={isSubmitting} items={regions} onInputChange={debouncedHandleRegionQuery} isClearable={false} listboxProps={{
                                         emptyContent: t('no_regions_found')
                                     }}>
-                                        {regions.map((region, index) => <AutocompleteItem tabIndex={index} key={index} textValue={region.name}>
+                                        {regions.map((region, index) => <AutocompleteItem tabIndex={index} key={index} textValue={region.name} onClick={() => handleRegionChange(region)}>
                                             <div>
                                                 <p>{region.name}</p>
                                                 {region.provinceName !== "N/A" && <p className="text-sm text-gray-500">{region.provinceName}</p>}
