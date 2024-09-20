@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Point,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -39,6 +40,9 @@ export class User {
 
   @Column({ nullable: true })
   phone: string;
+
+  @Column({ type: 'geometry', srid: 4326, nullable: true })
+  location: Point;
 
   @CreateDateColumn()
   createdAt: Date;

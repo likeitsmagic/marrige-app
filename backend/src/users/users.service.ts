@@ -3,7 +3,6 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { omit } from 'lodash';
 
 @Injectable()
 export class UsersService {
