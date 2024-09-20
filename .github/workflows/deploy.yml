@@ -31,7 +31,5 @@ jobs:
 
       - name: Deploy
         run: |
-          docker compose up -d traefik
-          docker compose up -d backend-db
-          docker compose up -d --build backend
-          docker compose up -d --build frontend
+          docker compose build
+          docker compose up -d --remove-orphans
