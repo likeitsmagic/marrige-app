@@ -4,6 +4,8 @@ import { config } from 'dotenv';
 
 config();
 
+console.log(process.env.POSTGRES_HOST);
+
 const connectionOptions: DataSourceOptions = {
   type: 'postgres' as const,
   host: process.env.POSTGRES_HOST,
