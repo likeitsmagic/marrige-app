@@ -7,8 +7,6 @@ async function bootstrap() {
 
   const configService = app.get<ConfigService>(ConfigService);
 
-  console.log(configService.get('POSTGRES_HOST'));
-
   app.enableCors({
     origin:
       configService.get('NODE_ENV') === 'development'
@@ -16,8 +14,6 @@ async function bootstrap() {
         : undefined,
     credentials: true,
   });
-
-  app.setGlobalPrefix('api');
 
   await app.listen(3000);
 }
