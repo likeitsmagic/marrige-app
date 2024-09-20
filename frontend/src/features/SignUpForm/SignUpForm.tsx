@@ -2,10 +2,8 @@ import { Autocomplete, AutocompleteItem, Button, Card, CardBody, Input, Link } f
 import { Field, Formik } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
 import { Link as RouterLink } from "react-router-dom";
 import { ImageContainer } from "src/components/ImageContainer";
-import { useAuthContext } from "src/core/auth/useAuth";
 import { debounce } from 'lodash';
 
 interface IRegion {
@@ -26,8 +24,6 @@ export const SignUpForm = () => {
 
     const [regions, setRegions] = useState<IRegion[]>([]);
 
-    const navigate = useNavigate();
-    const { signup, updateInfo } = useAuthContext();
 
 
     const initialValues: ISignUpValues = {
@@ -37,7 +33,7 @@ export const SignUpForm = () => {
         regionQuery: ""
     };
 
-    const onSubmit = async (data: ISignUpValues) => {
+    const onSubmit = async () => {
 
     };
 
