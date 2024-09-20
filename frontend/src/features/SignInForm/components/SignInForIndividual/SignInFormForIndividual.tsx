@@ -3,6 +3,7 @@ import { Field, Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { useAuthContext } from "src/core/auth/useAuth";
+import { Link as RouterLink } from "react-router-dom";
 
 interface ILoginValues {
     email: string;
@@ -40,7 +41,7 @@ export const SignInFormForIndividual = () => {
                         <h2 className="text-center text-xl font-semibold">{t('access_your_account')}</h2>
                         <p className="text-center text-sm text-gray-500">
                             {t('dont_have_an_account')}{" "}
-                            <Link size="sm">
+                            <Link size="sm" as={RouterLink} to="/signup">
                                 {t('sign_up')}
                             </Link>
                         </p>

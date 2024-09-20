@@ -1,11 +1,11 @@
 import axios, { AxiosInstance } from "axios";
-import { authTokenKey, refreshTokenKey } from "../auth/contants";
-import { camelizeKeys, decamelizeKeys } from "humps";
-import { getApiUrl } from "./getApiUrl";
-import { Services } from "./constants";
 import i18n from "src/i18n";
+import { authTokenKey, refreshTokenKey } from "../auth/contants";
+
+const apiUrl = import.meta.env.VITE_API_URL ?? "" + "/api";
 
 const axiosInstance: AxiosInstance = axios.create({
+  baseURL: apiUrl,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -20,25 +20,11 @@ axiosInstance.interceptors.request.use((config) => {
     config.headers.setAuthorization(`Bearer ${token}`);
   }
 
-  if (config.params) {
-    config.params = decamelizeKeys(config.params);
-  }
-
-  if (config.data) {
-    config.data = decamelizeKeys(config.data);
-  }
-
   return config;
 });
 
 axiosInstance.interceptors.response.use(
-  (response) => {
-    if (response.data) {
-      response.data = camelizeKeys(response.data);
-    }
-
-    return response;
-  },
+  (response) => response,
   async (error) => {
     if (error.response.status === 401) {
       await tryToRefreshTokens();
@@ -56,15 +42,15 @@ axiosInstance.interceptors.response.use(
 const tryToRefreshTokens = async () => {
   const refreshToken = localStorage.getItem(refreshTokenKey);
   const res = await axios.post(
-    getApiUrl(Services.userService, "auth/refresh"),
+    `${apiUrl}/auth/refresh-tokens`,
     {
-      [refreshTokenKey]: refreshToken,
+      refreshToken,
     }
   );
 
   if (res.status === 200 && res.data) {
-    localStorage.setItem(authTokenKey, res.data.access_token);
-    localStorage.setItem(refreshTokenKey, res.data.refresh_token);
+    localStorage.setItem(authTokenKey, res.data.accessToken);
+    localStorage.setItem(refreshTokenKey, res.data.refreshToken);
   }
 };
 

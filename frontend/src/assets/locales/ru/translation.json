@@ -24,6 +24,19 @@
         "forgot_password": "Забыли пароль?",
         "access": "Войти"
     },
+    "SignUpForm": {
+        "register_your_account": "Регистрация аккаунта",
+        "already_have_an_account": "У вас уже есть аккаунт?",
+        "sign_up": "Регистрация",
+        "sign_in": "Войти",
+        "your_email": "Ваш email",
+        "password": "Пароль",
+        "repeat_password": "Повторите пароль",
+        "region_query": "Область",
+        "region_query_placeholder": "Начните вводить название области",
+        "register": "Регистрация",
+        "no_regions_found": "Область не найдена"
+    },
     "CampaignList": {
         "title": "Наши фавориты"
     },

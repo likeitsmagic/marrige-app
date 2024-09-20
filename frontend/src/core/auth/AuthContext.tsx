@@ -1,8 +1,6 @@
 import { isAxiosError } from "axios";
 import { createContext, FC, PropsWithChildren, useCallback, useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
-import { Services } from "../api/constants";
-import { getApiUrl } from "../api/getApiUrl";
 import { authTokenKey, refreshTokenKey } from "./contants";
 
 interface ILoginResponse {
@@ -48,7 +46,7 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const signin = useCallback(async (email: string, password: string) => {
         try {
             const res = await axiosInstance.post<ILoginResponse>(
-                getApiUrl(Services.userService, "auth/signin"),
+                "/auth/sign-in",
                 { email, password }
             );
 
@@ -80,8 +78,8 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
         async (email: string, password: string, business: boolean) => {
             try {
                 const res = await axiosInstance.post<ILoginResponse>(
-                    getApiUrl(Services.userService, "auth/signup"),
-                    { email, password, business }
+                    business ? "/auth/sign-up-business" : "/auth/sign-up",
+                    { email, password }
                 );
 
                 if (res.status === 201) {
@@ -117,7 +115,7 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const getMe = useCallback(async () => {
         try {
             const res = await axiosInstance.get<IUser>(
-                getApiUrl(Services.userService, "auth/me"),
+                "/users/me",
             );
 
             if (res.status === 200) {

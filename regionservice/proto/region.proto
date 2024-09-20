@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option go_package = "./proto";
+
+package region;
+
+service RegionService {
+	rpc CreateRegion(CreateRegionRequest) returns (CreateRegionResponse);
+    rpc GetRegionByID(GetRegionByIDRequest) returns (GetRegionByIDResponse);
+}
+
+message CreateRegionRequest {
+    repeated double location = 1;
+}
+
+message CreateRegionResponse {
+	string id = 1;
+    repeated double location = 2;
+}
+
+message GetRegionByIDRequest {
+    string id = 1;
+}
+
+message GetRegionByIDResponse {
+    string id = 1;
+    repeated double location = 2;
+}

@@ -5,6 +5,7 @@ import { Home } from "./features/Home";
 import { SignInForm } from "./features/SignInForm";
 import { Profile } from "./features/Profile/Profile";
 import { ProtectedEntry } from "./features/Application/ProtectedEntry";
+import { SignUpForm } from "./features/SignUpForm";
 
 export interface FeatureRoute {
   component: FC;
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
       {
         path: "/user/:id",
         element: <ProtectedEntry><Profile /></ProtectedEntry>,
+      },
+      {
+        path: "/signup",
+        element: <SignUpForm />,
       },
     ],
   },
