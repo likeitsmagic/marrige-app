@@ -13,7 +13,7 @@ export const typeOrmConfig: TypeOrmModuleAsyncOptions = {
     database: configService.get('POSTGRES_DB'),
     entities: [__dirname + '/../../**/*.entity.{js,ts}'],
     migrations: [__dirname + '/../../**/migrations/*.{js,ts}'],
-    synchronize: configService.get('NODE_ENV') === 'development',
+    synchronize: true,
     logging: configService.get('NODE_ENV') === 'development',
   }),
 };

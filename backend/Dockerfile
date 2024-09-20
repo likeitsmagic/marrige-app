@@ -1,11 +1,5 @@
 FROM node:20-alpine
 
-ARG POSTGRES_USER
-ARG POSTGRES_PASSWORD
-ARG POSTGRES_DB
-ARG POSTGRES_HOST
-ARG POSTGRES_PORT
-
 # Set the working directory
 WORKDIR /app
 
@@ -21,8 +15,8 @@ COPY . .
 # Build the NestJS application
 RUN npm run build
 
-# Run migrations
-RUN npm run typeorm:migrate
+# # Run migrations
+# RUN npm run typeorm:migrate
 
 # Expose the application port
 EXPOSE 3000
