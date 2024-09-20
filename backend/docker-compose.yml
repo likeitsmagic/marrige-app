@@ -17,9 +17,6 @@ services:
       - "traefik.http.routers.backend.entrypoints=websecure"
       - "traefik.http.routers.backend.tls.certresolver=myresolver"
       - "traefik.http.services.backend.loadbalancer.server.port=3000"
-    depends_on:
-      - backend-db
-      - traefik
       
   backend-db:
     image: postgis/postgis:16-3.4-alpine
