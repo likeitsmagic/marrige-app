@@ -1,0 +1,10 @@
+{
+    "auth": {
+        "signin": {
+            "incorrect_credentials": "Incorrect email or password"
+        },
+        "signup": {
+            "email_already_in_use": "User with this email already exists"
+        }
+    }
+}

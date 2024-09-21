@@ -7,6 +7,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { SignInSchema } from "../../schema";
+import { useState } from "react";
 
 type LoginValues = z.infer<typeof SignInSchema>;
 
@@ -16,18 +17,25 @@ export const SignInFormForBusiness = () => {
 	const navigate = useNavigate();
 	const { signin, updateInfo } = useAuthContext();
 
+	const [error, setError] = useState<string | undefined>(undefined);
+
 	const initialValues: LoginValues = {
 		email: "",
 		password: "",
 	};
 
 	const onSubmit = async (data: LoginValues) => {
+		setError(undefined);
 		const loginData = await signin(data.email, data.password);
 
 		if (loginData.authenticated) {
 			updateInfo();
 			navigate("/");
 			return;
+		}
+
+		if (!loginData.authenticated && loginData.error) {
+			setError(loginData.error);
 		}
 	};
 
@@ -83,6 +91,7 @@ export const SignInFormForBusiness = () => {
 						>
 							{t("access")}
 						</Button>
+						{error && <p className="text-red-500 text-center pt-2">{error}</p>}
 					</form>
 				)}
 			</Formik>

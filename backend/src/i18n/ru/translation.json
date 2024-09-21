@@ -1,0 +1,11 @@
+{
+    "test": "тест",
+    "auth": {
+        "signin": {
+            "incorrect_credentials": "Неверные email или пароль"
+        },
+        "signup": {
+            "email_already_in_use": "Такой пользователь уже существует"
+        }
+    }
+}

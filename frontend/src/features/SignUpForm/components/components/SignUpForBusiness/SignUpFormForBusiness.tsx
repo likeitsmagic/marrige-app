@@ -1,5 +1,6 @@
 import { Button, Input, Link } from "@nextui-org/react";
 import { Field, Formik } from "formik";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { Link as RouterLink } from "react-router-dom";
@@ -17,6 +18,8 @@ export const SignUpFormForBusiness = () => {
 
 	const { signup, updateInfo } = useAuthContext();
 
+	const [error, setError] = useState<string | undefined>(undefined);
+
 	const initialValues: z.infer<typeof schema> = {
 		email: "",
 		password: "",
@@ -24,11 +27,17 @@ export const SignUpFormForBusiness = () => {
 	};
 
 	const onSubmit = async (values: z.infer<typeof schema>) => {
+		setError(undefined);
 		const result = await signup(values.email, values.password, true);
 
 		if (result.registered) {
 			updateInfo();
 			navigate("/");
+			return;
+		}
+
+		if (!result.registered && result.error) {
+			setError(result.error);
 		}
 	};
 
@@ -89,6 +98,7 @@ export const SignUpFormForBusiness = () => {
 						>
 							{t("register")}
 						</Button>
+						{error && <p className="text-red-500 text-center pt-2">{error}</p>}
 					</form>
 				)}
 			</Formik>

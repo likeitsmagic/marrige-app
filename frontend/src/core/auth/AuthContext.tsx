@@ -14,6 +14,7 @@ import { ILocation } from "../types";
 interface ILoginResponse {
 	accessToken: string;
 	refreshToken: string;
+	message?: string;
 }
 
 interface IUser {
@@ -30,13 +31,21 @@ interface IAuthContext {
 	signin: (
 		email: string,
 		password: string,
-	) => Promise<{ authenticated: boolean; data: ILoginResponse | null }>;
+	) => Promise<{
+		authenticated: boolean;
+		data: ILoginResponse | null;
+		error: string | undefined;
+	}>;
 	signup: (
 		email: string,
 		password: string,
 		business: boolean,
 		location?: ILocation,
-	) => Promise<{ registered: boolean; data: ILoginResponse | null }>;
+	) => Promise<{
+		registered: boolean;
+		data: ILoginResponse | null;
+		error: string | undefined;
+	}>;
 	logout: () => void;
 	updateInfo: () => Promise<void>;
 	isAuthenticated: boolean;
@@ -45,8 +54,8 @@ interface IAuthContext {
 }
 
 export const AuthContext = createContext<IAuthContext>({
-	signin: () => Promise.resolve({ authenticated: false, data: null }),
-	signup: () => Promise.resolve({ registered: false, data: null }),
+	signin: () => Promise.resolve({ authenticated: false, data: null, error: undefined }),
+	signup: () => Promise.resolve({ registered: false, data: null, error: undefined }),
 	logout: () => {},
 	updateInfo: () => Promise.resolve(),
 	isAuthenticated: false,
@@ -73,13 +82,16 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 				return {
 					authenticated: true,
 					data: res.data,
+					error: undefined,
 				};
 			}
+
 		} catch (error) {
 			if (isAxiosError(error)) {
 				return {
 					authenticated: false,
-					data: error.response?.data,
+					data: null,
+					error: error.response?.status === 401 ? error.response?.data.message : undefined
 				};
 			}
 		}
@@ -87,6 +99,7 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		return {
 			authenticated: false,
 			data: null,
+			error: undefined,
 		};
 	}, []);
 
@@ -110,6 +123,7 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 					return {
 						registered: true,
 						data: res.data,
+						error: undefined,
 					};
 				}
 			} catch (error) {
@@ -117,6 +131,10 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 					return {
 						registered: false,
 						data: error.response?.data,
+						error:
+							error.response?.status === 400
+								? error.response?.data.message
+								: undefined,
 					};
 				}
 			}
@@ -124,6 +142,7 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			return {
 				registered: false,
 				data: null,
+				error: undefined,
 			};
 		},
 		[],

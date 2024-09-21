@@ -29,7 +29,7 @@ export const SignUpFormForIndividual = () => {
 	const schema = useSignUpSchema(false);
 
 	const [regions, setRegions] = useState<IRegion[]>([]);
-
+	const [error, setError] = useState<string | undefined>(undefined);
 	const navigate = useNavigate();
 
 	const { signup, updateInfo } = useAuthContext();
@@ -41,6 +41,7 @@ export const SignUpFormForIndividual = () => {
 	};
 
 	const onSubmit = async (values: z.infer<typeof schema>) => {
+		setError(undefined);
 		const result = await signup(
 			values.email,
 			values.password,
@@ -51,6 +52,11 @@ export const SignUpFormForIndividual = () => {
 		if (result.registered) {
 			updateInfo();
 			navigate("/");
+			return;
+		}
+
+		if (!result.registered && result.error) {
+			setError(result.error);
 		}
 	};
 
@@ -178,6 +184,7 @@ export const SignUpFormForIndividual = () => {
 						>
 							{t("register")}
 						</Button>
+						{error && <p className="text-red-500 text-center pt-2">{error}</p>}
 					</form>
 				)}
 			</Formik>

@@ -1,15 +1,21 @@
-import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
-import { SignInUserDto } from './dto/sign-in-user.dto';
-import { hash, verify } from 'argon2';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Repository } from 'typeorm';
-import { RefreshToken } from './entities/refresh-token.entity';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SignUpUserDto } from './dto/sign-up-user.dto';
-import { RefreshTokensDto } from './dto/refresh-tokens.dto';
+import { hash, verify } from 'argon2';
+import { I18nService } from 'nestjs-i18n';
 import { Permission } from 'src/users/enums/permissions/permission.enum';
+import { UsersService } from 'src/users/users.service';
+import { QueryFailedError, Repository } from 'typeorm';
+import { RefreshTokensDto } from './dto/refresh-tokens.dto';
+import { SignInUserDto } from './dto/sign-in-user.dto';
+import { SignUpUserDto } from './dto/sign-up-user.dto';
+import { RefreshToken } from './entities/refresh-token.entity';
 
 @Injectable()
 export class AuthService {
@@ -21,19 +27,24 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly i18n: I18nService,
   ) {}
 
   async signIn(signInData: SignInUserDto): Promise<any> {
     const user = await this.usersService.findOneByEmail(signInData.email);
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(
+        this.i18n.t('translation.auth.signin.incorrect_credentials'),
+      );
     }
 
     const isPasswordValid = await verify(user.password, signInData.password);
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException(
+        this.i18n.t('translation.auth.signin.incorrect_credentials'),
+      );
     }
 
     const payload = {
@@ -55,25 +66,45 @@ export class AuthService {
 
   async signUp(signUpData: SignUpUserDto) {
     const password = await hash(signUpData.password);
-    const user = await this.usersService.create({
-      ...signUpData,
-      password,
-      permissions: [],
-    });
+    try {
+      const user = await this.usersService.create({
+        ...signUpData,
+        password,
+        permissions: [],
+      });
 
-    return this.signIn({ email: user.email, password: signUpData.password });
+      return this.signIn({ email: user.email, password: signUpData.password });
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        if (error.message.includes('duplicate key value')) {
+          throw new BadRequestException(
+            this.i18n.t('translation.auth.signup.email_already_in_use'),
+          );
+        }
+      }
+    }
   }
 
   async signUpBusiness(signUpData: SignUpUserDto) {
     const password = await hash(signUpData.password);
 
-    const user = await this.usersService.create({
-      ...signUpData,
-      password,
-      permissions: [Permission.BUSINESS],
-    });
+    try {
+      const user = await this.usersService.create({
+        ...signUpData,
+        password,
+        permissions: [Permission.BUSINESS],
+      });
 
-    return this.signIn({ email: user.email, password: signUpData.password });
+      return this.signIn({ email: user.email, password: signUpData.password });
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        if (error.message.includes('duplicate key value')) {
+          throw new BadRequestException(
+            this.i18n.t('translation.auth.signup.email_already_in_use'),
+          );
+        }
+      }
+    }
   }
 
   async saveRefreshToken(userId: string) {

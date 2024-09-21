@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
 import i18n from "src/i18n";
 import { authTokenKey, refreshTokenKey } from "../auth/contants";
 
@@ -25,8 +25,12 @@ axiosInstance.interceptors.request.use((config) => {
 
 axiosInstance.interceptors.response.use(
 	(response) => response,
-	async (error) => {
-		if (error.response.status === 401) {
+	async (error: AxiosError) => {
+		if (error.config && error.response?.status === 401 && 
+			error.config?.url !== "/auth/sign-in" && 
+			error.config?.url !== "/auth/sign-up" && 
+			error.config?.url !== "/auth/sign-up-business" && 
+			error.config?.url !== "/auth/refresh-tokens") {
 			await tryToRefreshTokens();
 
 			const newToken = localStorage.getItem(authTokenKey);
