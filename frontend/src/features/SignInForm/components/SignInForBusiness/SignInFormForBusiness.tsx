@@ -4,13 +4,13 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { useAuthContext } from "src/core/auth/useAuth";
 import { Link as RouterLink } from "react-router-dom";
-import { SignInSchema } from "../../schema";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { SignInSchema } from "../../schema";
 
 type LoginValues = z.infer<typeof SignInSchema>;
 
-export const SignInFormForIndividual = () => {
+export const SignInFormForBusiness = () => {
 	const { t } = useTranslation("translation", { keyPrefix: "SignInForm" });
 
 	const navigate = useNavigate();
@@ -44,8 +44,8 @@ export const SignInFormForIndividual = () => {
 							{t("access_your_account")}
 						</h2>
 						<p className="text-center text-sm text-gray-500">
-							{t("dont_have_an_account")}{" "}
-							<Link size="sm" as={RouterLink} to="/signup">
+							{t("sign_up_for_business")}{" "}
+							<Link size="sm" as={RouterLink} to="/signup?business=true">
 								{t("sign_up")}
 							</Link>
 						</p>

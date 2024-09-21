@@ -23,6 +23,10 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      'no-console': ['error'],
+      'react-hooks/exhaustive-deps': 'error',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/use-callback-deps': 'error',
     },
   },
 )

@@ -1,0 +1,1 @@
+export { SignUpFormForIndividual } from "./SignUpFormForIndividual";

@@ -4,18 +4,19 @@ import { Navigate } from "react-router";
 import { useAuthContext } from "src/core/auth/useAuth";
 
 export const ProtectedEntry: FC<PropsWithChildren> = ({ children }) => {
-    const { isAuthenticated, isLoading } = useAuthContext();
+	const { isAuthenticated, isLoading } = useAuthContext();
 
-    if (isLoading) {
-        return <div className="w-full h-full flex justify-center items-center">
-            <Spinner />
-        </div>;
-    }
+	if (isLoading) {
+		return (
+			<div className="w-full h-full flex justify-center items-center">
+				<Spinner />
+			</div>
+		);
+	}
 
-    if (!isAuthenticated) {
-        return <Navigate to="/signin" />;
-    }
+	if (!isAuthenticated) {
+		return <Navigate to="/signin" />;
+	}
 
-
-    return <>{children}</>;
+	return <>{children}</>;
 };

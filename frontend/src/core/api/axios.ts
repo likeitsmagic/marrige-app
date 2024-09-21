@@ -5,53 +5,50 @@ import { authTokenKey, refreshTokenKey } from "../auth/contants";
 const apiUrl = import.meta.env.VITE_API_URL ?? "" + "/api";
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: apiUrl,
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-    "Accept-Language": i18n.language,
-  },
+	baseURL: apiUrl,
+	withCredentials: true,
+	headers: {
+		"Content-Type": "application/json",
+		"Accept-Language": i18n.language,
+	},
 });
 
 axiosInstance.interceptors.request.use((config) => {
-  const token = localStorage.getItem(authTokenKey);
+	const token = localStorage.getItem(authTokenKey);
 
-  if (token) {
-    config.headers.setAuthorization(`Bearer ${token}`);
-  }
+	if (token) {
+		config.headers.setAuthorization(`Bearer ${token}`);
+	}
 
-  return config;
+	return config;
 });
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response.status === 401) {
-      await tryToRefreshTokens();
+	(response) => response,
+	async (error) => {
+		if (error.response.status === 401) {
+			await tryToRefreshTokens();
 
-      const newToken = localStorage.getItem(authTokenKey);
-      error.config.headers["Authorization"] = `Bearer ${newToken}`;
+			const newToken = localStorage.getItem(authTokenKey);
+			error.config.headers["Authorization"] = `Bearer ${newToken}`;
 
-      return axios(error.config);
-    }
+			return axios(error.config);
+		}
 
-    return Promise.reject(error);
-  }
+		return Promise.reject(error);
+	},
 );
 
 const tryToRefreshTokens = async () => {
-  const refreshToken = localStorage.getItem(refreshTokenKey);
-  const res = await axios.post(
-    `${apiUrl}/auth/refresh-tokens`,
-    {
-      refreshToken,
-    }
-  );
+	const refreshToken = localStorage.getItem(refreshTokenKey);
+	const res = await axios.post(`${apiUrl}/auth/refresh-tokens`, {
+		refreshToken,
+	});
 
-  if (res.status === 200 && res.data) {
-    localStorage.setItem(authTokenKey, res.data.accessToken);
-    localStorage.setItem(refreshTokenKey, res.data.refreshToken);
-  }
+	if (res.status === 200 && res.data) {
+		localStorage.setItem(authTokenKey, res.data.accessToken);
+		localStorage.setItem(refreshTokenKey, res.data.refreshToken);
+	}
 };
 
 export default axiosInstance;
