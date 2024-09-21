@@ -27,7 +27,6 @@ export const useSignUpSchema = (isBusiness: boolean) => {
 				: z.any().nullable().optional(),
 		})
 		.superRefine((data, ctx) => {
-			console.log(data);
 			if (data.password !== data.confirmPassword) {
 				return ctx.addIssue({
 					code: z.ZodIssueCode.custom,

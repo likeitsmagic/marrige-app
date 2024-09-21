@@ -20,10 +20,7 @@ export class CampaignsService {
     const advantages = await this.advantagesService.findManyById(
       createCampaignDto.advantages,
     );
-
-    this.logger.log(`Creating campaign for user ${ownerId}`);
-    console.log(advantages);
-
+    
     return this.campaignRepository.save({
       ...createCampaignDto,
       ownerId,
