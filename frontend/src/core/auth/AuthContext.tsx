@@ -54,17 +54,19 @@ interface IAuthContext {
 }
 
 export const AuthContext = createContext<IAuthContext>({
-	signin: () => Promise.resolve({ authenticated: false, data: null, error: undefined }),
-	signup: () => Promise.resolve({ registered: false, data: null, error: undefined }),
+	signin: () =>
+		Promise.resolve({ authenticated: false, data: null, error: undefined }),
+	signup: () =>
+		Promise.resolve({ registered: false, data: null, error: undefined }),
 	logout: () => {},
 	updateInfo: () => Promise.resolve(),
 	isAuthenticated: false,
-	isLoading: false,
+	isLoading: true,
 	user: undefined,
 });
 
 export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [user, setUser] = useState<IUser | undefined>(undefined);
 
@@ -85,13 +87,15 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 					error: undefined,
 				};
 			}
-
 		} catch (error) {
 			if (isAxiosError(error)) {
 				return {
 					authenticated: false,
 					data: null,
-					error: error.response?.status === 401 ? error.response?.data.message : undefined
+					error:
+						error.response?.status === 401
+							? error.response?.data.message
+							: undefined,
 				};
 			}
 		}
@@ -155,40 +159,36 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	}, []);
 
 	const getMe = useCallback(async () => {
+		setIsLoading(true);
 		try {
 			const res = await axiosInstance.get<IUser>("/users/me");
 
 			if (res.status === 200) {
+				setIsLoading(false);
 				return res.data;
 			}
 		} catch (error) {
 			if (isAxiosError(error)) {
+				setIsLoading(false);
 				return undefined;
 			}
 		}
 
+		setIsLoading(false);
 		return undefined;
 	}, []);
 
 	const updateInfo = useCallback(async () => {
-		setIsLoading(true);
 		const user = await getMe();
 		setUser(user);
 		setIsAuthenticated(user !== undefined);
-		setIsLoading(false);
 	}, [getMe]);
 
 	useEffect(() => {
-		setIsLoading(true);
-
-		getMe()
-			.then((user) => {
-				setIsAuthenticated(user !== undefined);
-				setUser(user);
-			})
-			.finally(() => {
-				setIsLoading(false);
-			});
+		getMe().then((user) => {
+			setIsAuthenticated(user !== undefined);
+			setUser(user);
+		});
 	}, [getMe]);
 
 	return (

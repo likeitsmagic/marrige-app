@@ -11,7 +11,11 @@
         "reception_venues": "Места проведения",
         "vendors": "Поставщики",
         "couple": "Жених и невеста",
-        "signin_signup": "Вход / Регистрация"
+        "signin_signup": "Вход / Регистрация",
+        "profile": "Профиль",
+        "logout": "Выйти",
+        "my_campaign": "Моя кампания",
+        "business": "Бизнес"
     },
     "SignInForm": {
         "individual": "Частное лицо",
@@ -53,6 +57,24 @@
         "invalid_email": "Некорректный email",
         "password_must_be_at_least_6_characters": "Пароль должен быть не менее 6 символов",
         "password_must_be_at_most_20_characters": "Пароль должен быть не более 20 символов",
-        "passwords_must_match": "Пароли должны совпадать"
+        "passwords_must_match": "Пароли должны совпадать",
+        "min_length": "Минимум {{length}} символов",
+        "max_length": "Максимум {{length}} символов",
+        "invalid_phone_number": "Некорректный номер телефона"
+    },
+    "Campaign": {
+        "you_dont_have_a_campaign_yet": "У вас еще нет кампании",
+        "create_a_campaign": "Создать кампанию"
+    },
+    "CreateCampaign": {
+        "create_a_campaign": "Создать кампанию",
+        "name": "Название",
+        "phone": "Телефон",
+        "location": "Локация",
+        "advantages": "Преимущества",
+        "no_regions_found": "Область не найдена",
+        "region_query_placeholder": "Начните вводить название области",
+        "region_query": "Область",
+        "create": "Создать"
     }
 }

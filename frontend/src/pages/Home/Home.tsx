@@ -1,7 +1,6 @@
 import { FC } from "react";
-import { Searcher } from "../Searcher";
-import { CampaignList } from "../CampaignList";
-
+import { Searcher } from "src/features/Searcher";
+import { CampaignList } from "src/features/CampaignList";
 export const Home: FC = () => {
 	return (
 		<div>

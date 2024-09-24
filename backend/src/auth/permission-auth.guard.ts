@@ -34,24 +34,29 @@ export class PermissionAuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
+    let payload;
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
+      payload = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get('JWT_SECRET'),
       });
-
-      if (payload.permissions.includes(Permission.SUPER_ADMIN)) {
-        request['user'] = { id: payload.sub, ...payload };
-        return true;
-      }
-
-      if (!payload.permissions.includes(permissions)) {
-        throw new ForbiddenException();
-      }
-
-      request['user'] = { id: payload.sub, ...payload };
     } catch {
       throw new UnauthorizedException();
     }
+
+    if (payload?.permissions?.includes(Permission.SUPER_ADMIN)) {
+      request['user'] = { id: payload.sub, ...payload };
+      return true;
+    }
+
+    if (
+      !permissions.every((permission) =>
+        payload.permissions.includes(permission),
+      )
+    ) {
+      throw new ForbiddenException();
+    }
+
+    request['user'] = { id: payload.sub, ...payload };
 
     return true;
   }

@@ -26,11 +26,14 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
 	(response) => response,
 	async (error: AxiosError) => {
-		if (error.config && error.response?.status === 401 && 
-			error.config?.url !== "/auth/sign-in" && 
-			error.config?.url !== "/auth/sign-up" && 
-			error.config?.url !== "/auth/sign-up-business" && 
-			error.config?.url !== "/auth/refresh-tokens") {
+		if (
+			error.config &&
+			error.response?.status === 401 &&
+			error.config?.url !== "/auth/sign-in" &&
+			error.config?.url !== "/auth/sign-up" &&
+			error.config?.url !== "/auth/sign-up-business" &&
+			error.config?.url !== "/auth/refresh-tokens"
+		) {
 			await tryToRefreshTokens();
 
 			const newToken = localStorage.getItem(authTokenKey);

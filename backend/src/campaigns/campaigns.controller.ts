@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, UseGuards, UsePipes, ValidationPipe, Logger } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+  Logger,
+} from '@nestjs/common';
 import { CampaignsService } from './campaigns.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { PermissionAuthGuard } from 'src/auth/permission-auth.guard';
@@ -27,5 +36,12 @@ export class CampaignsController {
   @Get()
   async getMany() {
     return this.campaignsService.findAll();
+  }
+
+  @Get('/my')
+  @UseGuards(PermissionAuthGuard)
+  @Permissions(Permission.BUSINESS)
+  async getByOwner(@CurrentUser() user: JWTUser) {
+    return this.campaignsService.findByOwnerId(user.id);
   }
 }

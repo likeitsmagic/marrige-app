@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   UseGuards,
   UsePipes,
@@ -22,5 +23,10 @@ export class AdvantagesController {
   @UsePipes(ValidationPipe)
   create(@Body() createAdvantageDto: CreateAdvantageDto) {
     return this.advantagesService.create(createAdvantageDto);
+  }
+
+  @Get()
+  findAll() {
+    return this.advantagesService.findAll();
   }
 }

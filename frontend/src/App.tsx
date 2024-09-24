@@ -2,14 +2,19 @@ import { NextUIProvider } from "@nextui-org/react";
 import { RouterProvider } from "react-router";
 import { router } from "./routes";
 import { AuthContextProvider } from "./core/auth/AuthContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const App = () => {
 	return (
-		<NextUIProvider>
-			<AuthContextProvider>
-				<RouterProvider router={router} />
-			</AuthContextProvider>
-		</NextUIProvider>
+		<QueryClientProvider client={queryClient}>
+			<NextUIProvider>
+				<AuthContextProvider>
+					<RouterProvider router={router} />
+				</AuthContextProvider>
+			</NextUIProvider>
+		</QueryClientProvider>
 	);
 };
 

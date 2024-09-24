@@ -2,14 +2,11 @@ import {
 	Navbar,
 	NavbarBrand,
 	NavbarContent,
-	NavbarItem,
-	NavbarMenu,
-	NavbarMenuToggle,
+	NavbarItem
 } from "@nextui-org/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link as RouterLink } from "react-router-dom";
-import { NavbarMenuButton } from "./components/NavbarMenuButton";
 import { UserInfo } from "./components/UserInfo";
 
 export const Header = () => {
@@ -24,11 +21,11 @@ export const Header = () => {
 			isMenuOpen={isMenuOpen}
 			onMenuOpenChange={setIsMenuOpen}
 		>
-			<NavbarContent className="md:hidden" justify="start">
+			{/* <NavbarContent className="md:hidden" justify="start">
 				<NavbarMenuToggle
 					aria-label={isMenuOpen ? "Close menu" : "Open menu"}
 				/>
-			</NavbarContent>
+			</NavbarContent> */}
 
 			<NavbarContent className="md:hidden pr-3" justify="center">
 				<NavbarBrand>
@@ -46,7 +43,7 @@ export const Header = () => {
 				</NavbarBrand>
 			</NavbarContent>
 
-			<NavbarContent className="hidden md:flex gap-0" justify="center">
+			{/* <NavbarContent className="hidden md:flex gap-0" justify="center">
 				<NavbarMenuButton title={t("wedding")} items={["1", "2", "3"]} />
 
 				<NavbarMenuButton
@@ -57,7 +54,7 @@ export const Header = () => {
 				<NavbarMenuButton title={t("vendors")} items={["1", "2", "3"]} />
 
 				<NavbarMenuButton title={t("couple")} items={["1", "2", "3"]} />
-			</NavbarContent>
+			</NavbarContent> */}
 
 			<NavbarContent justify="end">
 				<NavbarItem>
@@ -65,7 +62,7 @@ export const Header = () => {
 				</NavbarItem>
 			</NavbarContent>
 
-			<NavbarMenu></NavbarMenu>
+			{/* <NavbarMenu></NavbarMenu> */}
 		</Navbar>
 	);
 };

@@ -1,11 +1,13 @@
 import { FC } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { Entry } from "./features/Application";
-import { Home } from "./features/Home";
+import { Home } from "./pages/Home";
 import { SignInForm } from "./features/SignInForm";
-import { Profile } from "./features/Profile/Profile";
+import { Profile } from "./pages/Profile";
 import { ProtectedEntry } from "./features/Application/ProtectedEntry";
 import { SignUpForm } from "./features/SignUpForm";
+import { Campaign } from "./pages/Campaign";
+import { CreateCampaign } from "./pages/CreateCampaign";
 
 export interface FeatureRoute {
 	component: FC;
@@ -26,6 +28,10 @@ export const router = createBrowserRouter([
 				element: <SignInForm />,
 			},
 			{
+				path: "/signup",
+				element: <SignUpForm />,
+			},
+			{
 				path: "/user/:id",
 				element: (
 					<ProtectedEntry>
@@ -34,8 +40,20 @@ export const router = createBrowserRouter([
 				),
 			},
 			{
-				path: "/signup",
-				element: <SignUpForm />,
+				path: "/campaign/:id",
+				element: (
+					<ProtectedEntry>
+						<Campaign />
+					</ProtectedEntry>
+				),
+			},
+			{
+				path: "/create-campaign",
+				element: (
+					<ProtectedEntry>
+						<CreateCampaign />
+					</ProtectedEntry>
+				),
 			},
 		],
 	},

@@ -16,11 +16,10 @@ export class CampaignsService {
   ) {}
 
   async create(ownerId: string, createCampaignDto: CreateCampaignDto) {
-
     const advantages = await this.advantagesService.findManyById(
       createCampaignDto.advantages,
     );
-    
+
     return this.campaignRepository.save({
       ...createCampaignDto,
       ownerId,
@@ -30,6 +29,13 @@ export class CampaignsService {
 
   async findAll() {
     return this.campaignRepository.find({
+      relations: ['advantages'],
+    });
+  }
+
+  async findByOwnerId(ownerId: string) {
+    return this.campaignRepository.findOne({
+      where: { ownerId },
       relations: ['advantages'],
     });
   }

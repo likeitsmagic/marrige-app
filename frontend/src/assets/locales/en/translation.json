@@ -11,7 +11,11 @@
         "reception_venues": "Reception venues",
         "vendors": "Vendors",
         "couple": "Couple",
-        "signin_signup": "Sign in / Sign up"
+        "signin_signup": "Sign in / Sign up",
+        "profile": "Profile",
+        "logout": "Logout",
+        "my_campaign": "My campaign",
+        "business": "Business"
     },
     "SignInForm": {
         "individual": "Individual",
@@ -53,6 +57,24 @@
         "invalid_email": "Invalid email",
         "password_must_be_at_least_6_characters": "Password must be at least 6 characters",
         "password_must_be_at_most_20_characters": "Password must be at most 20 characters",
-        "passwords_must_match": "Passwords must match"
+        "passwords_must_match": "Passwords must match",
+        "min_length": "Minimum {{length}} characters",
+        "max_length": "Maximum {{length}} characters",
+        "invalid_phone_number": "Invalid phone number"
+    },
+    "Campaign": {
+        "you_dont_have_a_campaign_yet": "You don't have a campaign yet",
+        "create_a_campaign": "Create a campaign"
+    },
+    "CreateCampaign": {
+        "create_a_campaign": "Create a campaign",
+        "name": "Name",
+        "phone": "Phone",
+        "location": "Location",
+        "advantages": "Advantages",
+        "no_regions_found": "Region not found",
+        "region_query_placeholder": "Start typing the region name",
+        "region_query": "Region",
+        "create": "Create"
     }
 }

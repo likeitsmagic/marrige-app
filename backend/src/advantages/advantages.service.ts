@@ -29,4 +29,8 @@ export class AdvantagesService {
       },
     });
   }
+
+  async findAll() {
+    return this.advantageRepository.find();
+  }
 }

@@ -11,7 +11,11 @@
         "reception_venues": "Lieux de réception",
         "vendors": "Fournisseurs",
         "couple": "Couple",
-        "signin_signup": "Se connecter / S'inscrire"
+        "signin_signup": "Se connecter / S'inscrire",
+        "profile": "Profil",
+        "logout": "Se déconnecter",
+        "my_campaign": "Ma campagne",
+        "business": "Entreprise"
     },
     "SignInForm": {
         "individual": "Particulier",
@@ -53,6 +57,24 @@
         "invalid_email": "Email invalide",
         "password_must_be_at_least_6_characters": "Le mot de passe doit contenir au moins 6 caractères",
         "password_must_be_at_most_20_characters": "Le mot de passe doit contenir au plus 20 caractères",
-        "passwords_must_match": "Les mots de passe doivent correspondre"
+        "passwords_must_match": "Les mots de passe doivent correspondre",
+        "min_length": "Minimum {{length}} caractères",
+        "max_length": "Maximum {{length}} caractères",
+        "invalid_phone_number": "Numéro de téléphone invalide"
+    },
+    "Campaign": {
+        "you_dont_have_a_campaign_yet": "Vous n'avez pas encore de campagne",
+        "create_a_campaign": "Créer une campagne"
+    },
+    "CreateCampaign": {
+        "create_a_campaign": "Créer une campagne",
+        "name": "Nom",
+        "phone": "Téléphone",
+        "location": "Lieu",
+        "advantages": "Avantages",
+        "no_regions_found": "Région non trouvée",
+        "region_query_placeholder": "Commencez à taper le nom de la région",
+        "region_query": "Région",
+        "create": "Créer"
     }
 }
