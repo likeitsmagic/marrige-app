@@ -11,12 +11,11 @@ export interface IAdvantage {
 	type: string;
 }
 
-
 export interface ICampaign {
-    id: string;
-    name: string;
-    advantages: IAdvantage[];
-    location: ILocation;
+	id: string;
+	name: string;
+	advantages: IAdvantage[];
+	location: ILocation;
 	phone: string;
 	ownerId: string;
 	createdAt: string;

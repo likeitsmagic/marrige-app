@@ -44,10 +44,7 @@ export const UserInfo: FC = () => {
 	return (
 		<Dropdown>
 			<DropdownTrigger>
-				<User
-					name={user.email}
-					description={isBusiness ? t("business") : ""}
-				/>
+				<User name={user.email} description={isBusiness ? t("business") : ""} />
 			</DropdownTrigger>
 			<DropdownMenu
 				className="w-[340px]"

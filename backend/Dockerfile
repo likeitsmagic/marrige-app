@@ -22,4 +22,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "run", "start:prod"]
+CMD ["sh", "-c", "npm run typeorm:migrate && npm run start:prod"]

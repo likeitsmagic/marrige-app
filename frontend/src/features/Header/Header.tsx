@@ -2,7 +2,7 @@ import {
 	Navbar,
 	NavbarBrand,
 	NavbarContent,
-	NavbarItem
+	NavbarItem,
 } from "@nextui-org/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

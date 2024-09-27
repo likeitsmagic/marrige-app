@@ -26,4 +26,8 @@ export class CreateCampaignDto {
   @IsString({ each: true })
   @IsUUID('4', { each: true })
   advantages: string[];
+
+  @IsArray()
+  @IsString({ each: true })
+  images: string[];
 }

@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { typeOrmConfig } from './config/typeorm/typorm';
 import { UsersModule } from './users/users.module';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     CampaignsModule,
     AdvantagesModule,
+    ImagesModule,
   ],
   controllers: [],
   providers: [],

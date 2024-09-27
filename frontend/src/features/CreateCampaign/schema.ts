@@ -23,6 +23,7 @@ export const schema = z
 			.optional(),
 
 		advantages: z.array(z.string().uuid()),
+		images: z.array(z.string()),
 	})
 	.superRefine((data, ctx) => {
 		if (data.location === undefined) {
@@ -33,6 +34,5 @@ export const schema = z
 			});
 		}
 	});
-
 
 export type CreateCampaignSchema = z.infer<typeof schema>;

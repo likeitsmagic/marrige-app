@@ -16,14 +16,16 @@ export const useCreateCampaign = () => {
 		mutationFn: CreateCampaignApi.createCampaign,
 	});
 
-
-	const createCampaign = useCallback(async (values: CreateCampaignSchema) => {
-		await mutate(values, {
-			onSuccess: (data) => {
-				navigate(`/campaign/${data.data.id}`);
-			},
-		});
-	}, [mutate]);
+	const createCampaign = useCallback(
+		async (values: CreateCampaignSchema) => {
+			await mutate(values, {
+				onSuccess: (data) => {
+					navigate(`/campaign/${data.data.id}`);
+				},
+			});
+		},
+		[mutate],
+	);
 
 	return { advantages, isLoadingAdvantages, createCampaign };
 };

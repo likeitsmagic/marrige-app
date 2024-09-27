@@ -21,6 +21,7 @@ export type TCampaign = {
 	region: string;
 	activitySector: TActivitySector;
 	rating: number;
+	images: string[];
 	createdAt: string;
 	updatedAt: string;
 };

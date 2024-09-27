@@ -19,6 +19,12 @@ export class Campaign {
   @Column({ type: 'uuid', unique: true })
   ownerId: string;
 
+  @Column({ nullable: true })
+  previewImage: string;
+
+  @Column({ type: 'text', array: true, default: [] })
+  images: string[];
+
   @Column({ nullable: false })
   name: string;
 

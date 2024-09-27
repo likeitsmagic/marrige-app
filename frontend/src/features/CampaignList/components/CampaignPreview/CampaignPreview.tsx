@@ -1,11 +1,11 @@
 import { Chip, Image } from "@nextui-org/react";
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
+import { BsPeople } from "react-icons/bs";
 import { FaStar } from "react-icons/fa";
 import { GrMoney } from "react-icons/gr";
-import { BsPeople } from "react-icons/bs";
-import { TCampaign } from "../../types";
 import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
+import { TCampaign } from "../../types";
 
 interface ICampaignPreviewProps {
 	campaign: TCampaign;
@@ -21,9 +21,10 @@ export const CampaignPreview: FC<ICampaignPreviewProps> = ({ campaign }) => {
 					<Image
 						width="100%"
 						height={160}
-						src="https://app.requestly.io/delay/5000/https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+						src={campaign.images?.[0]}
 						alt={campaign.name}
-						className="w-full h-40 object-cover rounded-t-2xl"
+						fallbackSrc="https://via.placeholder.com/300x200"
+						className="w-full h-40 rounded-t-2xl"
 					/>
 					<Chip
 						color="danger"
