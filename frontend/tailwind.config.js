@@ -8,7 +8,15 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'goudy': ['"Goudy Bookletter 1911"', 'serif'],
+      },
+      maxWidth: {
+        'screen-2xl': '2560px',
+        'screen-xl': '1560px',
+      },
+    },
   },
   darkMode: "class",
   plugins: [nextui({
@@ -16,7 +24,7 @@ export default {
       light: {
         colors: {
           primary: {
-            DEFAULT: "#ba645d",
+            DEFAULT: "#761111",
             foreground: "#ffffff",
             "500": "#d17a73"
           }

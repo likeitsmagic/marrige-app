@@ -3,12 +3,12 @@ import {
 	DropdownItem,
 	DropdownMenu,
 	DropdownTrigger,
-	Link,
 	Skeleton,
 	User,
 } from "@nextui-org/react";
 import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { IoPersonSharp } from "react-icons/io5";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useAuthContext } from "src/core/auth/useAuth";
 
@@ -29,15 +29,27 @@ export const UserInfo: FC = () => {
 		navigate("/campaign/1");
 	}, [navigate]);
 
+	const handleOpenSignInSignUp = useCallback(() => {
+		navigate("/signin");
+	}, [navigate]);
+
 	if (isLoading) {
 		return <Skeleton className="h-3 w-3/5 rounded-lg" />;
 	}
 
 	if (!isAuthenticated || !user) {
 		return (
-			<Link to="/signin" as={RouterLink} color="primary" className="uppercase">
-				{t("signin_signup")}
-			</Link>
+			<div
+				className="text-primary flex items-center justify-center gap-4 border-2 border-white rounded-full p-4 group cursor-pointer w-16 h-16 hover:w-[280px] transition-width duration-300 ease-in-out overflow-hidden will-change-[width,opacity]"
+				onClick={handleOpenSignInSignUp}
+			>
+				<div>
+					<IoPersonSharp size="36px" />
+				</div>
+				<div className="hidden group-hover:block overflow-hidden">
+					<p className="text-xl">{t("signin_signup")}</p>
+				</div>
+			</div>
 		);
 	}
 

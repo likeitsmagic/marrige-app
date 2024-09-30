@@ -15,7 +15,8 @@
         "profile": "Профиль",
         "logout": "Выйти",
         "my_campaign": "Моя кампания",
-        "business": "Бизнес"
+        "business": "Бизнес",
+        "back": "Назад"
     },
     "SignInForm": {
         "individual": "Частное лицо",

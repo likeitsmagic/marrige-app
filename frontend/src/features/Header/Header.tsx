@@ -1,68 +1,64 @@
 import {
+	Button,
 	Navbar,
 	NavbarBrand,
 	NavbarContent,
 	NavbarItem,
 } from "@nextui-org/react";
-import { useState } from "react";
+import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Link as RouterLink } from "react-router-dom";
+import { GoArrowLeft } from "react-icons/go";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { Brand } from "./components/Brand";
 import { UserInfo } from "./components/UserInfo";
 
 export const Header = () => {
 	const { t } = useTranslation("translation", { keyPrefix: "Header" });
 
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const { pathname } = useLocation();
+	const navigate = useNavigate();
+
+	const isSignInSignUp = pathname === "/signin" || pathname === "/signup";
+
+	const handleGoBack = useCallback(() => {
+		navigate(-1);
+	}, [navigate]);
 
 	return (
 		<Navbar
 			maxWidth="2xl"
 			height="6rem"
-			isMenuOpen={isMenuOpen}
-			onMenuOpenChange={setIsMenuOpen}
+			classNames={{
+				base: "bg-transparent",
+			}}
 		>
-			{/* <NavbarContent className="md:hidden" justify="start">
-				<NavbarMenuToggle
-					aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-				/>
-			</NavbarContent> */}
+			<NavbarBrand className={isSignInSignUp ? "hidden" : "block"}>
+				<RouterLink to="/">
+					<Brand />
+				</RouterLink>
+			</NavbarBrand>
 
-			<NavbarContent className="md:hidden pr-3" justify="center">
-				<NavbarBrand>
-					<RouterLink to="/">
-						<h1 className="font-bold text-inherit">{t("brand")}</h1>
-					</RouterLink>
-				</NavbarBrand>
-			</NavbarContent>
+			<div className={`${isSignInSignUp ? "grid" : "hidden"} w-full grid-cols-[1fr_auto_1fr]`}>
+				<div>
+					<Button
+						className="text-primary text-2xl"
+						variant="light"
+						startContent={<GoArrowLeft />}
+						onClick={handleGoBack}
+					>
+						{t("back")}
+					</Button>
+				</div>
+				<div>
+					<Brand />
+				</div>
+			</div>
 
-			<NavbarContent className="hidden md:flex" justify="start">
-				<NavbarBrand>
-					<RouterLink to="/">
-						<h1 className="font-bold text-inherit text-2xl">{t("brand")}</h1>
-					</RouterLink>
-				</NavbarBrand>
-			</NavbarContent>
-
-			{/* <NavbarContent className="hidden md:flex gap-0" justify="center">
-				<NavbarMenuButton title={t("wedding")} items={["1", "2", "3"]} />
-
-				<NavbarMenuButton
-					title={t("reception_venues")}
-					items={["1", "2", "3"]}
-				/>
-
-				<NavbarMenuButton title={t("vendors")} items={["1", "2", "3"]} />
-
-				<NavbarMenuButton title={t("couple")} items={["1", "2", "3"]} />
-			</NavbarContent> */}
-
-			<NavbarContent justify="end">
+			<NavbarContent justify="end" className={isSignInSignUp ? "hidden" : "flex"}>
 				<NavbarItem>
 					<UserInfo />
 				</NavbarItem>
 			</NavbarContent>
-
-			{/* <NavbarMenu></NavbarMenu> */}
 		</Navbar>
 	);
 };
