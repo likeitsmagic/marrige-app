@@ -38,10 +38,12 @@ export const Header = () => {
 				</RouterLink>
 			</NavbarBrand>
 
-			<div className={`${isSignInSignUp ? "grid" : "hidden"} w-full grid-cols-[1fr_auto_1fr]`}>
+			<div
+				className={`${isSignInSignUp ? "grid" : "hidden"} w-full grid-cols-[1fr_auto_1fr]`}
+			>
 				<div>
 					<Button
-						className="text-primary text-2xl"
+						className="text-primary text-2xl px-0"
 						variant="light"
 						startContent={<GoArrowLeft />}
 						onClick={handleGoBack}
@@ -54,7 +56,10 @@ export const Header = () => {
 				</div>
 			</div>
 
-			<NavbarContent justify="end" className={isSignInSignUp ? "hidden" : "flex"}>
+			<NavbarContent
+				justify="end"
+				className={isSignInSignUp ? "hidden" : "flex"}
+			>
 				<NavbarItem>
 					<UserInfo />
 				</NavbarItem>
