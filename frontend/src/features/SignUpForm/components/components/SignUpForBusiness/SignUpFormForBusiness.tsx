@@ -1,6 +1,6 @@
 import { Button, Input, Link } from "@nextui-org/react";
 import { Field, Formik } from "formik";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { Link as RouterLink } from "react-router-dom";
@@ -26,20 +26,23 @@ export const SignUpFormForBusiness = () => {
 		confirmPassword: "",
 	};
 
-	const onSubmit = async (values: z.infer<typeof schema>) => {
-		setError(undefined);
-		const result = await signup(values.email, values.password, true);
+	const onSubmit = useCallback(
+		async (values: z.infer<typeof schema>) => {
+			setError(undefined);
+			const result = await signup(values.email, values.password, true);
 
-		if (result.registered) {
-			updateInfo();
-			navigate("/");
-			return;
-		}
+			if (result.registered) {
+				updateInfo();
+				navigate("/");
+				return;
+			}
 
-		if (!result.registered && result.error) {
-			setError(result.error);
-		}
-	};
+			if (!result.registered && result.error) {
+				setError(result.error);
+			}
+		},
+		[signup, updateInfo, navigate],
+	);
 
 	return (
 		<div className="p-6">

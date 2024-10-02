@@ -1,10 +1,11 @@
 import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { Key, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ImageContainer } from "src/components/ImageContainer";
+import { useSearchParams } from "react-router-dom";
+
 import { SignInFormForIndividual } from "./components/SignInForIndividual";
 import { SignInFormForBusiness } from "./components/SignInForBusiness";
-import { useSearchParams } from "react-router-dom";
 
 export const SignInForm = () => {
 	const { t } = useTranslation("translation", { keyPrefix: "SignInForm" });
@@ -20,6 +21,15 @@ export const SignInForm = () => {
 		}
 	}, [searchParams]);
 
+	const handleTabChange = useCallback(
+		(key: Key) => {
+			if (typeof key === "string") {
+				setSelected(key);
+			}
+		},
+		[setSelected],
+	);
+
 	return (
 		<ImageContainer>
 			<div className="w-full h-full flex flex-col justify-center items-center">
@@ -30,7 +40,7 @@ export const SignInForm = () => {
 							size="md"
 							aria-label="Tabs form"
 							selectedKey={selected}
-							onSelectionChange={(key) => setSelected(key as string)}
+							onSelectionChange={handleTabChange}
 							className="mb-6"
 							classNames={{
 								tabList: "bg-primary",

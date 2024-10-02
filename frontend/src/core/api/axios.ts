@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
 import i18n from "src/i18n";
+
 import { authTokenKey, refreshTokenKey } from "../auth/contants";
 
 const apiUrl = import.meta.env.VITE_API_URL ?? "" + "/api";

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { TCampaign } from "../types";
 import axiosInstance from "src/core/api/axios";
+
+import { TCampaign } from "../types";
 
 export const useCampaignsList = () => {
 	const [campaigns, setCampaigns] = useState<TCampaign[]>([]);

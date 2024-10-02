@@ -7,9 +7,11 @@ import {
 	useEffect,
 	useState,
 } from "react";
+
 import axiosInstance from "../api/axios";
-import { authTokenKey, refreshTokenKey } from "./contants";
 import { ILocation } from "../types";
+
+import { authTokenKey, refreshTokenKey } from "./contants";
 
 interface ILoginResponse {
 	accessToken: string;

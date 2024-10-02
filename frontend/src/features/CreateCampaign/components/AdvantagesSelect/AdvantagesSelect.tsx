@@ -3,6 +3,7 @@ import { useField, useFormikContext } from "formik";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { CustomCheckbox } from "src/components/CustomCheckbox";
+
 import { useCreateCampaign } from "../../hooks/useCreateCampaign";
 
 export const AdvantagesSelect = () => {
@@ -33,6 +34,7 @@ export const AdvantagesSelect = () => {
 				<CustomCheckbox
 					key={advantage.id}
 					value={advantage.id}
+					// eslint-disable-next-line
 					onClick={() => handleChange(advantage.id)}
 					disabled={isSubmitting}
 				>

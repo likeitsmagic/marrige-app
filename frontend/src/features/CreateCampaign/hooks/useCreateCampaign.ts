@@ -1,8 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { CreateCampaignApi } from "../api/CreateCampaign.api";
-import { CreateCampaignSchema } from "../schema";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
+
+import { CreateCampaignApi } from "../api/CreateCampaign.api";
+import { CreateCampaignSchema } from "../schema";
 
 export const useCreateCampaign = () => {
 	const navigate = useNavigate();
@@ -24,7 +25,7 @@ export const useCreateCampaign = () => {
 				},
 			});
 		},
-		[mutate],
+		[mutate, navigate],
 	);
 
 	return { advantages, isLoadingAdvantages, createCampaign };

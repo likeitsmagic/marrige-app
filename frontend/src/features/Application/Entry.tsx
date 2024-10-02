@@ -1,6 +1,7 @@
 import { Outlet } from "react-router";
-import { Header } from "../Header";
 import bgUrl from "src/assets/bg.webp";
+
+import { Header } from "../Header";
 export const Entry = () => {
 	return (
 		<div

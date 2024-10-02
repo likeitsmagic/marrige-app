@@ -1,8 +1,9 @@
 import { FC } from "react";
-import { useCampaignsList } from "./hooks/useCampaignList";
 import { Skeleton } from "@nextui-org/react";
-import { CampaignPreview } from "./components/CampaignPreview";
 import { useTranslation } from "react-i18next";
+
+import { useCampaignsList } from "./hooks/useCampaignList";
+import { CampaignPreview } from "./components/CampaignPreview";
 
 export const CampaignList: FC = () => {
 	const { t } = useTranslation("translation", { keyPrefix: "CampaignList" });

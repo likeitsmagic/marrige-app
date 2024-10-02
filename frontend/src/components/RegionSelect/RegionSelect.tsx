@@ -52,7 +52,7 @@ export const RegionSelect: FC<
 				coordinates: region.pos.split(" ").map(Number),
 			});
 		},
-		[],
+		[props.name],
 	);
 
 	const debouncedHandleRegionQuery = debounce(handleRegionQuery, 1000);
@@ -68,6 +68,7 @@ export const RegionSelect: FC<
 					tabIndex={index}
 					key={index}
 					textValue={region.name}
+					// eslint-disable-next-line
 					onClick={() => handleRegionChange(region, setFieldValue)}
 				>
 					<div>

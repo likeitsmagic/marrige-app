@@ -37,7 +37,7 @@ export const ImagesUploader: FC<ImagesUploaderProps> = ({ name }) => {
 		} catch (error) {
 			console.error(error);
 		}
-	}, [files]);
+	}, [files, setValue]);
 
 	return (
 		<div>

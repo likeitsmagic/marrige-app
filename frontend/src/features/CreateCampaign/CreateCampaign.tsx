@@ -4,6 +4,7 @@ import { FC, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { RegionSelect } from "src/components/RegionSelect";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+
 import { AdvantagesSelect } from "./components/AdvantagesSelect";
 import { ImagesUploader } from "./components/ImagesUploader";
 import { useCreateCampaign } from "./hooks/useCreateCampaign";

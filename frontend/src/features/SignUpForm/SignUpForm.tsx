@@ -1,9 +1,10 @@
 import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { Key, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ImageContainer } from "src/components/ImageContainer";
-import { SignUpFormForIndividual } from "./components/components/SignUpForIndividual";
 import { useSearchParams } from "react-router-dom";
+
+import { SignUpFormForIndividual } from "./components/components/SignUpForIndividual";
 import { SignUpFormForBusiness } from "./components/components/SignUpForBusiness";
 
 export const SignUpForm = () => {
@@ -20,6 +21,15 @@ export const SignUpForm = () => {
 		}
 	}, [searchParams]);
 
+	const handleTabChange = useCallback(
+		(key: Key) => {
+			if (typeof key === "string") {
+				setSelected(key);
+			}
+		},
+		[setSelected],
+	);
+
 	return (
 		<ImageContainer>
 			<div className="w-full h-full flex flex-col justify-center items-center">
@@ -30,7 +40,7 @@ export const SignUpForm = () => {
 							size="md"
 							aria-label="Tabs form"
 							selectedKey={selected}
-							onSelectionChange={(key) => setSelected(key as string)}
+							onSelectionChange={handleTabChange}
 							className="mb-6"
 							classNames={{
 								tabList: "bg-primary",

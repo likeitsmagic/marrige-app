@@ -6,8 +6,9 @@ import { useAuthContext } from "src/core/auth/useAuth";
 import { Link as RouterLink } from "react-router-dom";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { useCallback, useState } from "react";
+
 import { SignInSchema } from "../../schema";
-import { useState } from "react";
 
 type LoginValues = z.infer<typeof SignInSchema>;
 
@@ -24,20 +25,23 @@ export const SignInFormForBusiness = () => {
 		password: "",
 	};
 
-	const onSubmit = async (data: LoginValues) => {
-		setError(undefined);
-		const loginData = await signin(data.email, data.password);
+	const onSubmit = useCallback(
+		async (data: LoginValues) => {
+			setError(undefined);
+			const loginData = await signin(data.email, data.password);
 
-		if (loginData.authenticated) {
-			updateInfo();
-			navigate("/");
-			return;
-		}
+			if (loginData.authenticated) {
+				updateInfo();
+				navigate("/");
+				return;
+			}
 
-		if (!loginData.authenticated && loginData.error) {
-			setError(loginData.error);
-		}
-	};
+			if (!loginData.authenticated && loginData.error) {
+				setError(loginData.error);
+			}
+		},
+		[signin, updateInfo, navigate],
+	);
 
 	return (
 		<div className="p-6">
