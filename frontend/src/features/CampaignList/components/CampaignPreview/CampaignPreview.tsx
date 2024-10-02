@@ -1,4 +1,4 @@
-import { Chip, Image } from "@nextui-org/react";
+import { Image } from "@nextui-org/react";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { BsPeople } from "react-icons/bs";
