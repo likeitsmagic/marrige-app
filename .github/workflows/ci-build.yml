@@ -34,3 +34,6 @@ jobs:
 
       - name: Build images
         run: docker compose build
+
+      - name: Clean up Docker images
+        run: docker image prune -f
