@@ -1,0 +1,13 @@
+# .github/dependabot.yml
+
+version: 2
+updates:
+  - package-ecosystem: "npm" # Укажите экосистему пакетов, например, npm для JavaScript/TypeScript
+    directory: "/frontend" # Путь к папке с package.json
+    schedule:
+      interval: "weekly" # Интервал обновлений
+
+  - package-ecosystem: "npm" # Укажите экосистему пакетов, например, npm для JavaScript/TypeScript
+    directory: "/backend" # Путь к папке с package.json
+    schedule:
+      interval: "weekly" # Интервал обновлений
