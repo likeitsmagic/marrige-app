@@ -1,8 +1,8 @@
 import { IUser } from "../types";
 
 enum AuthProvider {
-    EMAIL = "email",
-    YANDEX = "yandex",
+	EMAIL = "email",
+	YANDEX = "yandex",
 }
 
 export class User {
@@ -14,30 +14,30 @@ export class User {
 	authProvider: string;
 	avatarUrl: string;
 
-    createdAt: Date;
-    updatedAt: Date;
+	createdAt: Date;
+	updatedAt: Date;
 
-    constructor(user: IUser) {
-        this.id = user.id;
-        this.email = user.email;
-        this.firstName = user.firstName;
-        this.lastName = user.lastName;
-        this.isConfirmed = user.isConfirmed;
-        this.authProvider = user.authProvider;
-        this.avatarUrl = user.avatarUrl;
-        this.createdAt = new Date(user.createdAt);
-        this.updatedAt = new Date(user.updatedAt);
-    }
+	constructor(user: IUser) {
+		this.id = user.id;
+		this.email = user.email;
+		this.firstName = user.firstName;
+		this.lastName = user.lastName;
+		this.isConfirmed = user.isConfirmed;
+		this.authProvider = user.authProvider;
+		this.avatarUrl = user.avatarUrl;
+		this.createdAt = new Date(user.createdAt);
+		this.updatedAt = new Date(user.updatedAt);
+	}
 
-    get fullName() {
-        return `${this.firstName} ${this.lastName}`;
-    }
+	get fullName() {
+		return `${this.firstName} ${this.lastName}`;
+	}
 
-    get hasFullName() {
-        return this.firstName && this.lastName;
-    }
+	get hasFullName() {
+		return this.firstName && this.lastName;
+	}
 
-    get isPasswordSet() {
-        return this.authProvider === AuthProvider.EMAIL;
-    }
+	get isPasswordSet() {
+		return this.authProvider === AuthProvider.EMAIL;
+	}
 }

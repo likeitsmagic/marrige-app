@@ -14,6 +14,6 @@ export class UsersController {
   async me(@CurrentUser() user: JWTUser) {
     const foundUser = await this.usersService.findOne(user.id);
 
-    return omit(foundUser, ['password']);
+    return omit(foundUser, ['password', 'externalId']);
   }
 }

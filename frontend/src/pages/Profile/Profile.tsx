@@ -6,7 +6,10 @@ import {
 	UserProfile,
 	UserProfileName,
 } from "src/features/Header/components/UserProfile";
-import { ProfileName, Profile as ProfileComponent } from "src/features/Profile/Profile";
+import {
+	ProfileName,
+	Profile as ProfileComponent,
+} from "src/features/Profile/Profile";
 
 export const Profile: FC = () => {
 	return (

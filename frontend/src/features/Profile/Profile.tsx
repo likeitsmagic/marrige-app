@@ -1,4 +1,5 @@
 import { Col, Divider, Row } from "@gravity-ui/uikit";
+
 import { ProfileHeader } from "./components/ProfileHeader";
 import { ProfileData } from "./components/ProfileData";
 import { ProfileActions } from "./components/ProfileActions";

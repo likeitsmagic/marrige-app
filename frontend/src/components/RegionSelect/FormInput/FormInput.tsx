@@ -4,18 +4,24 @@ import { FC } from "react";
 
 interface FormInputProps extends FormRowProps {
 	inEdit: boolean;
-    value: string;
+	value: string;
 }
 
 export const FormInput: FC<FormInputProps> = (props) => {
-    const { inEdit, ...rest } = props;
+	const { inEdit, ...rest } = props;
 
-    if (!inEdit) {
-        return <Flex direction={rest.direction} gap={2}>
-            <Text variant="body-1" color="primary">{props.label}</Text>
-            <Text variant="body-1" color="secondary">{props.value}</Text>
-        </Flex>;
-    }
+	if (!inEdit) {
+		return (
+			<Flex direction={rest.direction} gap={2}>
+				<Text variant="body-1" color="primary">
+					{props.label}
+				</Text>
+				<Text variant="body-1" color="secondary">
+					{props.value}
+				</Text>
+			</Flex>
+		);
+	}
 
-    return <FormRow {...rest} />;
+	return <FormRow {...rest} />;
 };
