@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { getDomain } from "src/core/helpers/getDomain";
 
 export const YandexAuth = () => {
 	useEffect(() => {
@@ -9,9 +10,9 @@ export const YandexAuth = () => {
 				{
 					client_id: "c20e0af991c84269be34f885db675513",
 					response_type: "token",
-					redirect_uri: "https://moyasvadba.space/verify_yid",
+					redirect_uri: `${getDomain()}/verify_yid`,
 				},
-				"https://moyasvadba.space",
+				`${getDomain()}/`,
 				{
 					view: "button",
 					parentId: "yandex-passport-auth-container",
@@ -22,9 +23,20 @@ export const YandexAuth = () => {
 					buttonIcon: "ya",
 				},
 			)
-				.then(({ handler }: { handler: () => unknown }) => handler())
-				.then((data: unknown) => console.log("Сообщение с токеном", data))
-				.catch((error: unknown) => console.log("Обработка ошибки", error));
+            // eslint-disable-next-line
+            .then(function(result: any) {
+                return result.handler()
+             })
+             // eslint-disable-next-line
+             .then(function(data: any) {
+                console.log('Сообщение с токеном: ', data);
+                document.body.innerHTML += `Сообщение с токеном: ${JSON.stringify(data)}`;
+				})
+				// eslint-disable-next-line
+				.catch(function (error: any) {
+					console.log("Что-то пошло не так: ", error);
+					document.body.innerHTML += `Что-то пошло не так: ${JSON.stringify(error)}`;
+             });
 		}
 	}, []);
 
