@@ -1,5 +1,6 @@
 import { Flex, Spin } from "@gravity-ui/uikit";
 import { useEffect } from "react";
+import { getDomain } from "src/core/helpers/getDomain";
 
 export const YandexVerify = () => {
 	useEffect(() => {
