@@ -9,7 +9,8 @@ import {
 } from "react";
 
 import axiosInstance from "../api/axios";
-import { ILocation } from "../types";
+import { ILocation, IUser } from "../types";
+import { User } from "../models/User";
 
 import { authTokenKey, refreshTokenKey } from "./contants";
 
@@ -17,16 +18,6 @@ interface ILoginResponse {
 	accessToken: string;
 	refreshToken: string;
 	message?: string;
-}
-
-interface IUser {
-	id: string;
-	email: string;
-	permissions: string[];
-	isBanned: boolean;
-	banReason: string;
-	createdAt: string;
-	updatedAt: string;
 }
 
 interface IAuthContext {
@@ -57,7 +48,7 @@ interface IAuthContext {
 	updateInfo: () => Promise<void>;
 	isAuthenticated: boolean;
 	isLoading: boolean;
-	user: IUser | undefined;
+	user: User | undefined;
 }
 
 export const AuthContext = createContext<IAuthContext>({
@@ -77,7 +68,7 @@ export const AuthContext = createContext<IAuthContext>({
 export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
-	const [user, setUser] = useState<IUser | undefined>(undefined);
+	const [user, setUser] = useState<User | undefined>(undefined);
 
 	const signin = useCallback(async (email: string, password: string) => {
 		try {
@@ -118,9 +109,12 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const signInOAuth = useCallback(async (oauthToken: string) => {
 		try {
-			const res = await axiosInstance.post<ILoginResponse>("/auth/sign-in-oauth", {
-				oauthToken,
-			});
+			const res = await axiosInstance.post<ILoginResponse>(
+				"/auth/sign-in-oauth",
+				{
+					oauthToken,
+				},
+			);
 
 			if (res.status === 200) {
 				localStorage.setItem(authTokenKey, res.data.accessToken);
@@ -225,14 +219,18 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 
 	const updateInfo = useCallback(async () => {
 		const user = await getMe();
-		setUser(user);
+		if (user) {
+			setUser(new User(user));
+		}
 		setIsAuthenticated(user !== undefined);
 	}, [getMe]);
 
 	useEffect(() => {
 		getMe().then((user) => {
 			setIsAuthenticated(user !== undefined);
-			setUser(user);
+			if (user) {
+				setUser(new User(user));
+			}
 		});
 	}, [getMe]);
 

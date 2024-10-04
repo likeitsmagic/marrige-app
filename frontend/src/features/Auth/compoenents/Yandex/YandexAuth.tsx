@@ -1,27 +1,32 @@
 import { FC, useCallback, useEffect } from "react";
 import { getDomain } from "src/core/helpers/getDomain";
-import { YandexOAuthResponse } from "./types";
 import { useAuthContext } from "src/core/auth/useAuth";
 import { useNavigate } from "react-router";
 
+import { YandexOAuthResponse } from "./types";
 
 export const YandexAuth: FC = () => {
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 
-    const { signInOAuth } = useAuthContext();
+	const { signInOAuth, updateInfo } = useAuthContext();
 
-    const handleSuccess = useCallback(async  (data: YandexOAuthResponse) => {
-        const res = await signInOAuth(data.access_token);
-        if (res.authenticated) {
-            navigate("/");
-            return;
-        } 
-        const container = document.getElementById("yandex-passport-auth-container");
-        if (container) {
-            container.innerHTML = res.error ?? "";
-        }
-    }, [signInOAuth, navigate])
-
+	const handleSuccess = useCallback(
+		async (data: YandexOAuthResponse) => {
+			const res = await signInOAuth(data.access_token);
+			if (res.authenticated) {
+				await updateInfo();
+				navigate("/");
+				return;
+			}
+			const container = document.getElementById(
+				"yandex-passport-auth-container",
+			);
+			if (container) {
+				container.innerHTML = res.error ?? "";
+			}
+		},
+		[signInOAuth, navigate, updateInfo],
+	);
 
 	useEffect(() => {
 		// @ts-expect-error fix types latter
@@ -44,7 +49,7 @@ export const YandexAuth: FC = () => {
 					buttonIcon: "ya",
 				},
 			)
-				.then(({handler}: {handler: () => void}) => handler())
+				.then(({ handler }: { handler: () => void }) => handler())
 				.then(handleSuccess)
 				// eslint-disable-next-line
 				.catch(function (error: any) {

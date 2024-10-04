@@ -35,9 +35,8 @@ export const UserProfile = () => {
 		<Flex alignItems="center" height="100%">
 			<Link to="/profile" style={{ textDecoration: "none" }}>
 				<User
-					name={user.email}
-					description={user.id}
-					avatar={{ text: user.email }}
+					name={user.hasFullName ? user.fullName : user.email}
+					avatar={{ text: user.email, imgUrl: user.avatarUrl }}
 				/>
 			</Link>
 		</Flex>

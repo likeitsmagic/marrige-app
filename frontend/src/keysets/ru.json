@@ -1,4 +1,8 @@
 {
+   "common": {
+    "yes": "Да",
+    "no": "Нет"
+   },
    "header": {
     "our_day": "Наш день",
     "contractor": "Подрядчик",
@@ -43,5 +47,16 @@
     "label": "Регион",
     "placeholder": "Выберите регион",
     "no_results": "Ничего не найдено"
+   },
+   "profile": {
+      "edit": "Редактировать",
+      "email": "Email",
+      "is_confirmed": "Email подтвержден",
+      "auth_provider": "Провайдер авторизации",
+      "is_password_set": "Пароль установлен",
+      "full_name": "Имя",
+      "logout": "Выйти",
+      "change_password": "Изменить пароль",
+      "actions": "Действия"
    }
 }

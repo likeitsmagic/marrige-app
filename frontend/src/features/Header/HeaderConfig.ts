@@ -4,7 +4,7 @@ import {
 } from "@gravity-ui/page-constructor";
 import i18n from "src/i18n";
 
-import { UserProfileName } from "./compoentens/UserProfile";
+import { UserProfileName } from "./components/UserProfile";
 
 export const HeaderConfig: NavigationData = {
 	logo: {

@@ -5,9 +5,8 @@ import { HeaderConfig } from "src/features/Header";
 import {
 	UserProfile,
 	UserProfileName,
-} from "src/features/Header/compoentens/UserProfile";
-import { ProfileHeader } from "src/features/Profile/components/ProfileHeader";
-import { ProfileHeaderName } from "src/features/Profile/components/ProfileHeader/ProfileHeader";
+} from "src/features/Header/components/UserProfile";
+import { ProfileName, Profile as ProfileComponent } from "src/features/Profile/Profile";
 
 export const Profile: FC = () => {
 	return (
@@ -17,13 +16,13 @@ export const Profile: FC = () => {
 					[UserProfileName]: UserProfile,
 				},
 				blocks: {
-					[ProfileHeaderName]: ProfileHeader,
+					[ProfileName]: ProfileComponent,
 					[FooterName]: Footer,
 				},
 			}}
 			navigation={HeaderConfig}
 			content={{
-				blocks: [{ type: ProfileHeaderName }, { type: FooterName }],
+				blocks: [{ type: ProfileName }, { type: FooterName }],
 			}}
 		/>
 	);

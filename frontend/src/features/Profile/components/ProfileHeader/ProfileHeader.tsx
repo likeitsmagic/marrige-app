@@ -1,5 +1,6 @@
 import { Button, Flex, User } from "@gravity-ui/uikit";
 import { useAuthContext } from "src/core/auth/useAuth";
+import i18n from "src/i18n";
 
 export const ProfileHeader = () => {
 	const { user } = useAuthContext();
@@ -8,15 +9,12 @@ export const ProfileHeader = () => {
 	}
 
 	return (
-		<Flex width="100%" justifyContent="space-between">
+		<Flex width="100%" justifyContent="space-between" alignItems="center">
 			<User
-				name={user.email}
-				description={user.id}
-				avatar={{ text: user.email }}
+				name={user.hasFullName ? user.fullName : user.email}
+				avatar={{ text: user.email, imgUrl: user.avatarUrl }}
 			/>
-			<Button>Edit profile</Button>
+			<Button>{i18n.i18n("profile", "edit")}</Button>
 		</Flex>
 	);
 };
-
-export const ProfileHeaderName = "profile-header";
