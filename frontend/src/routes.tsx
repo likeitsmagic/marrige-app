@@ -27,8 +27,10 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: "/profile",
-		element: <ProtectedEntry>
-			<Profile />
-		</ProtectedEntry>,
+		element: (
+			<ProtectedEntry>
+				<Profile />
+			</ProtectedEntry>
+		),
 	},
 ]);

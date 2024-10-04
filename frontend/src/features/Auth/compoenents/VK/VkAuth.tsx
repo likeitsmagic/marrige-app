@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 export const VkAuth = () => {
-    const vkidScript = `
+	const vkidScript = `
   <script src="https://unpkg.com/@vkid/sdk@<3.0.0/dist-sdk/umd/index.js"></script>
   <script type="text/javascript">
     if ('VKIDSDK' in window) {
@@ -41,18 +41,14 @@ export const VkAuth = () => {
     function vkidOnError(error) {
       // Обработка ошибки
     }
-  </script>`
+  </script>`;
 
-          useEffect(() => {
-            const container = document.getElementById('vkid-container')
-            if (container && container.children.length === 0) {
-                container.innerHTML = vkidScript
-            }
-          }, [vkidScript]);
+	useEffect(() => {
+		const container = document.getElementById("vkid-container");
+		if (container && container.children.length === 0) {
+			container.innerHTML = vkidScript;
+		}
+	}, [vkidScript]);
 
-    return (
-        <div id="vkid-container">
-            
-        </div>
-    );
+	return <div id="vkid-container"></div>;
 };

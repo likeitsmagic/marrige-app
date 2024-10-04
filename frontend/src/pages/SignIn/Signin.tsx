@@ -13,10 +13,7 @@ export const SignIn: FC = () => {
 				},
 			}}
 			content={{
-				blocks: [
-					{ type: SingInFormV2Name },
-					{ type: FooterName },
-				],
+				blocks: [{ type: SingInFormV2Name }, { type: FooterName }],
 			}}
 		/>
 	);

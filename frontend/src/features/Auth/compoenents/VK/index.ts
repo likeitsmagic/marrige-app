@@ -1,1 +1,1 @@
-export { VkAuth } from './VkAuth'
+export { VkAuth } from "./VkAuth";

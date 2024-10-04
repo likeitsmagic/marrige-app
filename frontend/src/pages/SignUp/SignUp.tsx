@@ -13,10 +13,7 @@ export const SignUp: FC = () => {
 				},
 			}}
 			content={{
-				blocks: [
-					{ type: SignUpFormV2Name },
-					{ type: FooterName },
-				],
+				blocks: [{ type: SignUpFormV2Name }, { type: FooterName }],
 			}}
 		/>
 	);
