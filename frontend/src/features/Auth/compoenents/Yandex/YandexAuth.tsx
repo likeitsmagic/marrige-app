@@ -1,7 +1,28 @@
-import { useEffect } from "react";
+import { FC, useCallback, useEffect } from "react";
 import { getDomain } from "src/core/helpers/getDomain";
+import { YandexOAuthResponse } from "./types";
+import { useAuthContext } from "src/core/auth/useAuth";
+import { useNavigate } from "react-router";
 
-export const YandexAuth = () => {
+
+export const YandexAuth: FC = () => {
+    const navigate = useNavigate();
+
+    const { signInOAuth } = useAuthContext();
+
+    const handleSuccess = useCallback(async  (data: YandexOAuthResponse) => {
+        const res = await signInOAuth(data.access_token);
+        if (res.authenticated) {
+            navigate("/");
+            return;
+        } 
+        const container = document.getElementById("yandex-passport-auth-container");
+        if (container) {
+            container.innerHTML = res.error ?? "";
+        }
+    }, [signInOAuth, navigate])
+
+
 	useEffect(() => {
 		// @ts-expect-error fix types latter
 		if (window.YaAuthSuggest) {
@@ -23,22 +44,14 @@ export const YandexAuth = () => {
 					buttonIcon: "ya",
 				},
 			)
-				// eslint-disable-next-line
-				.then(function (result: any) {
-					return result.handler();
-				})
-				// eslint-disable-next-line
-				.then(function (data: any) {
-					console.log("Сообщение с токеном: ", data);
-					document.body.innerHTML += `Сообщение с токеном: ${JSON.stringify(data)}`;
-				})
+				.then(({handler}: {handler: () => void}) => handler())
+				.then(handleSuccess)
 				// eslint-disable-next-line
 				.catch(function (error: any) {
-					console.log("Что-то пошло не так: ", error);
-					document.body.innerHTML += `Что-то пошло не так: ${JSON.stringify(error)}`;
+					// TODO: handle error
 				});
 		}
-	}, []);
+	}, [handleSuccess]);
 
 	return <div id="yandex-passport-auth-container"></div>;
 };

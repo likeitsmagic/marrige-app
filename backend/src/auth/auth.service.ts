@@ -16,6 +16,13 @@ import { RefreshTokensDto } from './dto/refresh-tokens.dto';
 import { SignInUserDto } from './dto/sign-in-user.dto';
 import { SignUpUserDto } from './dto/sign-up-user.dto';
 import { RefreshToken } from './entities/refresh-token.entity';
+import { SignInOAuthDto } from './dto/sign-in-oauth.dto';
+import { HttpService } from '@nestjs/axios';
+import { YandexOAuthUser } from './types';
+import { CreateUserYandexDto } from 'src/users/dto/create-user-yandex';
+import { firstValueFrom } from 'rxjs';
+import { getYandexUserAvatar } from './helpers/get-yandex-user-avatar.helper';
+import { AuthProvider } from 'src/users/enums/auth-providers/auth-provider.enum';
 
 @Injectable()
 export class AuthService {
@@ -28,6 +35,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly i18n: I18nService,
+    private readonly httpService: HttpService,
   ) {}
 
   async signIn(signInData: SignInUserDto): Promise<any> {
@@ -62,6 +70,56 @@ export class AuthService {
       }),
       refreshToken: refreshTokenData.token,
     };
+  }
+
+  async signInOAuth(signInOAuthDto: SignInOAuthDto) {
+    const { oauthToken } = signInOAuthDto;
+    try {
+      const user = await this.verifyYandexOAuthToken(oauthToken);
+
+      const existingUser = await this.usersService.findOneByExternalId(
+        user.externalId,
+      );
+
+      if (existingUser) {
+        const payload = {
+          sub: existingUser.id,
+          email: existingUser.email,
+          permissions: existingUser.permissions,
+        };
+
+        const refreshTokenData = await this.saveRefreshToken(existingUser.id);
+
+        return {
+          accessToken: await this.jwtService.signAsync(payload, {
+            expiresIn: '3m',
+            secret: this.configService.get('JWT_SECRET'),
+          }),
+          refreshToken: refreshTokenData.token,
+        };
+      }
+
+      const newUser = await this.usersService.createFromYandex(user);
+
+      const payload = {
+        sub: newUser.id,
+        email: newUser.email,
+        permissions: newUser.permissions,
+      };
+
+      const refreshTokenData = await this.saveRefreshToken(newUser.id);
+
+      return {
+        accessToken: await this.jwtService.signAsync(payload, {
+          expiresIn: '3m',
+          secret: this.configService.get('JWT_SECRET'),
+        }),
+        refreshToken: refreshTokenData.token,
+      };
+    } catch (error) {
+      this.logger.error('cant verify yandex oauth token', error);
+      throw new UnauthorizedException();
+    }
   }
 
   async signUp(signUpData: SignUpUserDto) {
@@ -164,5 +222,38 @@ export class AuthService {
       }),
       refreshToken: newRefreshToken.token,
     };
+  }
+
+  private async verifyYandexOAuthToken(
+    oauthToken: string,
+  ): Promise<CreateUserYandexDto> {
+    try {
+      const { data } = await firstValueFrom(
+        this.httpService.get<YandexOAuthUser>(
+          `https://login.yandex.ru/info?format=json`,
+          {
+            headers: {
+              Authorization: `OAuth ${oauthToken}`,
+            },
+          },
+        ),
+      );
+
+      if (!data) {
+        throw new UnauthorizedException();
+      }
+
+      return {
+        externalId: data.id,
+        email: data.default_email,
+        firstName: data.first_name,
+        lastName: data.last_name,
+        avatarUrl: getYandexUserAvatar(data.id, data.default_avatar_id),
+        birthDate: data.birthday,
+        authProvider: AuthProvider.YANDEX,
+      };
+    } catch {
+      throw new UnauthorizedException();
+    }
   }
 }

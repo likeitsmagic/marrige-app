@@ -8,16 +8,29 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Permission } from '../enums/permissions/permission.enum';
+import { AuthProvider } from '../enums/auth-providers/auth-provider.enum';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ default: '' })
+  externalId: string;
+
   @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column({ nullable: false })
+  @Column({ default: '' })
+  firstName: string;
+
+  @Column({ default: '' })
+  lastName: string;
+
+  @Column({ default: '' })
+  avatarUrl: string;
+
+  @Column({ nullable: false, default: '' })
   password: string;
 
   @Column({ default: false })
@@ -41,8 +54,14 @@ export class User {
   @Column({ nullable: true })
   phone: string;
 
+  @Column({ default: '' })
+  birthDate: string;
+
   @Column({ type: 'geometry', srid: 4326, nullable: true })
   location: Point;
+
+  @Column({ type: 'enum', enum: AuthProvider, default: AuthProvider.EMAIL })
+  authProvider: AuthProvider;
 
   @CreateDateColumn()
   createdAt: Date;

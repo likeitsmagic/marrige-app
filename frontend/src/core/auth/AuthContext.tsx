@@ -38,6 +38,11 @@ interface IAuthContext {
 		data: ILoginResponse | null;
 		error: string | undefined;
 	}>;
+	signInOAuth: (oauthToken: string) => Promise<{
+		authenticated: boolean;
+		data: ILoginResponse | null;
+		error: string | undefined;
+	}>;
 	signup: (
 		email: string,
 		password: string,
@@ -58,6 +63,8 @@ interface IAuthContext {
 export const AuthContext = createContext<IAuthContext>({
 	signin: () =>
 		Promise.resolve({ authenticated: false, data: null, error: undefined }),
+	signInOAuth: () =>
+		Promise.resolve({ authenticated: false, data: null, error: undefined }),
 	signup: () =>
 		Promise.resolve({ registered: false, data: null, error: undefined }),
 	logout: () => {},
@@ -77,6 +84,42 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			const res = await axiosInstance.post<ILoginResponse>("/auth/sign-in", {
 				email,
 				password,
+			});
+
+			if (res.status === 200) {
+				localStorage.setItem(authTokenKey, res.data.accessToken);
+				localStorage.setItem(refreshTokenKey, res.data.refreshToken);
+
+				return {
+					authenticated: true,
+					data: res.data,
+					error: undefined,
+				};
+			}
+		} catch (error) {
+			if (isAxiosError(error)) {
+				return {
+					authenticated: false,
+					data: null,
+					error:
+						error.response?.status === 401
+							? error.response?.data.message
+							: undefined,
+				};
+			}
+		}
+
+		return {
+			authenticated: false,
+			data: null,
+			error: undefined,
+		};
+	}, []);
+
+	const signInOAuth = useCallback(async (oauthToken: string) => {
+		try {
+			const res = await axiosInstance.post<ILoginResponse>("/auth/sign-in-oauth", {
+				oauthToken,
 			});
 
 			if (res.status === 200) {
@@ -197,6 +240,7 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 		<AuthContext.Provider
 			value={{
 				signin,
+				signInOAuth,
 				signup,
 				logout,
 				isAuthenticated,

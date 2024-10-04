@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 import { RefreshTokensDto } from './dto/refresh-tokens.dto';
 import { SignInUserDto } from './dto/sign-in-user.dto';
 import { SignUpUserDto } from './dto/sign-up-user.dto';
+import { SignInOAuthDto } from './dto/sign-in-oauth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -21,6 +22,13 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   async signIn(@Body() signInUserDto: SignInUserDto) {
     return await this.authService.signIn(signInUserDto);
+  }
+
+  @Post('sign-in-oauth')
+  @HttpCode(HttpStatus.OK)
+  @UsePipes(ValidationPipe)
+  async signInOAuth(@Body() signInOAuthDto: SignInOAuthDto) {
+    return await this.authService.signInOAuth(signInOAuthDto);
   }
 
   @Post('sign-up')
