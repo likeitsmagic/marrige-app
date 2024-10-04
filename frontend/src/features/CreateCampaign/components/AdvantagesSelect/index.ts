@@ -1,1 +1,0 @@
-export { AdvantagesSelect } from "./AdvantagesSelect";

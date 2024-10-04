@@ -1,1 +1,1 @@
-export { CampaignList } from "./CampaignList";
+export { CampaignList, CampaignListName } from "./CampaignList";

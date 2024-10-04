@@ -1,29 +1,12 @@
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
+import { I18N } from "@gravity-ui/i18n";
 
-import translationEN from "./assets/locales/en/translation.json";
-import translationRU from "./assets/locales/ru/translation.json";
+import en from "./keysets/en.json";
+import ru from "./keysets/ru.json";
 
-const resources = {
-	en: {
-		translation: translationEN,
-	},
-	ru: {
-		translation: translationRU,
-	},
-};
+const i18n = new I18N();
+i18n.registerKeysets("en", en);
+i18n.registerKeysets("ru", ru);
 
-i18n
-	.use(initReactI18next)
-	.use(LanguageDetector)
-	.init({
-		resources,
-		supportedLngs: ["en", "ru", "fr"],
-		lng: "ru",
+i18n.setFallbackLang("ru");
 
-		interpolation: {
-			escapeValue: false,
-		},
-	});
 export default i18n;

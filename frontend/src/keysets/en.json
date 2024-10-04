@@ -1,0 +1,13 @@
+{
+    "header": {
+     "our_day": "Our day",
+     "contractor": "Contractor",
+     "place": "Place",
+     "for_groom_and_bride": "For groom and bride",
+     "login": "Login",
+     "profile": "Profile"
+    },
+    "campaigns": {
+     "favorite_partners": "Our favorite partners"
+    }
+ }

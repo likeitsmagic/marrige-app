@@ -12,6 +12,8 @@ export const useCampaignsList = () => {
 			setIsLoading(true);
 			const { data } = await axiosInstance.get<TCampaign[]>("/campaigns");
 			setCampaigns(data);
+		} catch {
+			// TODO: handle error
 		} finally {
 			setIsLoading(false);
 		}

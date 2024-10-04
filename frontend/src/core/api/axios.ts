@@ -3,14 +3,14 @@ import i18n from "src/i18n";
 
 import { authTokenKey, refreshTokenKey } from "../auth/contants";
 
-const apiUrl = import.meta.env.VITE_API_URL ?? "" + "/api";
+const apiUrl = process.env.REACT_APP_API_URL ?? "/api";
 
 const axiosInstance: AxiosInstance = axios.create({
 	baseURL: apiUrl,
 	withCredentials: true,
 	headers: {
 		"Content-Type": "application/json",
-		"Accept-Language": i18n.language,
+		"Accept-Language": i18n.lang,
 	},
 });
 

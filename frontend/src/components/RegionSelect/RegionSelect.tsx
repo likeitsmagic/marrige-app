@@ -1,12 +1,14 @@
 import {
-	Autocomplete,
-	AutocompleteItem,
-	AutocompleteProps,
-} from "@nextui-org/react";
-import { useFormikContext } from "formik";
-import { debounce } from "lodash";
-import { FC, useCallback, useState } from "react";
-import { ILocation } from "src/core/types";
+	Flex,
+	List,
+	ListItemData,
+	TextInput,
+	TextInputProps,
+	Text,
+} from "@gravity-ui/uikit";
+import { useField, useFormikContext } from "formik";
+import { debounce, omit } from "lodash";
+import { ChangeEvent, FC, useCallback, useMemo, useState } from "react";
 
 interface IRegion {
 	name: string;
@@ -14,71 +16,95 @@ interface IRegion {
 	provinceName: string;
 }
 
-export const RegionSelect: FC<
-	Omit<AutocompleteProps, "items" | "onInputChange">
-> = (props) => {
+export const RegionSelect: FC<Omit<TextInputProps, "onChange">> = (props) => {
 	const { setFieldValue } = useFormikContext();
 
-	const [regions, setRegions] = useState<IRegion[]>([]);
+	const [{ value }] = useField(props.name as string);
 
+	const [regions, setRegions] = useState<IRegion[]>([]);
 	const handleRegionQuery = useCallback(
-		async (query: string) => {
-			if (query?.length < 1) {
+		async (query: ChangeEvent<HTMLInputElement>) => {
+			if (query?.target?.value?.length < 1) {
+				setRegions([]);
+				setFieldValue(props.name as string, null);
 				return;
 			}
-
 			const response = await fetch(
-				`https://functions.yandexcloud.net/d4e66i32i0s9783irqrp?query=${query.split(" ").join("+")}`,
+				`https://functions.yandexcloud.net/d4e66i32i0s9783irqrp?query=${query.target.value.split(" ").join("+")}`,
 			);
 			if (response.ok) {
 				const data = await response.json();
 				setRegions(data);
 			}
 		},
-		[setRegions],
+		[setRegions, setFieldValue, props.name],
 	);
 
 	const handleRegionChange = useCallback(
-		async (
-			region: IRegion,
-			setFieldValue: (field: string, value: ILocation) => unknown,
-		) => {
+		async (item: ListItemData<{ title: string; region: IRegion }>) => {
 			if (!props.name) {
 				return;
 			}
 
 			await setFieldValue(props.name, {
 				type: "Point",
-				coordinates: region.pos.split(" ").map(Number),
+				coordinates: item.region.pos.split(" ").map(Number),
 			});
 		},
-		[props.name],
+		[props.name, setFieldValue],
 	);
 
 	const debouncedHandleRegionQuery = debounce(handleRegionQuery, 1000);
 
+	const omitedProps = omit(props, [
+		"filterable",
+		"onFilterChange",
+		"onUpdate",
+		"value",
+		"loading",
+	]);
+
+	const items = useMemo(
+		() =>
+			regions.map((region) => ({
+				title: region.name,
+				region,
+			})),
+		[regions],
+	);
+
+	const renderItem = useCallback(
+		(item: ListItemData<{ title: string; region: IRegion }>) => {
+			return (
+				<Flex direction="column" gap={1} style={{ paddingLeft: 4 }}>
+					<Text>{item.title}</Text>
+					<Text variant="caption-2" color="hint">
+						{item.region.provinceName}
+					</Text>
+				</Flex>
+			);
+		},
+		[],
+	);
+
+	const selectedItemIndex = useMemo(() => {
+		return items.findIndex(
+			(item) => item.region.pos === value?.coordinates?.join(" "),
+		);
+	}, [items, value]);
+
 	return (
-		<Autocomplete
-			{...props}
-			items={regions}
-			onInputChange={debouncedHandleRegionQuery}
-		>
-			{regions.map((region, index) => (
-				<AutocompleteItem
-					tabIndex={index}
-					key={index}
-					textValue={region.name}
-					// eslint-disable-next-line
-					onClick={() => handleRegionChange(region, setFieldValue)}
-				>
-					<div>
-						<p>{region.name}</p>
-						{region.provinceName !== "N/A" && (
-							<p className="text-sm text-gray-500">{region.provinceName}</p>
-						)}
-					</div>
-				</AutocompleteItem>
-			))}
-		</Autocomplete>
+		<Flex direction="column" gap={1}>
+			<TextInput {...omitedProps} onChange={debouncedHandleRegionQuery} />
+			<List
+				filterable={false}
+				items={items}
+				onItemClick={handleRegionChange}
+				itemsHeight={items.length * 70}
+				itemHeight={60}
+				renderItem={renderItem}
+				selectedItemIndex={selectedItemIndex}
+			/>
+		</Flex>
 	);
 };
