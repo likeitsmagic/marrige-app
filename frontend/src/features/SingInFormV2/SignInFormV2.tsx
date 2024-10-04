@@ -19,7 +19,10 @@ import i18n from "src/i18n";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { Link as RouterLink } from "react-router-dom";
 
+
 import { SignInSchema, SignInValues } from "./schema";
+import { YandexAuth } from "../Auth/compoenents/Yandex";
+import { VkAuth } from "../Auth/compoenents/VK";
 
 export const SingInFormV2 = () => {
 	const navigate = useNavigate();
@@ -132,6 +135,8 @@ export const SingInFormV2 = () => {
 										>
 											{i18n.i18n("signin", "access")}
 										</Button>
+										<YandexAuth />	
+										<VkAuth />
 									</Flex>
 								</form>
 							)}

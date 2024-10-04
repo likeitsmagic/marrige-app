@@ -1,5 +1,6 @@
 import { Button, Flex, Spin, User } from "@gravity-ui/uikit";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 import { useAuthContext } from "src/core/auth/useAuth";
 import i18n from "src/i18n";
 
@@ -32,7 +33,8 @@ export const UserProfile = () => {
 
 	return (
 		<Flex alignItems="center" height="100%">
-			<User name={user.email} description={user.id} />
+			<Link to="/profile" style={{ textDecoration: "none" }}>
+			<User name={user.email} description={user.id} avatar={{text: user.email}} /></Link>
 		</Flex>
 	);
 };

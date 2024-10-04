@@ -1,11 +1,12 @@
-import { NavigationData, PageConstructor } from "@gravity-ui/page-constructor";
+import { PageConstructor } from "@gravity-ui/page-constructor";
 import { FC } from "react";
+import { CampaignList, CampaignListName } from "src/features/CampaignList";
+import { Footer, FooterName } from "src/features/Footer";
 import { HeaderConfig } from "src/features/Header";
 import {
 	UserProfile,
 	UserProfileName,
 } from "src/features/Header/compoentens/UserProfile";
-import { CampaignList, CampaignListName } from "src/features/CampaignList";
 import { Searcher, SearcherName } from "src/features/Searcher";
 
 export const Home: FC = () => {
@@ -18,9 +19,10 @@ export const Home: FC = () => {
 				blocks: {
 					[SearcherName]: Searcher,
 					[CampaignListName]: CampaignList,
+					[FooterName]: Footer,
 				},
 			}}
-			navigation={HeaderConfig as NavigationData}
+			navigation={HeaderConfig}
 			content={{
 				blocks: [
 					{
@@ -152,6 +154,7 @@ export const Home: FC = () => {
 						title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
 						type: "banner-block",
 					},
+					{ type: FooterName },
 				],
 			}}
 		/>

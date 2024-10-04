@@ -11,3 +11,5 @@ export const Footer: FC = () => {
 		/>
 	);
 };
+
+export const FooterName = "Footer";
