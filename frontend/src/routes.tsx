@@ -6,6 +6,7 @@ import { SignIn } from "./pages/SignIn";
 import { SignUp } from "./pages/SignUp/SignUp";
 import { Profile } from "./pages/Profile";
 import { ProtectedEntry } from "./features/Application";
+import { YandexVerify } from "./features/Auth/compoenents/Yandex/YandexVerify";
 
 export interface FeatureRoute {
 	component: FC;
@@ -32,5 +33,9 @@ export const router = createBrowserRouter([
 				<Profile />
 			</ProtectedEntry>
 		),
+	},
+	{
+		path: "/verify_yid",
+		element: <YandexVerify />,
 	},
 ]);
