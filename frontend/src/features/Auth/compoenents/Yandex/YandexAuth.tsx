@@ -23,20 +23,20 @@ export const YandexAuth = () => {
 					buttonIcon: "ya",
 				},
 			)
-            // eslint-disable-next-line
-            .then(function(result: any) {
-                return result.handler()
-             })
-             // eslint-disable-next-line
-             .then(function(data: any) {
-                console.log('Сообщение с токеном: ', data);
-                document.body.innerHTML += `Сообщение с токеном: ${JSON.stringify(data)}`;
+				// eslint-disable-next-line
+				.then(function (result: any) {
+					return result.handler();
+				})
+				// eslint-disable-next-line
+				.then(function (data: any) {
+					console.log("Сообщение с токеном: ", data);
+					document.body.innerHTML += `Сообщение с токеном: ${JSON.stringify(data)}`;
 				})
 				// eslint-disable-next-line
 				.catch(function (error: any) {
 					console.log("Что-то пошло не так: ", error);
 					document.body.innerHTML += `Что-то пошло не так: ${JSON.stringify(error)}`;
-             });
+				});
 		}
 	}, []);
 
