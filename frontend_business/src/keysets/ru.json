@@ -1,4 +1,7 @@
 {
+    "common": {
+        "save": "Сохранить"
+    },
     "application": {
        "title": "Toi & Moi",
        "pages_my_business": "Мой бизнес",
@@ -20,9 +23,16 @@
         "password_must_be_at_most_20_characters": "Пароль должен быть не более 20 символов"
     },
     "business": {
+        "business": "Мой бизнес",
         "start_button": "Начать показывать",
-        "is_started": "Запущен",
         "is_ready": "Готов",
-        "draft": "Черновик"
+        "draft": "Черновик",
+        "moderation": "На модерации",
+        "rejected": "Отклонен",
+        "active": "Запущен",
+        "general_information": "Общая информация",
+        "location": "Местоположение",
+        "images": "Изображения",
+        "social_media": "Социальные сети"
     }
 }

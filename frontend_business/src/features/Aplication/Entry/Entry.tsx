@@ -2,7 +2,7 @@ import { ChartAreaStacked, Comment, House } from "@gravity-ui/icons";
 import { PageLayout, PageLayoutAside } from "@gravity-ui/navigation";
 import { Flex, Spin, Text } from "@gravity-ui/uikit";
 import React from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "src/core/auth/useAuth";
 import i18n from "src/i18n";
 
@@ -10,6 +10,7 @@ import logoIcon from "../../../assets/logo.svg";
 
 export const Entry = () => {
 	const navigate = useNavigate();
+	const { pathname } = useLocation();
 
 	const { isAuthenticated, isLoading } = useAuthContext();
 
@@ -75,6 +76,7 @@ export const Entry = () => {
 							),
 							icon: House,
 							onItemClick: () => navigate("/my-business"),
+							current: pathname === "/my-business",
 						},
 						{
 							id: "messages",
@@ -85,6 +87,7 @@ export const Entry = () => {
 							),
 							icon: Comment,
 							onItemClick: () => navigate("/messages"),
+							current: pathname === "/messages",
 						},
 						{
 							id: "statistics",
@@ -95,6 +98,7 @@ export const Entry = () => {
 							),
 							icon: ChartAreaStacked,
 							onItemClick: () => navigate("/statistics"),
+							current: pathname === "/statistics",
 						},
 					]}
 					hideCollapseButton

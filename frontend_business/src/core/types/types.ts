@@ -1,3 +1,7 @@
+import { CampaignStatusEnum } from "../enums/campaignStatus.enum";
+import { SocialMediaPlatformEnum } from "../enums/socialMediaPlatform.enum";
+import { WeddingVendorTypeEnum } from "../enums/weddingVendorType.enum";
+
 export interface ILocation {
 	type: "Point";
 	coordinates: number[];
@@ -18,14 +22,25 @@ export interface IUser {
 	updatedAt: string;
 }
 
+export interface ISocialMedia {
+	platform: SocialMediaPlatformEnum;
+	link: string;
+}
+
 export interface IBusiness {
 	id: string;
 	ownerId: string;
-	previewImage: string | null;
 	images: string[];
 	name: string;
+	description: string;
 	phone: string;
 	location: ILocation;
-	isReady: boolean;
-	rating: number;
+	address: string;
+	minPrice: number;
+	maxPrice: number;
+	socialMedias: ISocialMedia[];
+	type: WeddingVendorTypeEnum;
+	createdAt: string;
+	updatedAt: string;
+	status: CampaignStatusEnum;
 }

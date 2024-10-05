@@ -1,4 +1,7 @@
 {
+    "common": {
+        "save": "Save"
+    },
     "application": {
        "title": "Toi & Moi",
        "pages_my_business": "My Business",
@@ -20,6 +23,16 @@
         "password_must_be_at_most_20_characters": "Password must be at most 20 characters"
     },
     "business": {
-        "start_button": "Start showing"
+        "business": "My Business",
+        "start_button": "Start showing",
+        "is_ready": "Ready",
+        "draft": "Draft",
+        "moderation": "On moderation",
+        "rejected": "Rejected",
+        "active": "Active",
+        "general_information": "General information",
+        "location": "Location",
+        "images": "Images",
+        "social_media": "Social media"
     }
 }
