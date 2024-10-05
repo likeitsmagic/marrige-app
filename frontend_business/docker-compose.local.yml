@@ -1,10 +1,8 @@
 services:
-  frontend:
+  frontend_business:
     build:
-      context: frontend
+      context: frontend_business
       dockerfile: Dockerfile
-    environment:
-      - REACT_APP_DOMAIN=${DOMAIN}
     labels:
-      - "traefik.http.routers.frontend.rule=Host(`business.localhost`)"
-      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      - "traefik.http.routers.frontend_business.rule=Host(`business.localhost`)"
+      - "traefik.http.services.frontend_business.loadbalancer.server.port=80"
