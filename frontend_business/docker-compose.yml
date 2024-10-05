@@ -1,0 +1,11 @@
+services:
+  frontend_business:
+    build:
+      context: frontend_business
+      dockerfile: Dockerfile
+
+    labels:
+      - "traefik.http.routers.frontend_business.rule=Host(`business.${DOMAIN}`)"
+      - "traefik.http.routers.frontend_business.entrypoints=websecure"
+      - "traefik.http.routers.frontend_business.tls.certresolver=myresolver"
+      - "traefik.http.services.frontend_business.loadbalancer.server.port=80"
