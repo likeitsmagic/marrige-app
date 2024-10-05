@@ -16,8 +16,9 @@ import { useAuthContext } from "src/core/auth/useAuth";
 import i18n from "src/i18n";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 
-import { schema, SignUpValues } from "./schema";
 import { YandexAuth } from "../Auth/compoenents/Yandex";
+
+import { schema, SignUpValues } from "./schema";
 
 export const SignUpFormV2 = () => {
 	const navigate = useNavigate();
@@ -36,11 +37,7 @@ export const SignUpFormV2 = () => {
 	const onSubmit = useCallback(
 		async (values: SignUpValues) => {
 			setError(null);
-			const result = await signup(
-				values.email,
-				values.password,
-				false,
-			);
+			const result = await signup(values.email, values.password, false);
 
 			if (result.registered) {
 				updateInfo();
