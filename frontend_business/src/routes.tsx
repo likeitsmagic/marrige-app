@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import { Entry } from "./features/Aplication/Entry";
-import { Home } from "./pages/Home";
 import { SignIn } from "./pages/SignIn";
 import { SignUp } from "./pages/SignUp";
+import { Business } from "./pages/Business";
 
 export interface FeatureRoute {
 	component: FC;
@@ -16,11 +16,9 @@ export const router = createBrowserRouter([
 		path: "/",
 		element: <Entry />,
 		children: [
-			{
-				path: "/",
-				element: <Home />,
-			},
-		],
+			{path: "/", element: <Navigate to="/my-business" />},
+			{path: "/my-business", element: <Business />}
+		]
 	},
 	{
 		path: "/signin",

@@ -18,5 +18,11 @@
         "passwords_must_match": "Пароли должны совпадать",
         "password_must_be_at_least_6_characters": "Пароль должен быть не менее 6 символов",
         "password_must_be_at_most_20_characters": "Пароль должен быть не более 20 символов"
+    },
+    "business": {
+        "start_button": "Начать показывать",
+        "is_started": "Запущен",
+        "is_ready": "Готов",
+        "draft": "Черновик"
     }
 }

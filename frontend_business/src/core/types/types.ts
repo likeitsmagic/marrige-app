@@ -17,3 +17,15 @@ export interface IUser {
 	createdAt: string;
 	updatedAt: string;
 }
+
+export interface IBusiness {
+	id: string;
+	ownerId: string;
+	previewImage: string | null;
+	images: string[];
+	name: string;
+	phone: string;
+	location: ILocation;
+	isReady: boolean;
+	rating: number;
+}

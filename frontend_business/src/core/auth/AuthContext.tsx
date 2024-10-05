@@ -40,7 +40,7 @@ interface IAuthContext {
 		error: string | undefined;
 	}>;
 	logout: () => void;
-	updateInfo: () => Promise<void>;
+	updateInfo: () => Promise<IUser | undefined>;
 	isAuthenticated: boolean;
 	isLoading: boolean;
 	user: User | undefined;
@@ -52,7 +52,7 @@ export const AuthContext = createContext<IAuthContext>({
 	signup: () =>
 		Promise.resolve({ registered: false, data: null, error: undefined }),
 	logout: () => {},
-	updateInfo: () => Promise.resolve(),
+	updateInfo: () => Promise.resolve(undefined),
 	isAuthenticated: false,
 	isLoading: true,
 	user: undefined,
@@ -177,6 +177,8 @@ export const AuthContextProvider: FC<PropsWithChildren> = ({ children }) => {
 			setUser(new User(user));
 		}
 		setIsAuthenticated(user !== undefined);
+
+		return user;
 	}, [getMe]);
 
 	useEffect(() => {

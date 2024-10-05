@@ -13,13 +13,14 @@ import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "src/core/auth/useAuth";
 import i18n from "src/i18n";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { Permission } from "src/core/enums/permission.enum";
 
 import { SignInSchema, SignInValues } from "./schema";
 
 export const SignInForm = () => {
 	const navigate = useNavigate();
 
-	const { signin, updateInfo } = useAuthContext();
+	const { signin, updateInfo, logout } = useAuthContext();
 
 	const [signInError, setSignInError] = useState<string | null>(null);
 
@@ -36,16 +37,22 @@ export const SignInForm = () => {
 			setSignInError(null);
 			const result = await signin(values.email, values.password);
 			if (result.authenticated) {
-				updateInfo();
-				navigate("/");
-				return;
+				const user = await updateInfo();
+				if (!user?.permissions.includes(Permission.BUSINESS)) {
+					logout();
+					navigate("/");
+					return;
 			}
+
+			navigate("/my-business");
+		
+		}
 
 			if (result.error) {
 				setSignInError(result.error);
 			}
 		},
-		[signin, updateInfo, navigate],
+		[signin, updateInfo, navigate, logout],
 	);
 
 	return (
