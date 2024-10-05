@@ -1,1 +1,22 @@
-{}
+{
+    "application": {
+       "title": "Toi & Moi",
+       "pages_my_business": "My Business",
+       "pages_messages": "Messages",
+       "pages_statistics": "Statistics"
+    },
+    "sign_in": {
+        "title": "Sign In",
+        "email": "Email",
+        "password": "Password",
+        "forgot_password": "Forgot password?",
+        "access_button": "Access"
+    },
+    "validation": {
+        "field_is_required": "Field is required",
+        "invalid_email": "Invalid email",
+        "passwords_must_match": "Passwords must match",
+        "password_must_be_at_least_6_characters": "Password must be at least 6 characters",
+        "password_must_be_at_most_20_characters": "Password must be at most 20 characters"
+    }
+}

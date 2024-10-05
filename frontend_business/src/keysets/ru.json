@@ -1,1 +1,22 @@
-{}
+{
+    "application": {
+       "title": "Toi & Moi",
+       "pages_my_business": "Мой бизнес",
+       "pages_messages": "Сообщения",
+       "pages_statistics": "Статистика"
+    },
+    "sign_in": {
+        "title": "Вход",
+        "email": "Email",
+        "password": "Пароль",
+        "forgot_password": "Забыли пароль?",
+        "access_button": "Войти"
+    },
+    "validation": {
+        "field_is_required": "Поле обязательно для заполнения",
+        "invalid_email": "Неверный формат email",
+        "passwords_must_match": "Пароли должны совпадать",
+        "password_must_be_at_least_6_characters": "Пароль должен быть не менее 6 символов",
+        "password_must_be_at_most_20_characters": "Пароль должен быть не более 20 символов"
+    }
+}
