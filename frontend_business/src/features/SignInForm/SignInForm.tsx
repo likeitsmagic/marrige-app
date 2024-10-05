@@ -42,11 +42,10 @@ export const SignInForm = () => {
 					logout();
 					navigate("/");
 					return;
-			}
+				}
 
-			navigate("/my-business");
-		
-		}
+				navigate("/my-business");
+			}
 
 			if (result.error) {
 				setSignInError(result.error);

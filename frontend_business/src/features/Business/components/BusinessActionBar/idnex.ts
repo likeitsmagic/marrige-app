@@ -1,1 +1,1 @@
-export { BusinessActionBar } from "./BusinessActionBar"
+export { BusinessActionBar } from "./BusinessActionBar";

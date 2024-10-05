@@ -1,4 +1,3 @@
-
 import { useContext } from "react";
 
 import { BusinessContext } from "./BusinessContext";

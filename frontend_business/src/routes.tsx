@@ -16,9 +16,9 @@ export const router = createBrowserRouter([
 		path: "/",
 		element: <Entry />,
 		children: [
-			{path: "/", element: <Navigate to="/my-business" />},
-			{path: "/my-business", element: <Business />}
-		]
+			{ path: "/", element: <Navigate to="/my-business" /> },
+			{ path: "/my-business", element: <Business /> },
+		],
 	},
 	{
 		path: "/signin",
