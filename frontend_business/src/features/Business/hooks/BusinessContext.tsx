@@ -64,11 +64,11 @@ export const BusinessContextProvider: FC<PropsWithChildren> = ({
 			address: data?.address ?? "",
 			phone: data?.phone ?? "",
 			type: data?.type ?? WeddingVendorTypeEnum.NONE,
-			images: data?.images ?? [],
 			location: data?.location ?? {
 				type: "Point",
 				coordinates: [],
 			},
+			images: data?.images ?? [],
 			minPrice: data?.minPrice ?? 0,
 			maxPrice: data?.maxPrice ?? 0,
 			socialMedias: data?.socialMedias ?? [],
