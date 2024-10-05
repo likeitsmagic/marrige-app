@@ -1,19 +1,37 @@
 import {
   IsArray,
+  IsEnum,
+  IsNumber,
   IsObject,
   IsPhoneNumber,
   IsString,
-  IsUUID,
+  IsUrl,
   MaxLength,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
 import { Point } from 'typeorm';
+import { WeddingVendorTypeEnum } from '../enums/wedding-vendor-type.enum';
+import { SocialMediaPlatformEnum } from '../enums/social-media.enum';
+import { Type } from 'class-transformer';
+
+class SocialMediaDto {
+  @IsEnum(SocialMediaPlatformEnum)
+  platform: SocialMediaPlatformEnum;
+
+  @IsUrl()
+  link: string;
+}
 
 export class CreateCampaignDto {
   @IsString()
   @MinLength(1)
-  @MaxLength(255)
+  @MaxLength(70)
   name: string;
+
+  @IsString()
+  @MaxLength(600)
+  description: string;
 
   @IsString()
   @IsPhoneNumber('RU')
@@ -22,12 +40,25 @@ export class CreateCampaignDto {
   @IsObject()
   location: Point;
 
-  @IsArray()
-  @IsString({ each: true })
-  @IsUUID('4', { each: true })
-  advantages: string[];
+  @IsString()
+  address: string;
 
   @IsArray()
   @IsString({ each: true })
   images: string[];
+
+  @IsEnum(WeddingVendorTypeEnum)
+  type: WeddingVendorTypeEnum;
+
+  @IsNumber()
+  minPrice: number;
+
+  @IsNumber()
+  maxPrice: number;
+
+  @IsArray()
+  @IsObject({ each: true })
+  @ValidateNested()
+  @Type(() => SocialMediaDto)
+  socialMedias: SocialMediaDto[];
 }

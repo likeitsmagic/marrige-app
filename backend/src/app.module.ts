@@ -7,7 +7,6 @@ import {
   I18nModule,
 } from 'nestjs-i18n';
 import { join } from 'path';
-import { AdvantagesModule } from './advantages/advantages.module';
 import { AuthModule } from './auth/auth.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { typeOrmConfig } from './config/typeorm/typorm';
@@ -34,7 +33,6 @@ import { ImagesModule } from './images/images.module';
     UsersModule,
     AuthModule,
     CampaignsModule,
-    AdvantagesModule,
     ImagesModule,
   ],
   controllers: [],

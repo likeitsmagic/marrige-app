@@ -3,10 +3,10 @@ import { CampaignsService } from './campaigns.service';
 import { CampaignsController } from './campaigns.controller';
 import { Campaign } from './entities/campaign.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AdvantagesModule } from 'src/advantages/advantages.module';
+import { SocialMedia } from './entities/social-media.entity';
 
 @Module({
-  imports: [AdvantagesModule, TypeOrmModule.forFeature([Campaign])],
+  imports: [TypeOrmModule.forFeature([Campaign, SocialMedia])],
   controllers: [CampaignsController],
   providers: [CampaignsService],
 })

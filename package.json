@@ -7,6 +7,8 @@
     "lint:frontend": "cd frontend && npm run lint",
     "prettier:frontend": "cd frontend && npm run prettier",
     "lint:frontend_business": "cd frontend_business && npm run lint",
-    "prettier:frontend_business": "cd frontend_business && npm run prettier"
+    "prettier:frontend_business": "cd frontend_business && npm run prettier",
+    "lint:backend": "cd backend && npm run lint",
+    "prettier:backend": "cd backend && npm run prettier"
   }
 }

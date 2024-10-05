@@ -1,15 +1,16 @@
-import { Advantage } from 'src/advantages/entities/advantage.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
+  OneToMany,
   Point,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { CampaignStatusEnum } from '../enums/campaign-status.enum';
+import { WeddingVendorTypeEnum } from '../enums/wedding-vendor-type.enum';
+import { SocialMedia } from './social-media.entity';
 
 @Entity('campaigns')
 export class Campaign {
@@ -19,8 +20,12 @@ export class Campaign {
   @Column({ type: 'uuid', unique: true })
   ownerId: string;
 
-  @Column({ nullable: true })
-  previewImage: string;
+  @Column({
+    type: 'enum',
+    enum: WeddingVendorTypeEnum,
+    default: WeddingVendorTypeEnum.NONE,
+  })
+  type: WeddingVendorTypeEnum;
 
   @Column({ type: 'text', array: true, default: [] })
   images: string[];
@@ -28,25 +33,33 @@ export class Campaign {
   @Column({ nullable: false })
   name: string;
 
-  @Column({ nullable: false })
+  @Column({ default: '' })
+  description: string;
+
+  @Column({ default: '' })
   phone: string;
 
   @Column({ type: 'geometry', srid: 4326 })
   location: Point;
 
-  @ManyToMany(() => Advantage)
-  @JoinTable({
-    name: 'campaign_advantages',
-    joinColumn: { name: 'campaignId', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'advantageId', referencedColumnName: 'id' },
+  @Column({ default: '' })
+  address: string;
+
+  @Column({
+    type: 'enum',
+    enum: CampaignStatusEnum,
+    default: CampaignStatusEnum.DRAFT,
   })
-  advantages: Advantage[];
+  status: CampaignStatusEnum;
 
-  @Column({ type: 'boolean', default: false })
-  isReady: boolean;
+  @Column({ type: 'integer', default: 0 })
+  minPrice: number;
 
-  @Column({ type: 'float', default: 0 })
-  rating: number;
+  @Column({ type: 'integer', default: 0 })
+  maxPrice: number;
+
+  @OneToMany(() => SocialMedia, (socialMedia) => socialMedia.campaign)
+  socialMedias: SocialMedia[];
 
   @CreateDateColumn()
   createdAt: Date;
