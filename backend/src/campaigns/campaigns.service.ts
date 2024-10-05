@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { Campaign } from './entities/campaign.entity';
 import { omit } from 'lodash';
+import { CampaignStatusEnum } from './enums/campaign-status.enum';
 
 @Injectable()
 export class CampaignsService {
@@ -25,11 +26,13 @@ export class CampaignsService {
         { id: campaign.id },
         {
           ...newData,
+          status: CampaignStatusEnum.READY,
         },
       );
     }
     return this.campaignRepository.save({
       ...createCampaignDto,
+      status: CampaignStatusEnum.READY,
       ownerId,
     });
   }
