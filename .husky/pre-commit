@@ -1,2 +1,5 @@
 npm run prettier:frontend
 npm run lint:frontend
+
+npm run prettier:frontend_business
+npm run lint:frontend_business

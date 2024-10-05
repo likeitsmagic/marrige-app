@@ -5,6 +5,8 @@
   "scripts": {
     "prepare": "husky",
     "lint:frontend": "cd frontend && npm run lint",
-    "prettier:frontend": "cd frontend && npm run prettier"
+    "prettier:frontend": "cd frontend && npm run prettier",
+    "lint:frontend_business": "cd frontend_business && npm run lint",
+    "prettier:frontend_business": "cd frontend_business && npm run prettier"
   }
 }

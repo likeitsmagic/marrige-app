@@ -5,7 +5,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['https://moyasvadba.space', 'http://localhost:5173'],
+    origin: [
+      'https://moyasvadba.space',
+      'http://localhost:5173',
+      'https://business.moyasvadba.space',
+    ],
     credentials: true,
   });
 
