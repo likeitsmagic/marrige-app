@@ -15,6 +15,7 @@ export const schema = z
 				});
 			}
 		}),
+		images: z.array(z.string()),
 		address: z.string().optional(),
 		location: z.object({
 			type: z.literal("Point"),

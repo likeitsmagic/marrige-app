@@ -28,6 +28,7 @@ export const BusinessContext = createContext<IBusinessContext>({
 		address: "",
 		phone: "",
 		type: WeddingVendorTypeEnum.NONE,
+		images: [],
 		location: {
 			type: "Point",
 			coordinates: [],
@@ -63,6 +64,7 @@ export const BusinessContextProvider: FC<PropsWithChildren> = ({
 			address: data?.address ?? "",
 			phone: data?.phone ?? "",
 			type: data?.type ?? WeddingVendorTypeEnum.NONE,
+			images: data?.images ?? [],
 			location: data?.location ?? {
 				type: "Point",
 				coordinates: [],
