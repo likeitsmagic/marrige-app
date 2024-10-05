@@ -23,13 +23,6 @@ export const schema = z
 		confirmPassword: z.string({
 			message: i18n.i18n("validation", "field_is_required"),
 		}),
-		location: z.object(
-			{
-				type: z.literal("Point"),
-				coordinates: z.array(z.number()),
-			},
-			{ message: i18n.i18n("validation", "field_is_required") },
-		),
 	})
 	.superRefine((data, ctx) => {
 		if (data.password !== data.confirmPassword) {

@@ -10,14 +10,14 @@ import {
 	TextInput,
 } from "@gravity-ui/uikit";
 import { Field, Formik } from "formik";
-import { useCallback, useState, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
-import { RegionSelect } from "src/components/RegionSelect";
 import { useAuthContext } from "src/core/auth/useAuth";
-import { toFormikValidationSchema } from "zod-formik-adapter";
 import i18n from "src/i18n";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 
 import { schema, SignUpValues } from "./schema";
+import { YandexAuth } from "../Auth/compoenents/Yandex";
 
 export const SignUpFormV2 = () => {
 	const navigate = useNavigate();
@@ -29,10 +29,6 @@ export const SignUpFormV2 = () => {
 			email: "",
 			password: "",
 			confirmPassword: "",
-			location: {
-				type: "Point",
-				coordinates: [],
-			},
 		}),
 		[],
 	);
@@ -44,7 +40,6 @@ export const SignUpFormV2 = () => {
 				values.email,
 				values.password,
 				false,
-				values.location,
 			);
 
 			if (result.registered) {
@@ -61,7 +56,7 @@ export const SignUpFormV2 = () => {
 	);
 
 	const handleBack = useCallback(() => {
-		navigate(-1);
+		navigate("/");
 	}, [navigate]);
 
 	return (
@@ -111,22 +106,6 @@ export const SignUpFormV2 = () => {
 											errorMessage={errors.email}
 											as={TextInput}
 										/>
-										<label htmlFor="location">
-											<Text variant="body-1">
-												{i18n.i18n("region_select", "label")}
-											</Text>
-										</label>
-										<Field
-											name="location"
-											placeholder={i18n.i18n("region_select", "placeholder")}
-											size="l"
-											disabled={isSubmitting}
-											error={touched.location && !!errors.location}
-											errorMessage={
-												touched.location && (errors.location as string)
-											}
-											as={RegionSelect}
-										/>
 										<label htmlFor="password">
 											<Text variant="body-1">
 												{i18n.i18n("signup", "password")}
@@ -167,6 +146,7 @@ export const SignUpFormV2 = () => {
 										>
 											{i18n.i18n("signup", "register")}
 										</Button>
+										<YandexAuth />
 									</Flex>
 								</form>
 							)}

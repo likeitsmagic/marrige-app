@@ -51,7 +51,7 @@ export const SingInFormV2 = () => {
 
 			if (res.authenticated) {
 				await updateInfo();
-				navigate(-1);
+				navigate("/");
 			}
 		},
 		[signin, navigate, updateInfo],
