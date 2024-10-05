@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { Campaign } from './entities/campaign.entity';
+import { omit } from 'lodash';
 
 @Injectable()
 export class CampaignsService {
@@ -19,10 +20,11 @@ export class CampaignsService {
     });
 
     if (campaign) {
+      const newData = omit(createCampaignDto, ['socialMedias']);
       return this.campaignRepository.update(
         { id: campaign.id },
         {
-          ...createCampaignDto,
+          ...newData,
         },
       );
     }
