@@ -33,6 +33,35 @@
         "general_information": "Общая информация",
         "location": "Местоположение",
         "images": "Изображения",
-        "social_media": "Социальные сети"
+        "social_media": "Социальные сети",
+        "name": "Название",
+        "name_placeholder": "Например, \"Магазин цветов\"",
+        "description": "Описание",
+        "description_placeholder": "Например, \"Мы продаем цветы\"",
+        "phone": "Телефон",
+        "phone_placeholder": "Например, \"+7 999 999 99 99\"",
+        "category": "Категория",
+        "min_price": "Минимальная цена",
+        "min_price_placeholder": "Например, \"1000\"",
+        "max_price": "Максимальная цена",
+        "max_price_placeholder": "Например, \"10000\""
+    },
+    "wedding_vendor_type": {
+        "none": "Не выбрано",
+        "photographer": "Фотограф", 
+        "videographer": "Видеограф", 
+        "caterer": "Кейтеринг", 
+        "florist": "Флорист", 
+        "dj": "Диджей", 
+        "band": "Музыкальная группа", 
+        "wedding_planner": "Организатор свадьбы", 
+        "venue": "Место проведения свадьбы", 
+        "baker": "Пекарь", 
+        "makeup_artist": "Визажист", 
+        "hair_stylist": "Парикмахер", 
+        "officiant": "Ведущий церемонии", 
+        "transportation": "Транспортные услуги", 
+        "decorator": "Декоратор", 
+        "bridal_shop": "Свадебный магазин"
     }
 }

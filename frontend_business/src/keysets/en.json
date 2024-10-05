@@ -33,6 +33,36 @@
         "general_information": "General information",
         "location": "Location",
         "images": "Images",
-        "social_media": "Social media"
+        "social_media": "Social media",
+        "name": "Name",
+        "name_placeholder": "For example, \"Flower shop\"",
+        "description": "Description",
+        "description_placeholder": "For example, \"We sell flowers\"",
+        "phone": "Phone",
+        "phone_placeholder": "For example, \"+7 999 999 99 99\"",
+        "category": "Category",
+        "min_price": "Min price",
+        "min_price_placeholder": "For example, \"1000\"",
+        "max_price": "Max price",
+        "max_price_placeholder": "For example, \"10000\""
+        
+    },
+    "wedding_vendor_type": {
+        "none": "Not selected",
+        "photographer": "Photographer", 
+        "videographer": "Videographer", 
+        "caterer": "Caterer", 
+        "florist": "Florist", 
+        "dj": "DJ", 
+        "band": "Band", 
+        "wedding_planner": "Wedding planner", 
+        "venue": "Venue", 
+        "baker": "Baker", 
+        "makeup_artist": "Makeup artist", 
+        "hair_stylist": "Hair stylist", 
+        "officiant": "Officiant", 
+        "transportation": "Transportation", 
+        "decorator": "Decorator", 
+        "bridal_shop": "Bridal shop"
     }
 }

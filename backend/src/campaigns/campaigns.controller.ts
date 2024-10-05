@@ -26,11 +26,11 @@ export class CampaignsController {
   @UseGuards(PermissionAuthGuard)
   @Permissions(Permission.BUSINESS)
   @UsePipes(ValidationPipe)
-  async create(
+  async createOrUpdate(
     @CurrentUser() user: JWTUser,
     @Body() createCampaignDto: CreateCampaignDto,
   ) {
-    return this.campaignsService.create(user.id, createCampaignDto);
+    return this.campaignsService.createOrUpdate(user.id, createCampaignDto);
   }
 
   @Get()

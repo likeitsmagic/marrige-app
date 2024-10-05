@@ -3,6 +3,7 @@ import {
   IsEnum,
   IsNumber,
   IsObject,
+  IsOptional,
   IsPhoneNumber,
   IsString,
   IsUrl,
@@ -35,6 +36,7 @@ export class CreateCampaignDto {
 
   @IsString()
   @IsPhoneNumber('RU')
+  @IsOptional()
   phone: string;
 
   @IsObject()

@@ -13,7 +13,19 @@ export class CampaignsService {
     private readonly campaignRepository: Repository<Campaign>,
   ) {}
 
-  async create(ownerId: string, createCampaignDto: CreateCampaignDto) {
+  async createOrUpdate(ownerId: string, createCampaignDto: CreateCampaignDto) {
+    const campaign = await this.campaignRepository.findOne({
+      where: { ownerId },
+    });
+
+    if (campaign) {
+      return this.campaignRepository.update(
+        { id: campaign.id },
+        {
+          ...createCampaignDto,
+        },
+      );
+    }
     return this.campaignRepository.save({
       ...createCampaignDto,
       ownerId,
