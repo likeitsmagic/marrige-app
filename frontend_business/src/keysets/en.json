@@ -44,8 +44,8 @@
         "min_price": "Min price",
         "min_price_placeholder": "For example, \"1000\"",
         "max_price": "Max price",
-        "max_price_placeholder": "For example, \"10000\""
-        
+        "max_price_placeholder": "For example, \"10000\"",
+        "search_geo": "Where is your business?"
     },
     "wedding_vendor_type": {
         "none": "Not selected",

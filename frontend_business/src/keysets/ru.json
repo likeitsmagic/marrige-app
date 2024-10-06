@@ -44,7 +44,8 @@
         "min_price": "Минимальная цена",
         "min_price_placeholder": "Например, \"1000\"",
         "max_price": "Максимальная цена",
-        "max_price_placeholder": "Например, \"10000\""
+        "max_price_placeholder": "Например, \"10000\"",
+        "search_geo": "Где находится ваш бизнес?"
     },
     "wedding_vendor_type": {
         "none": "Не выбрано",
