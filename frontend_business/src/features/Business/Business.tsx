@@ -1,4 +1,4 @@
-import { Container, Flex, Skeleton } from "@gravity-ui/uikit";
+import { Col, Container, Flex, Row, Skeleton } from "@gravity-ui/uikit";
 import { Formik } from "formik";
 import { CONTAINER_PADDING } from "src/core/constants";
 import { toFormikValidationSchema } from "zod-formik-adapter";
@@ -15,11 +15,19 @@ export const Business = () => {
 
 	if (isLoading)
 		return (
-			<Flex height="100vh" width="100%" direction="column" gap={4}>
-				<Skeleton qa="page" style={{ height: 200, width: "100%" }} />
-				<Skeleton qa="page" style={{ height: 200, width: "100%" }} />
-				<Skeleton qa="page" style={{ height: 200, width: "100%" }} />
-			</Flex>
+			<>
+				<Skeleton qa="actionbar" style={{ height: 40, width: "100%" }} />
+				<Container style={{ ...CONTAINER_PADDING }} maxWidth="xl">
+					<Row space={4}>
+						<Col s={12}>
+							<Skeleton style={{ height: 36, width: "100%" }} />
+						</Col>
+						<Col s={12}>
+							<Skeleton style={{ height: 400, width: "100%" }} />
+						</Col>
+					</Row>
+				</Container>
+			</>
 		);
 
 	return (
@@ -31,7 +39,10 @@ export const Business = () => {
 			{() => (
 				<>
 					<BusinessActionBar />
-					<Container style={{ ...CONTAINER_PADDING, height: "inherit" }}>
+					<Container
+						style={{ ...CONTAINER_PADDING, height: "inherit" }}
+						maxWidth="xl"
+					>
 						<Flex direction="column" gap={4}>
 							<BusinessTabs />
 							{panel === PANELS.GENERAL_INFORMATION && <GeneralInformation />}

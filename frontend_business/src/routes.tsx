@@ -5,6 +5,8 @@ import { Entry } from "./features/Aplication/Entry";
 import { SignIn } from "./pages/SignIn";
 import { SignUp } from "./pages/SignUp";
 import { Business } from "./pages/Business";
+import { Messages } from "./pages/Messages";
+import { Statistics } from "./pages/Statistics";
 
 export interface FeatureRoute {
 	component: FC;
@@ -18,6 +20,8 @@ export const router = createBrowserRouter([
 		children: [
 			{ path: "/", element: <Navigate to="/my-business" /> },
 			{ path: "/my-business", element: <Business /> },
+			{ path: "/statistics", element: <Statistics /> },
+			{ path: "/messages", element: <Messages /> },
 		],
 	},
 	{

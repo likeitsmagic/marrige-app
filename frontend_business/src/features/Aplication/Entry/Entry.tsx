@@ -1,10 +1,11 @@
 import { ChartAreaStacked, Comment, House } from "@gravity-ui/icons";
 import { PageLayout, PageLayoutAside } from "@gravity-ui/navigation";
 import { Flex, Spin, Text } from "@gravity-ui/uikit";
-import React from "react";
+import React, { useCallback } from "react";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "src/core/auth/useAuth";
 import i18n from "src/i18n";
+import { Footer } from "src/features/Footer";
 
 import logoIcon from "../../../assets/logo.svg";
 
@@ -13,6 +14,10 @@ export const Entry = () => {
 	const { pathname } = useLocation();
 
 	const { isAuthenticated, isLoading } = useAuthContext();
+
+	const renderFooter = useCallback(() => {
+		return <Footer />;
+	}, []);
 
 	if (isLoading) {
 		return (
@@ -101,6 +106,7 @@ export const Entry = () => {
 							current: pathname === "/statistics",
 						},
 					]}
+					renderFooter={renderFooter}
 					hideCollapseButton
 				/>
 			</React.Fragment>
