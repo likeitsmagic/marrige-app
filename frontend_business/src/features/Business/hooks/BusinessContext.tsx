@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { createContext, FC, PropsWithChildren, useMemo, useState } from "react";
 import { IBusiness } from "src/core/types";
 import { WeddingVendorTypeEnum } from "src/core/enums/weddingVendorType.enum";
+import { DataApi } from "src/core/api/Data.api";
 
 import { BusinessApi } from "../api/Business.api";
 import { PANELS } from "../constants";
@@ -14,6 +15,7 @@ interface IBusinessContext {
 	setPanel: (panel: PANELS) => void;
 	initialValues: BusinessValues;
 	updateBusiness: (business: BusinessValues) => Promise<IBusiness | undefined>;
+	yandexMapsApiKey: string | undefined;
 }
 
 export const BusinessContext = createContext<IBusinessContext>({
@@ -37,12 +39,19 @@ export const BusinessContext = createContext<IBusinessContext>({
 		socialMedias: [],
 	},
 	updateBusiness: () => Promise.resolve(undefined),
+	yandexMapsApiKey: "",
 });
 
 export const BusinessContextProvider: FC<PropsWithChildren> = ({
 	children,
 }) => {
 	const [panel, setPanel] = useState<PANELS>(PANELS.GENERAL_INFORMATION);
+
+	const { data: yandexMapsApiKey, isLoading: isLoadingYandexMapsApiKey } =
+		useQuery({
+			queryKey: ["yandexMapsApiKey"],
+			queryFn: DataApi.getYandexMapsApiKey,
+		});
 
 	const { data, isLoading, refetch } = useQuery({
 		queryKey: ["business"],
@@ -78,11 +87,12 @@ export const BusinessContextProvider: FC<PropsWithChildren> = ({
 		<BusinessContext.Provider
 			value={{
 				business: data,
-				isLoading,
+				isLoading: isLoading || isLoadingYandexMapsApiKey,
 				panel,
 				setPanel,
 				initialValues,
 				updateBusiness,
+				yandexMapsApiKey: yandexMapsApiKey,
 			}}
 		>
 			{children}

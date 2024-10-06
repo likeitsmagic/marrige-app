@@ -12,7 +12,8 @@ import { BusinessBreadcrumbs } from "../BusinessBreadcrumbs";
 import { BusinessStatus } from "../BusinessStatus";
 
 export const BusinessActionBar: FC = () => {
-	const { handleSubmit, isSubmitting } = useFormikContext<BusinessValues>();
+	const { handleSubmit, isSubmitting, isValid } =
+		useFormikContext<BusinessValues>();
 	const { business } = useBusiness();
 
 	const handleSave = useCallback(async () => {
@@ -42,6 +43,7 @@ export const BusinessActionBar: FC = () => {
 							view="outlined-success"
 							onClick={handleSave}
 							loading={isSubmitting}
+							disabled={!isValid}
 						>
 							<Icon data={PencilToSquare} />
 							<Text>{i18n.i18n("common", "save")}</Text>

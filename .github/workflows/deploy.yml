@@ -24,6 +24,8 @@ env:
   S3_REGION: ${{ secrets.S3_REGION }}
   S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
 
+  YANDEX_MAPS_API_KEY: ${{ secrets.YANDEX_MAPS_API_KEY }}
+
   COMPOSE_FILE: ${{ secrets.COMPOSE_FILE }}
 
 jobs:

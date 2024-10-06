@@ -17,6 +17,7 @@ services:
       S3_BUCKET: ${S3_BUCKET}
       S3_REGION: ${S3_REGION}
       S3_ENDPOINT: ${S3_ENDPOINT}
+      YANDEX_MAPS_API_KEY: ${YANDEX_MAPS_API_KEY}
     labels:
       - "traefik.http.routers.backend.rule=Host(`${DOMAIN}`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend.entrypoints=websecure"

@@ -10,6 +10,7 @@ import {
 import { Field, useFormikContext } from "formik";
 import { CONTAINER_PADDING } from "src/core/constants";
 import i18n from "src/i18n";
+import { CircleRuble } from "@gravity-ui/icons";
 
 import { BusinessValues } from "../../schema";
 import { CategorySelect } from "../CategorySelect";
@@ -72,6 +73,7 @@ export const GeneralInformation = () => {
 								}
 								errorMessage={errors.minPrice}
 								disabled={isSubmitting}
+								endContent={<CircleRuble />}
 								as={TextInput}
 							/>
 						</FormRow>
@@ -93,6 +95,7 @@ export const GeneralInformation = () => {
 								}
 								errorMessage={errors.maxPrice}
 								disabled={isSubmitting}
+								endContent={<CircleRuble />}
 								as={TextInput}
 							/>
 						</FormRow>
