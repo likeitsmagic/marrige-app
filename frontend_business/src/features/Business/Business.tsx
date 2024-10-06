@@ -44,6 +44,7 @@ export const Business = () => {
 			initialValues={initialValues}
 			onSubmit={updateBusiness}
 			validationSchema={toFormikValidationSchema(schema)}
+			enableReinitialize
 		>
 			{() => (
 				<>
