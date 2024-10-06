@@ -11,11 +11,12 @@ import { LocationInfo } from "./components/LoacationInfo";
 import { PANELS } from "./constants";
 import { useBusiness } from "./hooks/useBusiness";
 import { BusinessValues, schema } from "./schema";
+import { ImagesInformation } from "./components/ImagesInformation";
 
 const PANELS_COMPONENTS: Record<PANELS, ReactNode> = {
 	[PANELS.GENERAL_INFORMATION]: <GeneralInformation />,
 	[PANELS.LOCATION]: <LocationInfo />,
-	[PANELS.IMAGES]: <div>Images</div>,
+	[PANELS.IMAGES]: <ImagesInformation />,
 	[PANELS.SOCIAL_MEDIA]: <div>Social Media</div>,
 };
 

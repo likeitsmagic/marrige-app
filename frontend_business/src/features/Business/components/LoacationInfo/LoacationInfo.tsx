@@ -46,6 +46,7 @@ export const LocationInfo = () => {
 									options={{
 										float: "left",
 										placeholderContent: i18n.i18n("business", "search_geo"),
+										noSuggestPanel: true,
 									}}
 									instanceRef={handleSearchResult}
 								/>
