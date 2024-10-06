@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - REACT_APP_DOMAIN=${DOMAIN}
-
+      - REACT_APP_YANDEX_CAPTCHA_KEY=${YANDEX_CAPTCHA_KEY}
     labels:
       - "traefik.http.routers.frontend.rule=Host(`${DOMAIN}`)"
       - "traefik.http.routers.frontend.entrypoints=websecure"

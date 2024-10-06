@@ -1,11 +1,13 @@
-import { PasswordInput } from "@gravity-ui/components";
+import { FormRow, PasswordInput } from "@gravity-ui/components";
 import { ArrowLeft } from "@gravity-ui/icons";
 import {
 	Button,
 	Card,
+	Col,
 	Container,
 	Flex,
 	Icon,
+	Row,
 	Text,
 	TextInput,
 } from "@gravity-ui/uikit";
@@ -15,6 +17,7 @@ import { useNavigate } from "react-router";
 import { useAuthContext } from "src/core/auth/useAuth";
 import i18n from "src/i18n";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { Captcha } from "src/components/Captcha";
 
 import { YandexAuth } from "../Auth/compoenents/Yandex";
 
@@ -24,6 +27,7 @@ export const SignUpFormV2 = () => {
 	const navigate = useNavigate();
 	const { signup, updateInfo } = useAuthContext();
 	const [error, setError] = useState<string | null>(null);
+	const [token, setToken] = useState<string | null>(null);
 
 	const initialValues = useMemo<SignUpValues>(
 		() => ({
@@ -36,6 +40,11 @@ export const SignUpFormV2 = () => {
 
 	const onSubmit = useCallback(
 		async (values: SignUpValues) => {
+			if (!token) {
+				setError(i18n.i18n("validation", "captcha_required"));
+				return;
+			}
+
 			setError(null);
 			const result = await signup(values.email, values.password, false);
 
@@ -49,7 +58,7 @@ export const SignUpFormV2 = () => {
 				setError(result.error);
 			}
 		},
-		[signup, updateInfo, navigate],
+		[signup, updateInfo, navigate, token],
 	);
 
 	const handleBack = useCallback(() => {
@@ -87,12 +96,10 @@ export const SignUpFormV2 = () => {
 						>
 							{({ handleSubmit, isSubmitting, errors, touched }) => (
 								<form onSubmit={handleSubmit} style={{ width: "100%" }}>
-									<Flex direction="column" gap={4}>
-										<label htmlFor="email">
-											<Text variant="body-1">
-												{i18n.i18n("signup", "email")}
-											</Text>
-										</label>
+									<FormRow
+										label={i18n.i18n("signup", "email")}
+										direction="column"
+									>
 										<Field
 											name="email"
 											type="email"
@@ -103,11 +110,12 @@ export const SignUpFormV2 = () => {
 											errorMessage={errors.email}
 											as={TextInput}
 										/>
-										<label htmlFor="password">
-											<Text variant="body-1">
-												{i18n.i18n("signup", "password")}
-											</Text>
-										</label>
+									</FormRow>
+
+									<FormRow
+										label={i18n.i18n("signup", "password")}
+										direction="column"
+									>
 										<Field
 											name="password"
 											type="password"
@@ -118,11 +126,11 @@ export const SignUpFormV2 = () => {
 											errorMessage={errors.password}
 											as={PasswordInput}
 										/>
-										<label htmlFor="confirmPassword">
-											<Text variant="body-1">
-												{i18n.i18n("signup", "repeat_password")}
-											</Text>
-										</label>
+									</FormRow>
+									<FormRow
+										label={i18n.i18n("signup", "repeat_password")}
+										direction="column"
+									>
 										<Field
 											name="confirmPassword"
 											type="password"
@@ -135,16 +143,26 @@ export const SignUpFormV2 = () => {
 											errorMessage={errors.confirmPassword}
 											as={PasswordInput}
 										/>
-										<Button
-											type="submit"
-											loading={isSubmitting}
-											view="action"
-											size="l"
-										>
-											{i18n.i18n("signup", "register")}
-										</Button>
-										<YandexAuth />
-									</Flex>
+									</FormRow>
+									<Row space={4}>
+										<Col s={12}>
+											<Captcha setToken={setToken} />
+										</Col>
+										<Col s={12}>
+											<Button
+												type="submit"
+												loading={isSubmitting}
+												view="action"
+												size="l"
+												width="max"
+											>
+												{i18n.i18n("signup", "register")}
+											</Button>
+										</Col>
+										<Col s={12}>
+											<YandexAuth />
+										</Col>
+									</Row>
 								</form>
 							)}
 						</Formik>

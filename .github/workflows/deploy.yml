@@ -26,6 +26,8 @@ env:
 
   YANDEX_MAPS_API_KEY: ${{ secrets.YANDEX_MAPS_API_KEY }}
 
+  YANDEX_CAPTCHA_KEY: ${{ secrets.YANDEX_CAPTCHA_KEY }}
+
   COMPOSE_FILE: ${{ secrets.COMPOSE_FILE }}
 
 jobs:
