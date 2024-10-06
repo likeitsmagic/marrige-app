@@ -2,13 +2,22 @@ import { Col, Container, Flex, Row, Skeleton } from "@gravity-ui/uikit";
 import { Formik } from "formik";
 import { CONTAINER_PADDING } from "src/core/constants";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { ReactNode } from "react";
 
 import { BusinessActionBar } from "./components/BusinessActionBar/BusinessActionBar";
 import { BusinessTabs } from "./components/BusinessTabs";
 import { GeneralInformation } from "./components/GeneralInformation";
+import { LocationInfo } from "./components/LoacationInfo";
 import { PANELS } from "./constants";
 import { useBusiness } from "./hooks/useBusiness";
 import { BusinessValues, schema } from "./schema";
+
+const PANELS_COMPONENTS: Record<PANELS, ReactNode> = {
+	[PANELS.GENERAL_INFORMATION]: <GeneralInformation />,
+	[PANELS.LOCATION]: <LocationInfo />,
+	[PANELS.IMAGES]: <div>Images</div>,
+	[PANELS.SOCIAL_MEDIA]: <div>Social Media</div>,
+};
 
 export const Business = () => {
 	const { isLoading, panel, initialValues, updateBusiness } = useBusiness();
@@ -16,7 +25,7 @@ export const Business = () => {
 	if (isLoading)
 		return (
 			<>
-				<Skeleton qa="actionbar" style={{ height: 40, width: "100%" }} />
+				<Skeleton style={{ height: 40, width: "100%" }} />
 				<Container style={{ ...CONTAINER_PADDING }} maxWidth="xl">
 					<Row space={4}>
 						<Col s={12}>
@@ -45,7 +54,7 @@ export const Business = () => {
 					>
 						<Flex direction="column" gap={4}>
 							<BusinessTabs />
-							{panel === PANELS.GENERAL_INFORMATION && <GeneralInformation />}
+							{PANELS_COMPONENTS[panel]}
 						</Flex>
 					</Container>
 				</>

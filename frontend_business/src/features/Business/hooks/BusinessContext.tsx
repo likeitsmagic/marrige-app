@@ -6,13 +6,12 @@ import { WeddingVendorTypeEnum } from "src/core/enums/weddingVendorType.enum";
 import { BusinessApi } from "../api/Business.api";
 import { PANELS } from "../constants";
 import { BusinessValues } from "../schema";
-import { Panel } from "../types";
 
 interface IBusinessContext {
 	business: IBusiness | undefined;
 	isLoading: boolean;
-	panel: Panel;
-	setPanel: (panel: Panel) => void;
+	panel: PANELS;
+	setPanel: (panel: PANELS) => void;
 	initialValues: BusinessValues;
 	updateBusiness: (business: BusinessValues) => Promise<IBusiness | undefined>;
 }
@@ -43,7 +42,7 @@ export const BusinessContext = createContext<IBusinessContext>({
 export const BusinessContextProvider: FC<PropsWithChildren> = ({
 	children,
 }) => {
-	const [panel, setPanel] = useState<Panel>(PANELS.GENERAL_INFORMATION);
+	const [panel, setPanel] = useState<PANELS>(PANELS.GENERAL_INFORMATION);
 
 	const { data, isLoading, refetch } = useQuery({
 		queryKey: ["business"],
